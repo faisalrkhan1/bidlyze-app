@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
 import { getSupabase } from "@/lib/supabase";
+import { useTheme } from "@/lib/theme";
 
 const ACCEPTED_TYPES = [
   "application/pdf",
@@ -55,6 +56,28 @@ const features = [
     ),
   },
 ];
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <button
+      onClick={toggleTheme}
+      className="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300"
+      style={{ border: "1px solid var(--border-secondary)", background: "var(--bg-subtle)" }}
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {theme === "dark" ? (
+        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: "var(--text-secondary)" }}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        </svg>
+      ) : (
+        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: "var(--text-secondary)" }}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+        </svg>
+      )}
+    </button>
+  );
+}
 
 export default function HomePage() {
   const { user, loading: authLoading, logout } = useAuth();
@@ -159,16 +182,16 @@ export default function HomePage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-[#08090c] text-white flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
         <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#08090c] text-white">
+    <div className="min-h-screen transition-colors duration-300" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
       {/* Header */}
-      <header className="border-b border-white/5">
+      <header className="transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-base text-white">
@@ -177,10 +200,14 @@ export default function HomePage() {
             <span className="text-lg font-semibold tracking-tight">Bidlyze</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-gray-400 text-sm hidden sm:block">{user?.email}</span>
+            <span className="text-sm hidden sm:block" style={{ color: "var(--text-secondary)" }}>{user?.email}</span>
+            <ThemeToggle />
             <button
               onClick={logout}
-              className="px-4 py-2 rounded-lg text-sm font-medium border border-white/10 hover:bg-white/5 transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300"
+              style={{ border: "1px solid var(--border-secondary)", background: "transparent" }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "var(--bg-subtle)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
             >
               Log Out
             </button>
@@ -192,11 +219,13 @@ export default function HomePage() {
         {/* Usage Counter */}
         {usageCount !== null && (
           <div className="max-w-2xl mx-auto mb-8">
-            <div className={`flex items-center justify-between p-4 rounded-xl border ${
-              limitReached
-                ? "bg-red-500/5 border-red-500/20"
-                : "bg-white/[0.02] border-white/5"
-            }`}>
+            <div
+              className="flex items-center justify-between p-4 rounded-xl transition-colors duration-300"
+              style={{
+                background: limitReached ? "rgba(239, 68, 68, 0.05)" : "var(--bg-subtle)",
+                border: limitReached ? "1px solid rgba(239, 68, 68, 0.2)" : "1px solid var(--border-primary)",
+              }}
+            >
               <div className="flex items-center gap-3">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                   limitReached ? "bg-red-500/10" : "bg-emerald-500/10"
@@ -205,7 +234,7 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
                   </svg>
                 </div>
-                <span className={`text-sm font-medium ${limitReached ? "text-red-400" : "text-gray-300"}`}>
+                <span className={`text-sm font-medium ${limitReached ? "text-red-400" : ""}`} style={!limitReached ? { color: "var(--text-secondary)" } : {}}>
                   {usageCount} / {FREE_LIMIT} free analyses this month
                 </span>
               </div>
@@ -228,7 +257,7 @@ export default function HomePage() {
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
             AI-Powered <span className="text-emerald-500">Tender Analysis</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
             Upload your tender document and get instant analysis with compliance checks,
             risk flags, and bid recommendations.
           </p>
@@ -237,14 +266,17 @@ export default function HomePage() {
         {/* Upload Area */}
         <div className="max-w-2xl mx-auto mb-16">
           {limitReached ? (
-            <div className="border-2 border-dashed rounded-2xl p-12 text-center border-white/10 bg-white/[0.02] opacity-50">
-              <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div
+              className="border-2 border-dashed rounded-2xl p-12 text-center opacity-50 transition-colors duration-300"
+              style={{ borderColor: "var(--border-secondary)", background: "var(--bg-subtle)" }}
+            >
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: "var(--icon-muted)" }}>
+                <svg className="w-7 h-7" style={{ color: "var(--text-secondary)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
                 </svg>
               </div>
-              <p className="text-white font-medium mb-1">Free limit reached</p>
-              <p className="text-gray-500 text-sm mb-4">
+              <p className="font-medium mb-1">Free limit reached</p>
+              <p className="text-sm mb-4" style={{ color: "var(--text-muted)" }}>
                 You&apos;ve reached your free limit. Upgrade to continue.
               </p>
               <a
@@ -264,13 +296,14 @@ export default function HomePage() {
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className={`relative border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-200 ${
+                className={`relative border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-300 ${
                   dragActive
                     ? "border-emerald-500 bg-emerald-500/5"
                     : file
                     ? "border-emerald-500/50 bg-emerald-500/5"
-                    : "border-white/10 hover:border-white/20 bg-white/[0.02]"
+                    : ""
                 }`}
+                style={!dragActive && !file ? { borderColor: "var(--border-secondary)", background: "var(--bg-subtle)" } : {}}
               >
                 <input
                   ref={fileInputRef}
@@ -287,20 +320,20 @@ export default function HomePage() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                       </svg>
                     </div>
-                    <p className="text-white font-medium mb-1">{file.name}</p>
-                    <p className="text-gray-500 text-sm">{formatSize(file.size)}</p>
+                    <p className="font-medium mb-1">{file.name}</p>
+                    <p className="text-sm" style={{ color: "var(--text-muted)" }}>{formatSize(file.size)}</p>
                   </div>
                 ) : (
                   <div>
-                    <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: "var(--icon-muted)" }}>
+                      <svg className="w-7 h-7" style={{ color: "var(--text-secondary)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                       </svg>
                     </div>
-                    <p className="text-white font-medium mb-1">
+                    <p className="font-medium mb-1">
                       Drop your tender document here or click to browse
                     </p>
-                    <p className="text-gray-500 text-sm">PDF, DOCX, or TXT — max 3MB</p>
+                    <p className="text-sm" style={{ color: "var(--text-muted)" }}>PDF, DOCX, or TXT — max 3MB</p>
                   </div>
                 )}
               </div>
@@ -337,13 +370,16 @@ export default function HomePage() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors"
+              className="p-6 rounded-2xl transition-colors duration-300"
+              style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = "var(--border-secondary)"}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = "var(--border-primary)"}
             >
               <div className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-4">
                 {f.icon}
               </div>
               <h3 className="font-semibold mb-1">{f.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{f.description}</p>
+              <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{f.description}</p>
             </div>
           ))}
         </div>

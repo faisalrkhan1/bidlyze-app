@@ -3,6 +3,29 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabase } from "@/lib/supabase";
+import { useTheme } from "@/lib/theme";
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <button
+      onClick={toggleTheme}
+      className="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300"
+      style={{ border: "1px solid var(--border-secondary)", background: "var(--bg-subtle)" }}
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {theme === "dark" ? (
+        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: "var(--text-secondary)" }}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        </svg>
+      ) : (
+        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: "var(--text-secondary)" }}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+        </svg>
+      )}
+    </button>
+  );
+}
 
 export default function LoginPage() {
   const [tab, setTab] = useState("signin");
@@ -60,7 +83,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#08090c] text-white flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 transition-colors duration-300 relative" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
+      {/* Theme toggle in top right */}
+      <div className="absolute top-5 right-6">
+        <ThemeToggle />
+      </div>
+
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex flex-col items-center mb-10">
@@ -68,24 +96,30 @@ export default function LoginPage() {
             B
           </div>
           <span className="text-2xl font-semibold tracking-tight">Bidlyze</span>
-          <p className="text-gray-500 text-sm mt-2">AI-Powered Tender Analysis</p>
+          <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>AI-Powered Tender Analysis</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex mb-8 border border-white/10 rounded-xl overflow-hidden">
+        <div className="flex mb-8 rounded-xl overflow-hidden transition-colors duration-300" style={{ border: "1px solid var(--border-secondary)" }}>
           <button
             onClick={() => { setTab("signin"); setError(""); setMessage(""); }}
             className={`flex-1 py-3 text-sm font-medium transition-colors ${
-              tab === "signin" ? "bg-emerald-500 text-white" : "text-gray-400 hover:text-white hover:bg-white/5"
+              tab === "signin" ? "bg-emerald-500 text-white" : ""
             }`}
+            style={tab !== "signin" ? { color: "var(--text-secondary)" } : {}}
+            onMouseEnter={(e) => { if (tab !== "signin") e.currentTarget.style.background = "var(--bg-subtle)"; }}
+            onMouseLeave={(e) => { if (tab !== "signin") e.currentTarget.style.background = "transparent"; }}
           >
             Sign In
           </button>
           <button
             onClick={() => { setTab("signup"); setError(""); setMessage(""); }}
             className={`flex-1 py-3 text-sm font-medium transition-colors ${
-              tab === "signup" ? "bg-emerald-500 text-white" : "text-gray-400 hover:text-white hover:bg-white/5"
+              tab === "signup" ? "bg-emerald-500 text-white" : ""
             }`}
+            style={tab !== "signup" ? { color: "var(--text-secondary)" } : {}}
+            onMouseEnter={(e) => { if (tab !== "signup") e.currentTarget.style.background = "var(--bg-subtle)"; }}
+            onMouseLeave={(e) => { if (tab !== "signup") e.currentTarget.style.background = "transparent"; }}
           >
             Sign Up
           </button>
@@ -95,24 +129,26 @@ export default function LoginPage() {
         {tab === "signin" && (
           <form onSubmit={handleSignIn} className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">Email</label>
+              <label className="block text-sm mb-1.5" style={{ color: "var(--text-secondary)" }}>Email</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="you@example.com"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">Password</label>
+              <label className="block text-sm mb-1.5" style={{ color: "var(--text-secondary)" }}>Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="Enter your password"
               />
             </div>
@@ -140,35 +176,38 @@ export default function LoginPage() {
         {tab === "signup" && (
           <form onSubmit={handleSignUp} className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">Email</label>
+              <label className="block text-sm mb-1.5" style={{ color: "var(--text-secondary)" }}>Email</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="you@example.com"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">Password</label>
+              <label className="block text-sm mb-1.5" style={{ color: "var(--text-secondary)" }}>Password</label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="At least 6 characters"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">Confirm Password</label>
+              <label className="block text-sm mb-1.5" style={{ color: "var(--text-secondary)" }}>Confirm Password</label>
               <input
                 type="password"
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="Confirm your password"
               />
             </div>

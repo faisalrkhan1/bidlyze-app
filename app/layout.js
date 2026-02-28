@@ -1,5 +1,6 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/lib/theme";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${outfit.variable} font-[family-name:var(--font-outfit)] antialiased`}>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

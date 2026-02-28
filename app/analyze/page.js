@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
+import { useTheme } from "@/lib/theme";
 
 function ScoreBadge({ score }) {
   const color =
@@ -41,7 +42,7 @@ function SeverityBadge({ severity }) {
     LOW: "bg-emerald-500/10 text-emerald-400",
   };
   return (
-    <span className={`px-2 py-0.5 rounded text-xs font-medium ${colors[severity] || "bg-white/5 text-gray-400"}`}>
+    <span className={`px-2 py-0.5 rounded text-xs font-medium ${colors[severity] || ""}`} style={!colors[severity] ? { background: "var(--icon-muted)", color: "var(--text-secondary)" } : {}}>
       {severity}
     </span>
   );
@@ -50,14 +51,17 @@ function SeverityBadge({ severity }) {
 function Section({ title, defaultOpen = false, children }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border border-white/5 rounded-2xl overflow-hidden">
+    <div className="rounded-2xl overflow-hidden transition-colors duration-300" style={{ border: "1px solid var(--border-primary)" }}>
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-5 text-left hover:bg-white/[0.02] transition-colors"
+        className="w-full flex items-center justify-between p-5 text-left transition-colors duration-300"
+        onMouseEnter={(e) => e.currentTarget.style.background = "var(--bg-card-hover)"}
+        onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
       >
         <h3 className="font-semibold">{title}</h3>
         <svg
-          className={`w-5 h-5 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
+          className={`w-5 h-5 transition-transform`}
+          style={{ color: "var(--text-secondary)", transform: open ? "rotate(180deg)" : "" }}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -66,17 +70,39 @@ function Section({ title, defaultOpen = false, children }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
         </svg>
       </button>
-      {open && <div className="px-5 pb-5 border-t border-white/5 pt-4">{children}</div>}
+      {open && <div className="px-5 pb-5 pt-4 transition-colors duration-300" style={{ borderTop: "1px solid var(--border-primary)" }}>{children}</div>}
     </div>
   );
 }
 
 function InfoCard({ label, value }) {
   return (
-    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-      <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">{label}</p>
-      <p className="text-white text-sm font-medium">{value || "Not specified"}</p>
+    <div className="p-4 rounded-xl transition-colors duration-300" style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}>
+      <p className="text-xs uppercase tracking-wider mb-1" style={{ color: "var(--text-muted)" }}>{label}</p>
+      <p className="text-sm font-medium">{value || "Not specified"}</p>
     </div>
+  );
+}
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <button
+      onClick={toggleTheme}
+      className="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-300"
+      style={{ border: "1px solid var(--border-secondary)", background: "var(--bg-subtle)" }}
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {theme === "dark" ? (
+        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: "var(--text-secondary)" }}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        </svg>
+      ) : (
+        <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: "var(--text-secondary)" }}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+        </svg>
+      )}
+    </button>
   );
 }
 
@@ -103,7 +129,7 @@ export default function AnalyzePage() {
 
   if (authLoading || !result) {
     return (
-      <div className="min-h-screen bg-[#08090c] text-white flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
         <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
       </div>
     );
@@ -123,9 +149,9 @@ export default function AnalyzePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#08090c] text-white">
+    <div className="min-h-screen transition-colors duration-300" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
       {/* Header */}
-      <header className="border-b border-white/5">
+      <header className="transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-base text-white">
@@ -134,22 +160,29 @@ export default function AnalyzePage() {
             <span className="text-lg font-semibold tracking-tight">Bidlyze</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-gray-400 text-sm hidden sm:block">{user?.email}</span>
+            <span className="text-sm hidden sm:block" style={{ color: "var(--text-secondary)" }}>{user?.email}</span>
+            <ThemeToggle />
             <button
               onClick={() => router.push("/")}
-              className="px-4 py-2 rounded-lg text-sm font-medium border border-white/10 hover:bg-white/5 transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300"
+              style={{ border: "1px solid var(--border-secondary)", background: "transparent" }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "var(--bg-subtle)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
             >
               Analyze Another
             </button>
             <button
               onClick={exportJSON}
-              className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-500 hover:bg-emerald-400 transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-500 hover:bg-emerald-400 transition-colors text-white"
             >
               Export JSON
             </button>
             <button
               onClick={logout}
-              className="px-4 py-2 rounded-lg text-sm font-medium border border-white/10 hover:bg-white/5 transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300"
+              style={{ border: "1px solid var(--border-secondary)", background: "transparent" }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "var(--bg-subtle)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
             >
               Log Out
             </button>
@@ -162,7 +195,7 @@ export default function AnalyzePage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold mb-1">{summary?.projectName || "Tender Analysis"}</h1>
-            <p className="text-gray-400 text-sm">{fileName}</p>
+            <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{fileName}</p>
           </div>
           <div className="flex items-center gap-3">
             {bidScore && <ScoreBadge score={bidScore.score} />}
@@ -184,9 +217,9 @@ export default function AnalyzePage() {
 
         {/* Brief Description */}
         {summary?.briefDescription && (
-          <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Brief Description</p>
-            <p className="text-gray-300 text-sm leading-relaxed">{summary.briefDescription}</p>
+          <div className="p-5 rounded-2xl transition-colors duration-300" style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}>
+            <p className="text-xs uppercase tracking-wider mb-2" style={{ color: "var(--text-muted)" }}>Brief Description</p>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{summary.briefDescription}</p>
           </div>
         )}
 
@@ -196,7 +229,7 @@ export default function AnalyzePage() {
             <p className="text-emerald-400 text-xs uppercase tracking-wider mb-2 font-semibold">
               AI Recommendation
             </p>
-            <p className="text-gray-300 text-sm leading-relaxed">{bidScore.reasoning}</p>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{bidScore.reasoning}</p>
           </div>
         )}
 
@@ -207,9 +240,9 @@ export default function AnalyzePage() {
             <Section title={`Requirements (${requirements.length})`} defaultOpen>
               <div className="space-y-3">
                 {requirements.map((r, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <div key={i} className="p-4 rounded-xl transition-colors duration-300" style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}>
                     <div className="flex items-start justify-between gap-3 mb-1">
-                      <span className="text-xs font-medium text-gray-500 uppercase">{r.category}</span>
+                      <span className="text-xs font-medium uppercase" style={{ color: "var(--text-muted)" }}>{r.category}</span>
                       <div className="flex items-center gap-2">
                         {r.mandatory && (
                           <span className="px-2 py-0.5 rounded text-xs font-medium bg-red-500/10 text-red-400">
@@ -219,7 +252,7 @@ export default function AnalyzePage() {
                         <SeverityBadge severity={r.priority} />
                       </div>
                     </div>
-                    <p className="text-gray-300 text-sm">{r.requirement}</p>
+                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{r.requirement}</p>
                   </div>
                 ))}
               </div>
@@ -233,11 +266,12 @@ export default function AnalyzePage() {
                 {complianceChecklist.map((c, i) => (
                   <div
                     key={i}
-                    className="flex items-start justify-between gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/5"
+                    className="flex items-start justify-between gap-3 p-3 rounded-lg transition-colors duration-300"
+                    style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}
                   >
                     <div>
-                      <p className="text-gray-300 text-sm">{c.item}</p>
-                      <p className="text-gray-500 text-xs mt-0.5">{c.category}</p>
+                      <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{c.item}</p>
+                      <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{c.category}</p>
                     </div>
                     {c.critical && (
                       <span className="shrink-0 px-2 py-0.5 rounded text-xs font-medium bg-red-500/10 text-red-400">
@@ -255,12 +289,12 @@ export default function AnalyzePage() {
             <Section title={`Risk Flags (${riskFlags.length})`}>
               <div className="space-y-3">
                 {riskFlags.map((r, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <div key={i} className="p-4 rounded-xl transition-colors duration-300" style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}>
                     <div className="flex items-start justify-between gap-3 mb-2">
-                      <p className="text-white text-sm font-medium">{r.risk}</p>
+                      <p className="text-sm font-medium">{r.risk}</p>
                       <SeverityBadge severity={r.severity} />
                     </div>
-                    <p className="text-gray-400 text-sm">{r.recommendation}</p>
+                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{r.recommendation}</p>
                   </div>
                 ))}
               </div>
@@ -274,9 +308,10 @@ export default function AnalyzePage() {
                 {keyDates.map((d, i) => (
                   <div
                     key={i}
-                    className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5"
+                    className="flex items-center justify-between p-3 rounded-lg transition-colors duration-300"
+                    style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}
                   >
-                    <span className="text-gray-300 text-sm">{d.event}</span>
+                    <span className="text-sm" style={{ color: "var(--text-secondary)" }}>{d.event}</span>
                     <span className="text-emerald-400 text-sm font-medium">{d.date}</span>
                   </div>
                 ))}
@@ -289,14 +324,14 @@ export default function AnalyzePage() {
             <Section title={`Evaluation Criteria (${evaluationCriteria.length})`}>
               <div className="space-y-3">
                 {evaluationCriteria.map((e, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <div key={i} className="p-4 rounded-xl transition-colors duration-300" style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}>
                     <div className="flex items-start justify-between gap-3 mb-1">
-                      <p className="text-white text-sm font-medium">{e.criterion}</p>
+                      <p className="text-sm font-medium">{e.criterion}</p>
                       <span className="shrink-0 px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/10 text-emerald-400">
                         {e.weight}
                       </span>
                     </div>
-                    <p className="text-gray-400 text-sm">{e.details}</p>
+                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{e.details}</p>
                   </div>
                 ))}
               </div>
