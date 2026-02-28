@@ -8,7 +8,7 @@ const ACCEPTED_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "text/plain",
 ];
-const MAX_SIZE = 50 * 1024 * 1024; // 50MB
+const MAX_SIZE = 3 * 1024 * 1024; // 3MB
 
 const features = [
   {
@@ -66,7 +66,7 @@ export default function HomePage() {
     if (!ACCEPTED_TYPES.includes(f.type) && !f.name.match(/\.(pdf|docx|txt)$/i)) {
       return "Unsupported file type. Please upload a PDF, DOCX, or TXT file.";
     }
-    if (f.size > MAX_SIZE) return "File too large. Maximum size is 50MB.";
+    if (f.size > MAX_SIZE) return "File too large. Maximum size is 3MB on the free plan.";
     return null;
   }
 
@@ -194,7 +194,7 @@ export default function HomePage() {
                 <p className="text-white font-medium mb-1">
                   Drop your tender document here or click to browse
                 </p>
-                <p className="text-gray-500 text-sm">PDF, DOCX, or TXT — max 50MB</p>
+                <p className="text-gray-500 text-sm">PDF, DOCX, or TXT — max 3MB</p>
               </div>
             )}
           </div>

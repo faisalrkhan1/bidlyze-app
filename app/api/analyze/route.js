@@ -17,7 +17,18 @@ export async function POST(request) {
 
     const fileName = file.name;
     const fileSize = file.size;
+    const maxSize = 3 * 1024 * 1024; // 3MB — Vercel free tier has 4.5MB body limit, base64 adds ~33%
     const fileExtension = fileName.split(".").pop().toLowerCase();
+
+    if (fileSize > maxSize) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "File too large. Please upload a PDF under 3MB.",
+        },
+        { status: 400 }
+      );
+    }
 
     let result;
 
