@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 const ACCEPTED_TYPES = [
   "application/pdf",
@@ -72,7 +72,7 @@ export default function HomePage() {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-    supabase
+    getSupabase()
       .from("analyses")
       .select("*", { count: "exact", head: true })
       .eq("user_id", user.id)
@@ -123,7 +123,7 @@ export default function HomePage() {
     setError("");
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await getSupabase().auth.getSession();
 
       const formData = new FormData();
       formData.append("file", file);
