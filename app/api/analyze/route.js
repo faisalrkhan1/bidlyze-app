@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { analyzeTender } from "@/lib/gemini";
+import { analyzeTender, analyzeTenderFromPDF } from "@/lib/gemini";
 
 export const maxDuration = 60;
 
@@ -19,20 +19,43 @@ export async function POST(request) {
     const fileSize = file.size;
     const fileExtension = fileName.split(".").pop().toLowerCase();
 
-    let text = "";
+    let result;
 
     if (fileExtension === "pdf") {
-      const pdfParse = require("pdf-parse");
       const buffer = Buffer.from(await file.arrayBuffer());
-      const pdfData = await pdfParse(buffer);
-      text = pdfData.text;
+      const base64PDF = buffer.toString("base64");
+      result = await analyzeTenderFromPDF(base64PDF);
     } else if (fileExtension === "docx") {
       const mammoth = await import("mammoth");
       const buffer = Buffer.from(await file.arrayBuffer());
-      const result = await mammoth.extractRawText({ buffer });
-      text = result.value;
+      const extracted = await mammoth.extractRawText({ buffer });
+      const text = extracted.value;
+
+      if (!text || text.trim().length === 0) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Could not extract text from the uploaded file. The file may be empty or corrupted.",
+          },
+          { status: 400 }
+        );
+      }
+
+      result = await analyzeTender(text.substring(0, 500000));
     } else if (fileExtension === "txt") {
-      text = await file.text();
+      const text = await file.text();
+
+      if (!text || text.trim().length === 0) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Could not extract text from the uploaded file. The file may be empty or corrupted.",
+          },
+          { status: 400 }
+        );
+      }
+
+      result = await analyzeTender(text.substring(0, 500000));
     } else {
       return NextResponse.json(
         {
@@ -42,21 +65,6 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-
-    if (!text || text.trim().length === 0) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Could not extract text from the uploaded file. The file may be empty or corrupted.",
-        },
-        { status: 400 }
-      );
-    }
-
-    // Truncate text to 500,000 characters max
-    const truncatedText = text.substring(0, 500000);
-
-    const result = await analyzeTender(truncatedText);
 
     if (!result.success) {
       return NextResponse.json(
@@ -69,7 +77,6 @@ export async function POST(request) {
       success: true,
       fileName,
       fileSize,
-      textLength: truncatedText.length,
       analysis: result.data,
     });
   } catch (error) {
