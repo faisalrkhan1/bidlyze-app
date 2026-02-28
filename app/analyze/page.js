@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/useAuth";
 
 function ScoreBadge({ score }) {
   const color =
@@ -80,10 +81,14 @@ function InfoCard({ label, value }) {
 }
 
 export default function AnalyzePage() {
+  const { user, loading: authLoading, logout } = useAuth();
   const [result, setResult] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
+    if (authLoading) return;
+    if (!user) return;
+
     const stored = sessionStorage.getItem("bidlyze-result");
     if (!stored) {
       router.push("/");
@@ -94,9 +99,9 @@ export default function AnalyzePage() {
     } catch {
       router.push("/");
     }
-  }, [router]);
+  }, [router, user, authLoading]);
 
-  if (!result) {
+  if (authLoading || !result) {
     return (
       <div className="min-h-screen bg-[#08090c] text-white flex items-center justify-center">
         <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
@@ -129,6 +134,7 @@ export default function AnalyzePage() {
             <span className="text-lg font-semibold tracking-tight">Bidlyze</span>
           </div>
           <div className="flex items-center gap-3">
+            <span className="text-gray-400 text-sm hidden sm:block">{user?.email}</span>
             <button
               onClick={() => router.push("/")}
               className="px-4 py-2 rounded-lg text-sm font-medium border border-white/10 hover:bg-white/5 transition-colors"
@@ -140,6 +146,12 @@ export default function AnalyzePage() {
               className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-500 hover:bg-emerald-400 transition-colors"
             >
               Export JSON
+            </button>
+            <button
+              onClick={logout}
+              className="px-4 py-2 rounded-lg text-sm font-medium border border-white/10 hover:bg-white/5 transition-colors"
+            >
+              Log Out
             </button>
           </div>
         </div>

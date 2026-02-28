@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/useAuth";
+import { supabase } from "@/lib/supabase";
 
 const ACCEPTED_TYPES = [
   "application/pdf",
@@ -9,6 +11,7 @@ const ACCEPTED_TYPES = [
   "text/plain",
 ];
 const MAX_SIZE = 3 * 1024 * 1024; // 3MB
+const FREE_LIMIT = 3;
 
 const features = [
   {
@@ -54,12 +57,32 @@ const features = [
 ];
 
 export default function HomePage() {
+  const { user, loading: authLoading, logout } = useAuth();
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [usageCount, setUsageCount] = useState(null);
   const fileInputRef = useRef(null);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user) return;
+
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+    supabase
+      .from("analyses")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .gte("created_at", startOfMonth)
+      .then(({ count }) => {
+        setUsageCount(count ?? 0);
+      });
+  }, [user]);
+
+  const limitReached = usageCount !== null && usageCount >= FREE_LIMIT;
 
   function validateFile(f) {
     if (!f) return "Please select a file.";
@@ -95,15 +118,23 @@ export default function HomePage() {
   }
 
   async function handleAnalyze() {
-    if (!file) return;
+    if (!file || limitReached) return;
     setLoading(true);
     setError("");
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("/api/analyze", { method: "POST", body: formData });
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+      });
       const data = await res.json();
 
       if (!data.success) {
@@ -126,19 +157,72 @@ export default function HomePage() {
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
   }
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#08090c] text-white flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#08090c] text-white">
       {/* Header */}
       <header className="border-b border-white/5">
-        <div className="max-w-5xl mx-auto px-6 py-5 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-base text-white">
-            B
+        <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-base text-white">
+              B
+            </div>
+            <span className="text-lg font-semibold tracking-tight">Bidlyze</span>
           </div>
-          <span className="text-lg font-semibold tracking-tight">Bidlyze</span>
+          <div className="flex items-center gap-4">
+            <span className="text-gray-400 text-sm hidden sm:block">{user?.email}</span>
+            <button
+              onClick={logout}
+              className="px-4 py-2 rounded-lg text-sm font-medium border border-white/10 hover:bg-white/5 transition-colors"
+            >
+              Log Out
+            </button>
+          </div>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto px-6 py-16">
+        {/* Usage Counter */}
+        {usageCount !== null && (
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className={`flex items-center justify-between p-4 rounded-xl border ${
+              limitReached
+                ? "bg-red-500/5 border-red-500/20"
+                : "bg-white/[0.02] border-white/5"
+            }`}>
+              <div className="flex items-center gap-3">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                  limitReached ? "bg-red-500/10" : "bg-emerald-500/10"
+                }`}>
+                  <svg className={`w-4 h-4 ${limitReached ? "text-red-400" : "text-emerald-400"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                  </svg>
+                </div>
+                <span className={`text-sm font-medium ${limitReached ? "text-red-400" : "text-gray-300"}`}>
+                  {usageCount} / {FREE_LIMIT} free analyses this month
+                </span>
+              </div>
+              {limitReached && (
+                <a
+                  href="https://bidlyze.com/#pricing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+                >
+                  Upgrade
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Hero */}
         <div className="text-center mb-14">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
@@ -152,76 +236,100 @@ export default function HomePage() {
 
         {/* Upload Area */}
         <div className="max-w-2xl mx-auto mb-16">
-          <div
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            className={`relative border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-200 ${
-              dragActive
-                ? "border-emerald-500 bg-emerald-500/5"
-                : file
-                ? "border-emerald-500/50 bg-emerald-500/5"
-                : "border-white/10 hover:border-white/20 bg-white/[0.02]"
-            }`}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".pdf,.docx,.txt"
-              className="hidden"
-              onChange={(e) => handleFile(e.target.files?.[0])}
-            />
-
-            {file ? (
-              <div>
-                <div className="w-14 h-14 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-7 h-7 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                </div>
-                <p className="text-white font-medium mb-1">{file.name}</p>
-                <p className="text-gray-500 text-sm">{formatSize(file.size)}</p>
-              </div>
-            ) : (
-              <div>
-                <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                  </svg>
-                </div>
-                <p className="text-white font-medium mb-1">
-                  Drop your tender document here or click to browse
-                </p>
-                <p className="text-gray-500 text-sm">PDF, DOCX, or TXT — max 3MB</p>
-              </div>
-            )}
-          </div>
-
-          {error && (
-            <div className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-              {error}
-            </div>
-          )}
-
-          <button
-            onClick={handleAnalyze}
-            disabled={!file || loading}
-            className="w-full mt-6 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-emerald-500 hover:bg-emerald-400 text-white"
-          >
-            {loading ? (
-              <span className="flex items-center justify-center gap-3">
-                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          {limitReached ? (
+            <div className="border-2 border-dashed rounded-2xl p-12 text-center border-white/10 bg-white/[0.02] opacity-50">
+              <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
                 </svg>
-                Analyzing tender document...
-              </span>
-            ) : (
-              "Analyze Tender"
-            )}
-          </button>
+              </div>
+              <p className="text-white font-medium mb-1">Free limit reached</p>
+              <p className="text-gray-500 text-sm mb-4">
+                You&apos;ve reached your free limit. Upgrade to continue.
+              </p>
+              <a
+                href="https://bidlyze.com/#pricing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-3 rounded-xl font-semibold text-sm bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+              >
+                View Pricing
+              </a>
+            </div>
+          ) : (
+            <>
+              <div
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+                className={`relative border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-200 ${
+                  dragActive
+                    ? "border-emerald-500 bg-emerald-500/5"
+                    : file
+                    ? "border-emerald-500/50 bg-emerald-500/5"
+                    : "border-white/10 hover:border-white/20 bg-white/[0.02]"
+                }`}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf,.docx,.txt"
+                  className="hidden"
+                  onChange={(e) => handleFile(e.target.files?.[0])}
+                />
+
+                {file ? (
+                  <div>
+                    <div className="w-14 h-14 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-7 h-7 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                    </div>
+                    <p className="text-white font-medium mb-1">{file.name}</p>
+                    <p className="text-gray-500 text-sm">{formatSize(file.size)}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                      </svg>
+                    </div>
+                    <p className="text-white font-medium mb-1">
+                      Drop your tender document here or click to browse
+                    </p>
+                    <p className="text-gray-500 text-sm">PDF, DOCX, or TXT — max 3MB</p>
+                  </div>
+                )}
+              </div>
+
+              {error && (
+                <div className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                  {error}
+                </div>
+              )}
+
+              <button
+                onClick={handleAnalyze}
+                disabled={!file || loading}
+                className="w-full mt-6 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-emerald-500 hover:bg-emerald-400 text-white"
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center gap-3">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Analyzing tender document...
+                  </span>
+                ) : (
+                  "Analyze Tender"
+                )}
+              </button>
+            </>
+          )}
         </div>
 
         {/* Features Grid */}
