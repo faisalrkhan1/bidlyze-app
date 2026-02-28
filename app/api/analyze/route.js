@@ -4,13 +4,12 @@ import { analyzeTender, analyzeTenderFromPDF } from "@/lib/gemini";
 
 export const maxDuration = 60;
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
 export async function POST(request) {
   try {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
     // Authenticate user
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -21,7 +20,7 @@ export async function POST(request) {
     }
 
     const token = authHeader.split(" ")[1];
-    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
     if (authError || !user) {
       return NextResponse.json(
@@ -33,7 +32,7 @@ export async function POST(request) {
     // Check usage limit
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-    const { count } = await supabaseAdmin
+    const { count } = await supabase
       .from("analyses")
       .select("*", { count: "exact", head: true })
       .eq("user_id", user.id)
@@ -126,7 +125,7 @@ export async function POST(request) {
     }
 
     // Save analysis record to Supabase
-    await supabaseAdmin.from("analyses").insert({
+    await supabase.from("analyses").insert({
       user_id: user.id,
       file_name: fileName,
       project_name: result.data?.summary?.projectName || "Unknown",
