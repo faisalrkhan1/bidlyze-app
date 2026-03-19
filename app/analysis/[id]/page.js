@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
+import { getSupabase } from "@/lib/supabase";
 import { useTheme } from "@/lib/theme";
 import { exportPDF } from "@/app/utils/exportPDF";
 
@@ -107,28 +108,32 @@ function ThemeToggle() {
   );
 }
 
-export default function AnalyzePage() {
+export default function AnalysisDetailPage({ params }) {
+  const { id } = use(params);
   const { user, loading: authLoading, logout } = useAuth();
-  const [result, setResult] = useState(null);
+  const [record, setRecord] = useState(null);
+  const [notFound, setNotFound] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (authLoading) return;
-    if (!user) return;
+    if (authLoading || !user) return;
 
-    const stored = sessionStorage.getItem("bidlyze-result");
-    if (!stored) {
-      router.push("/dashboard");
-      return;
-    }
-    try {
-      setResult(JSON.parse(stored));
-    } catch {
-      router.push("/dashboard");
-    }
-  }, [router, user, authLoading]);
+    getSupabase()
+      .from("analyses")
+      .select("*")
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .single()
+      .then(({ data, error }) => {
+        if (error || !data || !data.analysis_data) {
+          setNotFound(true);
+        } else {
+          setRecord(data);
+        }
+      });
+  }, [id, user, authLoading]);
 
-  if (authLoading || !result) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
         <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
@@ -136,7 +141,41 @@ export default function AnalyzePage() {
     );
   }
 
-  const { analysis, fileName, analysisId } = result;
+  if (notFound) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
+        <div className="text-center">
+          <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: "var(--icon-muted)" }}>
+            <svg className="w-7 h-7" style={{ color: "var(--text-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-bold mb-2">Analysis not found</h2>
+          <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
+            This analysis doesn&apos;t exist or you don&apos;t have access to it.
+          </p>
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="px-6 py-3 rounded-xl font-semibold text-sm bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!record) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
+        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  const analysis = record.analysis_data;
+  const fileName = record.file_name;
+  const filePath = record.file_path;
   const { summary, requirements, complianceAnalysis, riskRadar, keyDates, evaluationCriteria, financialRequirements, bidScore, winProbability, competitorIntelligence, pricingAdvisor } = analysis;
 
   function exportJSON() {
@@ -144,7 +183,24 @@ export default function AnalyzePage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `bidlyze-analysis-${Date.now()}.json`;
+    a.download = `bidlyze-analysis-${record.id}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function downloadOriginal() {
+    if (!filePath) return;
+    const { data, error } = await getSupabase().storage
+      .from("tenders")
+      .download(filePath);
+    if (error || !data) {
+      console.error("Download error:", error);
+      return;
+    }
+    const url = URL.createObjectURL(data);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName || "tender-document";
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -173,23 +229,26 @@ export default function AnalyzePage() {
               Dashboard
             </button>
             <button
-              onClick={() => router.push("/upload")}
-              className="px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300"
-              style={{ border: "1px solid var(--border-secondary)", background: "transparent" }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "var(--bg-subtle)"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+              onClick={() => router.push(`/proposal/${id}`)}
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-500 hover:bg-emerald-400 transition-colors text-white flex items-center gap-1.5"
             >
-              Analyze Another
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
+              </svg>
+              Generate Proposal
             </button>
-            {analysisId && (
+            {filePath && (
               <button
-                onClick={() => router.push(`/proposal/${analysisId}`)}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-500 hover:bg-emerald-400 transition-colors text-white flex items-center gap-1.5"
+                onClick={downloadOriginal}
+                className="px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 flex items-center gap-1.5"
+                style={{ border: "1px solid var(--border-secondary)", background: "transparent" }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "var(--bg-subtle)"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
-                Generate Proposal
+                Download Original
               </button>
             )}
             <button
