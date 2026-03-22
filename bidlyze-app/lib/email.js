@@ -27,16 +27,7 @@ function baseLayout(content) {
           <!-- Header -->
           <tr>
             <td style="padding:32px 32px 24px 32px;border-bottom:1px solid #1e1e1e;">
-              <table role="presentation" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="width:36px;height:36px;background-color:#10b981;border-radius:8px;text-align:center;vertical-align:middle;">
-                    <span style="color:#ffffff;font-weight:bold;font-size:16px;line-height:36px;">B</span>
-                  </td>
-                  <td style="padding-left:12px;">
-                    <span style="color:#ffffff;font-size:18px;font-weight:600;letter-spacing:-0.02em;">Bidlyze</span>
-                  </td>
-                </tr>
-              </table>
+              <span style="font-size:20px;font-weight:700;letter-spacing:-0.03em;"><span style="color:#10b981;">Bid</span><span style="color:#ffffff;">lyze</span></span>
             </td>
           </tr>
           <!-- Content -->
