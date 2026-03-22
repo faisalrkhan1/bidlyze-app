@@ -33,9 +33,9 @@ const PLANS = [
     cta: "Get Started",
     features: [
       "15 analyses per month",
-      "Up to 5 documents per analysis",
-      "Full analysis with risk flags & compliance gaps",
-      "PDF report + Excel compliance matrix export",
+      "5 documents per analysis",
+      "Full risk & compliance analysis",
+      "PDF + Excel export",
       "Full analysis history",
       "Email support",
     ],
@@ -51,12 +51,12 @@ const PLANS = [
     cta: "Start Free Trial",
     features: [
       "50 analyses per month",
-      "Up to 20 documents per analysis",
+      "20 documents per analysis",
       "Everything in Starter",
       { text: "Multi-document intelligence", comingSoon: true },
       { text: "Scope decomposition", comingSoon: true },
       { text: "Proposal structure generator", comingSoon: true },
-      { text: "Word proposal template export", comingSoon: true },
+      { text: "Word template export", comingSoon: true },
       { text: "Up to 10 users", comingSoon: true },
       "Priority support",
     ],
@@ -72,7 +72,7 @@ const PLANS = [
     ctaHref: "mailto:hello@bidlyze.com",
     features: [
       "Unlimited analyses",
-      "Unlimited documents per analysis",
+      "Unlimited documents",
       "Everything in Professional",
       { text: "API access", comingSoon: true },
       { text: "Unlimited users", comingSoon: true },
@@ -326,12 +326,13 @@ export default function PricingPage() {
                 key={plan.key}
                 className="relative rounded-2xl p-6 flex flex-col transition-colors duration-300"
                 style={{
-                  background: "var(--bg-subtle)",
+                  background: isPopular ? "rgba(16, 185, 129, 0.04)" : "var(--bg-subtle)",
                   border: isPopular
                     ? "2px solid #10b981"
                     : isCurrent
                     ? "2px solid var(--border-secondary)"
                     : "1px solid var(--border-primary)",
+                  boxShadow: isPopular ? "0 8px 32px rgba(16, 185, 129, 0.12)" : undefined,
                 }}
               >
                 {/* Badges */}
@@ -365,7 +366,7 @@ export default function PricingPage() {
                 </div>
 
                 {/* Features */}
-                <ul className="space-y-3 mb-8 flex-1">
+                <ul className="space-y-3.5 mb-8 flex-1">
                   {plan.features.map((feature, i) => {
                     const text = typeof feature === "string" ? feature : feature.text;
                     const comingSoon = typeof feature === "object" && feature.comingSoon;
@@ -374,14 +375,14 @@ export default function PricingPage() {
                         <svg className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>
-                        <span className="flex items-center gap-2 flex-wrap">
+                        <span className="flex items-center gap-1.5 flex-wrap">
                           {text}
                           {comingSoon && (
                             <span
-                              className="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium leading-none"
-                              style={{ background: "var(--bg-input)", color: "var(--text-muted)", border: "1px solid var(--border-primary)" }}
+                              className="inline-block px-1.5 py-px rounded-full italic leading-none"
+                              style={{ fontSize: "9px", background: "#f3f4f6", color: "#9ca3af" }}
                             >
-                              Coming Soon
+                              soon
                             </span>
                           )}
                         </span>
