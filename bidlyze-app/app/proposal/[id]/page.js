@@ -249,11 +249,9 @@ export default function ProposalPage({ params }) {
       <header className="shrink-0 transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-base text-white">
-              B
-            </div>
             <div>
-              <span className="text-lg font-semibold tracking-tight">Proposal Writer</span>
+              <span className="text-xl font-bold tracking-tight"><span className="text-emerald-500">Bid</span>lyze</span>
+              <span className="text-sm font-medium ml-2" style={{ color: "var(--text-muted)" }}>Proposal Writer</span>
               <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                 {record.project_name || record.file_name}
               </p>
