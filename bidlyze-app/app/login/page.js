@@ -100,10 +100,11 @@ export default function LoginPage() {
         <div className="flex mb-8 rounded-xl overflow-hidden transition-colors duration-300" style={{ border: "1px solid var(--border-secondary)" }}>
           <button
             onClick={() => { setTab("signin"); setError(""); setMessage(""); }}
-            className={`flex-1 py-3 text-sm font-medium transition-colors ${
-              tab === "signin" ? "bg-emerald-500 text-white" : ""
-            }`}
-            style={tab !== "signin" ? { color: "var(--text-secondary)" } : {}}
+            className="flex-1 py-3 text-sm transition-colors"
+            style={tab === "signin"
+              ? { background: "#10b981", color: "#ffffff", fontWeight: 700 }
+              : { background: "transparent", color: "var(--text-secondary)", fontWeight: 500 }
+            }
             onMouseEnter={(e) => { if (tab !== "signin") e.currentTarget.style.background = "var(--bg-subtle)"; }}
             onMouseLeave={(e) => { if (tab !== "signin") e.currentTarget.style.background = "transparent"; }}
           >
@@ -111,10 +112,11 @@ export default function LoginPage() {
           </button>
           <button
             onClick={() => { setTab("signup"); setError(""); setMessage(""); }}
-            className={`flex-1 py-3 text-sm font-medium transition-colors ${
-              tab === "signup" ? "bg-emerald-500 text-white" : ""
-            }`}
-            style={tab !== "signup" ? { color: "var(--text-secondary)" } : {}}
+            className="flex-1 py-3 text-sm transition-colors"
+            style={tab === "signup"
+              ? { background: "#10b981", color: "#ffffff", fontWeight: 700 }
+              : { background: "transparent", color: "var(--text-secondary)", fontWeight: 500 }
+            }
             onMouseEnter={(e) => { if (tab !== "signup") e.currentTarget.style.background = "var(--bg-subtle)"; }}
             onMouseLeave={(e) => { if (tab !== "signup") e.currentTarget.style.background = "transparent"; }}
           >
