@@ -92,9 +92,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo — text only, no icon */}
         <div className="flex flex-col items-center mb-10">
-          <span style={{ fontSize: "30px", fontWeight: 700, letterSpacing: "-0.025em" }}>
-            <span style={{ color: "#10b981" }}>Bid</span>lyze
-          </span>
+          <span style={{ fontSize: "30px", fontWeight: 700, letterSpacing: "-0.025em" }}><span style={{ color: "#10b981" }}>Bid</span>lyze</span>
           <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>AI-Powered Tender Analysis</p>
         </div>
 
