@@ -216,7 +216,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/dashboard")}>
             <span className="text-xl font-bold tracking-tight"><span className="text-emerald-500">Bid</span>lyze</span>
           </div>
           <div className="flex items-center gap-4">

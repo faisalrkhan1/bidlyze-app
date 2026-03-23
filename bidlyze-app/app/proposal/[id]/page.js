@@ -250,7 +250,7 @@ export default function ProposalPage({ params }) {
         <div className="px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div>
-              <span className="text-xl font-bold tracking-tight"><span className="text-emerald-500">Bid</span>lyze</span>
+              <span className="text-xl font-bold tracking-tight cursor-pointer" onClick={() => router.push("/dashboard")}><span className="text-emerald-500">Bid</span>lyze</span>
               <span className="text-sm font-medium ml-2" style={{ color: "var(--text-muted)" }}>Proposal Writer</span>
               <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                 {record.project_name || record.file_name}
