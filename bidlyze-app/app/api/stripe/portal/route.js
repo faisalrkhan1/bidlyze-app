@@ -21,37 +21,52 @@ export async function POST(request) {
       );
     }
 
-    const supabase = createClient(
+    // Verify user identity with anon key + token
+    const authClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       {
         global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         },
       }
     );
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    const { data: { user }, error: authError } = await authClient.auth.getUser(token);
 
     if (authError || !user) {
       return NextResponse.json(
-        { success: false, error: "Unauthorized" },
+        { success: false, error: "Unauthorized — session expired. Please log in again." },
         { status: 401 }
       );
     }
 
-    // Get Stripe customer ID from subscriptions table
-    const { data: subscription } = await supabase
+    // Use service role key to bypass RLS for subscription lookup
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+
+    // Use limit(1) instead of single() for resilience
+    const { data: subRows, error: subError } = await supabase
       .from("subscriptions")
       .select("stripe_customer_id")
       .eq("user_id", user.id)
-      .single();
+      .order("updated_at", { ascending: false })
+      .limit(1);
 
-    if (!subscription?.stripe_customer_id) {
+    if (subError) {
+      console.error("[Portal] Subscription query error:", subError.message);
       return NextResponse.json(
-        { success: false, error: "No active subscription found" },
+        { success: false, error: "Failed to look up subscription" },
+        { status: 500 }
+      );
+    }
+
+    const customerId = subRows?.[0]?.stripe_customer_id;
+    if (!customerId) {
+      return NextResponse.json(
+        { success: false, error: "No active subscription found. Subscribe to a plan first." },
         { status: 404 }
       );
     }
@@ -60,13 +75,13 @@ export async function POST(request) {
     const origin = request.headers.get("origin") || request.headers.get("referer")?.replace(/\/[^/]*$/, "") || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
     const portalSession = await stripe.billingPortal.sessions.create({
-      customer: subscription.stripe_customer_id,
+      customer: customerId,
       return_url: `${origin}/dashboard`,
     });
 
     return NextResponse.json({ success: true, url: portalSession.url });
   } catch (error) {
-    console.error("Portal error:", error);
+    console.error("[Portal] Error:", error?.message || error);
     const message = error?.message || "Unknown error creating portal session";
     return NextResponse.json(
       { success: false, error: message },

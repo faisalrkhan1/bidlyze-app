@@ -79,6 +79,7 @@ export default function DashboardPage() {
   const [plan, setPlan] = useState("free");
   const [analysesLimit, setAnalysesLimit] = useState(DEFAULT_LIMIT);
   const [loadingPortal, setLoadingPortal] = useState(false);
+  const [billingError, setBillingError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -153,23 +154,32 @@ export default function DashboardPage() {
   }, [user]);
 
   async function handleManageBilling() {
+    setBillingError(null);
     setLoadingPortal(true);
     try {
       const { data: { session } } = await getSupabase().auth.getSession();
+      if (!session?.access_token) {
+        setBillingError("Session expired. Please log in again.");
+        setLoadingPortal(false);
+        return;
+      }
       const res = await fetch("/api/stripe/portal", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session.access_token}`,
         },
       });
       const data = await res.json();
       if (data.success && data.url) {
         window.location.href = data.url;
+      } else {
+        setBillingError(data.error || "Failed to open billing portal. Please try again.");
+        setLoadingPortal(false);
       }
     } catch (err) {
       console.error("Portal error:", err);
-    } finally {
+      setBillingError("Network error. Please check your connection.");
       setLoadingPortal(false);
     }
   }
@@ -272,6 +282,15 @@ export default function DashboardPage() {
                   </div>
                 )}
               </div>
+              {billingError && (
+                <div
+                  className="mt-3 p-3 rounded-lg text-xs flex items-center justify-between"
+                  style={{ background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.2)", color: "#f87171" }}
+                >
+                  <span>{billingError}</span>
+                  <button onClick={() => setBillingError(null)} className="ml-3 font-bold hover:opacity-70">&times;</button>
+                </div>
+              )}
               <div className="w-full h-2.5 rounded-full overflow-hidden" style={{ background: "var(--bg-input)" }}>
                 <div
                   className="h-full rounded-full transition-all duration-500"
