@@ -1,5 +1,5 @@
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const MODEL = "anthropic/claude-opus-4-20250514";
+const MODEL = "anthropic/claude-opus-4";
 
 // ── Helper: call OpenRouter API ──────────────────────────────────────────────
 
