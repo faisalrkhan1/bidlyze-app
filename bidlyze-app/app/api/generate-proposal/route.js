@@ -26,16 +26,11 @@ export async function POST(request) {
 
     const token = authHeader.split(" ")[1];
 
+    // Use service role key for server-side operations.
+    // NEXT_PUBLIC_ env vars may not be in process.env for Route Handlers.
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      }
+      process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
     const {

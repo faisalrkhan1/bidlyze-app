@@ -21,18 +21,15 @@ export async function POST(request) {
       );
     }
 
-    // Verify user identity with anon key + token
-    const authClient = createClient(
+    // Use service role key for all server-side Supabase operations.
+    // NEXT_PUBLIC_ env vars are inlined into client bundles by Turbopack
+    // but may not be available in process.env for server-side Route Handlers.
+    const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      {
-        global: {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      }
+      process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
-    const { data: { user }, error: authError } = await authClient.auth.getUser(token);
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
     if (authError || !user) {
       return NextResponse.json(
@@ -40,12 +37,6 @@ export async function POST(request) {
         { status: 401 }
       );
     }
-
-    // Use service role key to bypass RLS for subscription lookup
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
 
     // Use limit(1) instead of single() for resilience
     const { data: subRows, error: subError } = await supabase
