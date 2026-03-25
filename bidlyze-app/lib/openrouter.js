@@ -506,40 +506,6 @@ export async function analyzeTender(documentText) {
   }
 }
 
-export async function analyzeTenderFromPDF(base64PDF) {
-  try {
-    const content = await callOpenRouter({
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:application/pdf;base64,${base64PDF}`,
-              },
-            },
-            {
-              type: "text",
-              text: ANALYSIS_PROMPT,
-            },
-          ],
-        },
-      ],
-      jsonMode: true,
-    });
-
-    const analysis = parseResponse(content);
-    return { success: true, data: analysis };
-  } catch (error) {
-    console.error("OpenRouter PDF analysis error:", error);
-    return {
-      success: false,
-      error: error.message || "Failed to analyze tender PDF",
-    };
-  }
-}
-
 export async function generateProposalSection(analysisData, sectionType) {
   try {
     const sectionPrompt = PROPOSAL_PROMPTS[sectionType];
@@ -589,42 +555,3 @@ export async function compareTenderAmendments(originalText, amendedText) {
   }
 }
 
-export async function compareTenderPDFs(base64Original, base64Amended) {
-  try {
-    const content = await callOpenRouter({
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:application/pdf;base64,${base64Original}`,
-              },
-            },
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:application/pdf;base64,${base64Amended}`,
-              },
-            },
-            {
-              type: "text",
-              text: COMPARISON_PROMPT,
-            },
-          ],
-        },
-      ],
-      jsonMode: true,
-    });
-
-    const comparison = parseResponse(content);
-    return { success: true, data: comparison };
-  } catch (error) {
-    console.error("OpenRouter PDF comparison error:", error);
-    return {
-      success: false,
-      error: error.message || "Failed to compare tender PDFs",
-    };
-  }
-}

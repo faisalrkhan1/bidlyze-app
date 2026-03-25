@@ -1,16 +1,23 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { compareTenderAmendments, compareTenderPDFs } from "@/lib/openrouter";
+import { compareTenderAmendments } from "@/lib/openrouter";
 
 export const maxDuration = 120;
+
+const MAX_TEXT = 150000;
 
 async function extractText(file) {
   const fileName = file.name;
   const fileExtension = fileName.split(".").pop().toLowerCase();
 
   if (fileExtension === "pdf") {
+    const pdfParse = (await import("pdf-parse")).default;
     const buffer = Buffer.from(await file.arrayBuffer());
-    return { type: "pdf", data: buffer.toString("base64") };
+    const pdf = await pdfParse(buffer);
+    if (!pdf.text || pdf.text.trim().length === 0) {
+      return { type: "error", error: "Could not extract text from PDF file." };
+    }
+    return { type: "text", data: pdf.text.substring(0, MAX_TEXT) };
   } else if (fileExtension === "docx") {
     const mammoth = await import("mammoth");
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -18,13 +25,13 @@ async function extractText(file) {
     if (!extracted.value || extracted.value.trim().length === 0) {
       return { type: "error", error: "Could not extract text from DOCX file." };
     }
-    return { type: "text", data: extracted.value.substring(0, 500000) };
+    return { type: "text", data: extracted.value.substring(0, MAX_TEXT) };
   } else if (fileExtension === "txt") {
     const text = await file.text();
     if (!text || text.trim().length === 0) {
       return { type: "error", error: "Could not extract text from TXT file." };
     }
-    return { type: "text", data: text.substring(0, 500000) };
+    return { type: "text", data: text.substring(0, MAX_TEXT) };
   }
   return { type: "error", error: "Unsupported file type." };
 }
@@ -69,14 +76,6 @@ export async function POST(request) {
       );
     }
 
-    const maxSize = 3 * 1024 * 1024;
-    if (originalFile.size > maxSize || amendedFile.size > maxSize) {
-      return NextResponse.json(
-        { success: false, error: "Each file must be under 3MB." },
-        { status: 400 }
-      );
-    }
-
     const original = await extractText(originalFile);
     const amended = await extractText(amendedFile);
 
@@ -93,23 +92,8 @@ export async function POST(request) {
       );
     }
 
-    let result;
-
-    if (original.type === "pdf" && amended.type === "pdf") {
-      result = await compareTenderPDFs(original.data, amended.data);
-    } else {
-      // If one is PDF, we can't mix — fall back to text comparison
-      // For PDF that needs text extraction, use Gemini inline for both
-      if (original.type === "pdf" || amended.type === "pdf") {
-        // Send both as PDFs if both are PDFs, otherwise use text
-        // For mixed types, we need text from both
-        return NextResponse.json(
-          { success: false, error: "Both files must be the same type (both PDF or both DOCX/TXT) for comparison." },
-          { status: 400 }
-        );
-      }
-      result = await compareTenderAmendments(original.data, amended.data);
-    }
+    // All file types (PDF, DOCX, TXT) are now extracted to text
+    const result = await compareTenderAmendments(original.data, amended.data);
 
     if (!result.success) {
       return NextResponse.json(

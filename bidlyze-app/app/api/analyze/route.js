@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { analyzeTender, analyzeTenderFromPDF } from "@/lib/openrouter";
+import { analyzeTender } from "@/lib/openrouter";
 import {
   sendEmail,
   buildAnalysisSummaryEmail,
@@ -92,9 +92,21 @@ export async function POST(request) {
     const fileBuffer = Buffer.from(await file.arrayBuffer());
     let result;
 
+    const MAX_TEXT = 150000; // ~150k chars fits safely in Claude's context
+
     if (fileExtension === "pdf") {
-      const base64PDF = fileBuffer.toString("base64");
-      result = await analyzeTenderFromPDF(base64PDF);
+      const pdfParse = (await import("pdf-parse")).default;
+      const pdf = await pdfParse(fileBuffer);
+      const text = pdf.text;
+
+      if (!text || text.trim().length === 0) {
+        return NextResponse.json(
+          { success: false, error: "Could not extract text from the PDF. The file may be scanned/image-only or corrupted." },
+          { status: 400 }
+        );
+      }
+
+      result = await analyzeTender(text.substring(0, MAX_TEXT));
     } else if (fileExtension === "docx") {
       const mammoth = await import("mammoth");
       const extracted = await mammoth.extractRawText({ buffer: fileBuffer });
@@ -110,7 +122,7 @@ export async function POST(request) {
         );
       }
 
-      result = await analyzeTender(text.substring(0, 500000));
+      result = await analyzeTender(text.substring(0, MAX_TEXT));
     } else if (fileExtension === "txt") {
       const text = fileBuffer.toString("utf-8");
 
@@ -124,7 +136,7 @@ export async function POST(request) {
         );
       }
 
-      result = await analyzeTender(text.substring(0, 500000));
+      result = await analyzeTender(text.substring(0, MAX_TEXT));
     } else {
       return NextResponse.json(
         {

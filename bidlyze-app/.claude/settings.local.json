@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npx next:*)",
       "Bash(npm run:*)",
-      "Bash(xxd .env.local)"
+      "Bash(xxd .env.local)",
+      "Bash(npm install:*)"
     ]
   }
 }
