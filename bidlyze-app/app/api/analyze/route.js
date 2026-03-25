@@ -88,23 +88,25 @@ export async function POST(request) {
     const fileSize = file.size;
     const fileExtension = fileName.split(".").pop().toLowerCase();
 
-    // Read file buffer once so we can reuse for analysis + storage upload
+    // Read file buffer once so we can reuse for storage upload
     const fileBuffer = Buffer.from(await file.arrayBuffer());
     let result;
 
     const MAX_TEXT = 150000; // ~150k chars fits safely in Claude's context
 
-    if (fileExtension === "pdf") {
-      const { extractPdfText } = await import("@/lib/pdf");
-      const text = await extractPdfText(fileBuffer);
+    // Check for client-side pre-extracted text (PDFs are extracted in the browser
+    // because all server-side PDF libraries need DOM which Vercel serverless lacks)
+    const extractedText = formData.get("extractedText");
 
-      if (!text || text.trim().length === 0) {
+    if (extractedText) {
+      // PDF text was extracted client-side
+      const text = String(extractedText);
+      if (!text.trim()) {
         return NextResponse.json(
           { success: false, error: "Could not extract text from the PDF. The file may be scanned/image-only or corrupted." },
           { status: 400 }
         );
       }
-
       result = await analyzeTender(text.substring(0, MAX_TEXT));
     } else if (fileExtension === "docx") {
       const mammoth = await import("mammoth");
@@ -113,10 +115,7 @@ export async function POST(request) {
 
       if (!text || text.trim().length === 0) {
         return NextResponse.json(
-          {
-            success: false,
-            error: "Could not extract text from the uploaded file. The file may be empty or corrupted.",
-          },
+          { success: false, error: "Could not extract text from the uploaded file. The file may be empty or corrupted." },
           { status: 400 }
         );
       }
@@ -127,10 +126,7 @@ export async function POST(request) {
 
       if (!text || text.trim().length === 0) {
         return NextResponse.json(
-          {
-            success: false,
-            error: "Could not extract text from the uploaded file. The file may be empty or corrupted.",
-          },
+          { success: false, error: "Could not extract text from the uploaded file. The file may be empty or corrupted." },
           { status: 400 }
         );
       }
@@ -138,10 +134,7 @@ export async function POST(request) {
       result = await analyzeTender(text.substring(0, MAX_TEXT));
     } else {
       return NextResponse.json(
-        {
-          success: false,
-          error: "Unsupported file type. Please upload a PDF, DOCX, or TXT file.",
-        },
+        { success: false, error: "Unsupported file type. Please upload a PDF, DOCX, or TXT file." },
         { status: 400 }
       );
     }

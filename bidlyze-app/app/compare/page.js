@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
 import { getSupabase } from "@/lib/supabase";
+import { extractTextFromPdf } from "@/lib/extract-pdf";
 import UserMenu from "@/app/components/UserMenu";
 
 const ACCEPTED_TYPES = [
@@ -11,14 +12,12 @@ const ACCEPTED_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "text/plain",
 ];
-const MAX_SIZE = 3 * 1024 * 1024;
 
 function validateFile(f) {
   if (!f) return "Please select a file.";
   if (!ACCEPTED_TYPES.includes(f.type) && !f.name.match(/\.(pdf|docx|txt)$/i)) {
     return "Unsupported file type. Please upload a PDF, DOCX, or TXT file.";
   }
-  if (f.size > MAX_SIZE) return "File too large. Maximum size is 3MB.";
   return null;
 }
 
@@ -74,7 +73,7 @@ function UploadZone({ label, sublabel, file, onFile, dragActive, onDrag, onDrop,
               </svg>
             </div>
             <p className="font-medium text-sm mb-1">Drop file here or click to browse</p>
-            <p className="text-xs" style={{ color: "var(--text-muted)" }}>PDF, DOCX, or TXT — max 3MB</p>
+            <p className="text-xs" style={{ color: "var(--text-muted)" }}>PDF, DOCX, or TXT</p>
           </div>
         )}
       </div>
@@ -145,6 +144,16 @@ export default function ComparePage() {
       const formData = new FormData();
       formData.append("original", originalFile);
       formData.append("amended", amendedFile);
+
+      // Extract PDF text client-side (browser has DOM; Vercel serverless doesn't)
+      if (/\.pdf$/i.test(originalFile.name)) {
+        const text = await extractTextFromPdf(originalFile);
+        formData.append("originalText", text);
+      }
+      if (/\.pdf$/i.test(amendedFile.name)) {
+        const text = await extractTextFromPdf(amendedFile);
+        formData.append("amendedText", text);
+      }
 
       const res = await fetch("/api/compare", {
         method: "POST",
