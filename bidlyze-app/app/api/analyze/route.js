@@ -95,9 +95,8 @@ export async function POST(request) {
     const MAX_TEXT = 150000; // ~150k chars fits safely in Claude's context
 
     if (fileExtension === "pdf") {
-      const pdfParse = (await import("pdf-parse")).default;
-      const pdf = await pdfParse(fileBuffer);
-      const text = pdf.text;
+      const { extractPdfText } = await import("@/lib/pdf");
+      const text = await extractPdfText(fileBuffer);
 
       if (!text || text.trim().length === 0) {
         return NextResponse.json(

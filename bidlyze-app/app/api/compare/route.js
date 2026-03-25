@@ -11,13 +11,13 @@ async function extractText(file) {
   const fileExtension = fileName.split(".").pop().toLowerCase();
 
   if (fileExtension === "pdf") {
-    const pdfParse = (await import("pdf-parse")).default;
+    const { extractPdfText } = await import("@/lib/pdf");
     const buffer = Buffer.from(await file.arrayBuffer());
-    const pdf = await pdfParse(buffer);
-    if (!pdf.text || pdf.text.trim().length === 0) {
+    const text = await extractPdfText(buffer);
+    if (!text || text.trim().length === 0) {
       return { type: "error", error: "Could not extract text from PDF file." };
     }
-    return { type: "text", data: pdf.text.substring(0, MAX_TEXT) };
+    return { type: "text", data: text.substring(0, MAX_TEXT) };
   } else if (fileExtension === "docx") {
     const mammoth = await import("mammoth");
     const buffer = Buffer.from(await file.arrayBuffer());
