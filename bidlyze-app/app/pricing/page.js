@@ -194,7 +194,7 @@ export default function PricingPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+        <div className="animate-spin h-8 w-8 border-2 border-[#D4764E] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -208,7 +208,7 @@ export default function PricingPage() {
       <header className="transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/dashboard")}>
-            <span className="text-xl font-bold tracking-tight"><span className="text-emerald-500">Bid</span>lyze</span>
+            <span className="text-xl font-bold tracking-tight"><span className="text-[#D4764E]">Bid</span>lyze</span>
           </div>
           <UserMenu user={user} onLogout={logout} />
         </div>
@@ -232,7 +232,7 @@ export default function PricingPage() {
         {/* Title */}
         <div className="text-center mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
-            Choose Your <span className="text-emerald-500">Plan</span>
+            Choose Your <span className="text-[#D4764E]">Plan</span>
           </h1>
           <p className="text-base max-w-xl mx-auto" style={{ color: "var(--text-secondary)" }}>
             Scale your tender analysis capability with the right plan for your team.
@@ -308,7 +308,7 @@ export default function PricingPage() {
                 {/* Badges */}
                 <div className="flex items-center gap-2 mb-4">
                   {isPopular && (
-                    <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500 text-white">
+                    <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-[#D4764E] text-white">
                       Popular
                     </span>
                   )}
@@ -342,7 +342,7 @@ export default function PricingPage() {
                     const comingSoon = typeof feature === "object" && feature.comingSoon;
                     return (
                       <li key={i} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text-secondary)" }}>
-                        <svg className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="w-4 h-4 text-[#D4764E] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>
                         <span className="flex items-center gap-1.5 flex-wrap">
@@ -416,7 +416,7 @@ export default function PricingPage() {
                       disabled={loadingPlan === plan.priceId}
                       className={`w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-60 ${
                         isPopular
-                          ? "bg-emerald-500 hover:bg-emerald-400 text-white"
+                          ? "bg-[#D4764E] hover:bg-[#E8956A] text-white"
                           : ""
                       }`}
                       style={!isPopular ? { border: "1px solid var(--border-secondary)", background: "transparent" } : {}}

@@ -3,270 +3,591 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bidlyze — AI-Powered Tender Analysis Platform</title>
+<title>Bidlyze — AI-Powered Tender Intelligence</title>
 <meta name="description" content="Upload any government tender and get instant AI analysis — compliance checklists, risk flags, and bid/no-bid recommendations in under 2 minutes. Free to start.">
 <meta property="og:title" content="Bidlyze — Stop Reading Tenders. Start Winning Them.">
 <meta property="og:description" content="AI-powered tender analysis for procurement teams of every size. Free to start.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bidlyze.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><text x='2' y='28' fill='%2310b981' font-family='system-ui,-apple-system,sans-serif' font-weight='800' font-size='32' letter-spacing='-1'>B</text></svg>">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='10' fill='%23D4764E'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='Georgia,serif' font-weight='bold' font-size='19'>B</text></svg>">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
---bg:#fafaf9;--bg-alt:#f5f5f4;--bg-dark:#0a0c10;--bg-dark-card:#12151c;
---text:#1c1917;--text-light:#78716c;--text-on-dark:#e7e5e4;--text-muted-dark:#a8a29e;
---accent:#059669;--accent-light:#d1fae5;--accent-dark:#047857;--accent-glow:rgba(5,150,105,0.15);
---border:#e7e5e4;--border-dark:rgba(255,255,255,0.07);
---font-display:'Playfair Display',Georgia,serif;
---font-body:'DM Sans',system-ui,sans-serif;
---font-mono:'JetBrains Mono',monospace;
---max-w:1200px;--radius:12px;
-}
-html{scroll-behavior:smooth}
-body{font-family:var(--font-body);font-size:16px;line-height:1.7;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::selection{background:var(--accent-light);color:var(--accent-dark)}
-a{text-decoration:none;color:inherit}
-.container{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ─── NAV ─── */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,250,249,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:all .3s}
-.nav-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-0.03em}
-.nav-logo-accent{color:var(--accent)}
-.nav-links{display:flex;align-items:center;gap:28px}
-.nav-links a{font-size:14px;font-weight:500;color:var(--text-light);transition:color .2s}
-.nav-links a:hover{color:var(--text)}
-.nav-cta{display:inline-flex;align-items:center;gap:6px;padding:9px 22px;background:var(--accent);color:#fff!important;border-radius:8px;font-size:14px;font-weight:600;transition:all .2s;box-shadow:0 2px 8px rgba(5,150,105,0.2)}
-.nav-cta:hover{background:var(--accent-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(5,150,105,0.3)}
-.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none}
-.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
-.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(250,250,249,0.98);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:16px 24px;flex-direction:column;gap:12px;z-index:99}
-.mobile-menu.open{display:flex}
-.mobile-menu a{font-size:16px;font-weight:500;color:var(--text);padding:12px 0;border-bottom:1px solid var(--border)}
-.mobile-menu a:last-child{border:none}
-.mobile-menu .nav-cta{text-align:center;justify-content:center;margin-top:4px}
-
-/* ─── HERO ─── */
-.hero{padding:130px 0 60px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(5,150,105,0.08) 0%,rgba(5,150,105,0.03) 35%,transparent 70%);pointer-events:none;z-index:0}
-.hero::after{content:'';position:absolute;top:40px;right:10%;width:400px;height:400px;background:radial-gradient(circle,rgba(52,211,153,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
-.hero .container{position:relative;z-index:1}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px 6px 10px;background:var(--accent-light);color:var(--accent-dark);border-radius:100px;font-size:13px;font-weight:600;margin-bottom:28px;border:1px solid rgba(5,150,105,0.15)}
-.hero-badge .dot{width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse-dot 2s infinite;box-shadow:0 0 8px rgba(5,150,105,0.4)}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(0.8)}}
-.hero h1{font-family:var(--font-display);font-size:clamp(38px,5.5vw,68px);line-height:1.08;letter-spacing:-0.02em;max-width:780px;margin:0 auto 20px;font-weight:800}
-.hero h1 em{font-style:italic;color:var(--accent);position:relative}
-.hero-sub{font-size:18px;color:var(--text-light);max-width:540px;margin:0 auto 36px;line-height:1.65}
-.hero-sub strong{color:var(--text);font-weight:600}
-.hero-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;background:var(--accent);color:#fff;border-radius:10px;font-size:16px;font-weight:600;font-family:var(--font-body);border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 16px rgba(5,150,105,0.2)}
-.btn-primary:hover{background:var(--accent-dark);transform:translateY(-2px);box-shadow:0 8px 30px rgba(5,150,105,0.3)}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;background:transparent;color:var(--text);border:1.5px solid var(--border);border-radius:10px;font-size:16px;font-weight:500;font-family:var(--font-body);cursor:pointer;transition:all .2s}
-.btn-secondary:hover{border-color:var(--accent);color:var(--accent);background:rgba(5,150,105,0.03)}
-.hero-proof{margin-top:44px;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap}
-.hero-proof-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-light)}
-.hero-proof-item .num{font-weight:700;color:var(--accent);font-family:var(--font-mono);font-size:15px}
-
-/* ─── PRODUCT PREVIEW ─── */
-.preview-section{padding:20px 0 100px}
-.preview-window{max-width:1020px;margin:0 auto;background:var(--bg-dark);border-radius:16px;overflow:hidden;box-shadow:0 50px 100px rgba(0,0,0,0.18),0 0 0 1px rgba(255,255,255,0.03);position:relative}
-.preview-window::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(52,211,153,0.3),transparent)}
-.preview-topbar{display:flex;align-items:center;gap:8px;padding:14px 20px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border-dark)}
-.preview-dot{width:12px;height:12px;border-radius:50%}
-.preview-dot.red{background:#ff5f57}.preview-dot.yellow{background:#ffbd2e}.preview-dot.green{background:#28ca41}
-.preview-url{flex:1;text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--text-muted-dark)}
-.preview-body{padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.preview-left{display:flex;flex-direction:column;gap:14px}
-.preview-card{background:rgba(255,255,255,0.03);border:1px solid var(--border-dark);border-radius:10px;padding:18px}
-.preview-card-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted-dark);font-weight:600;margin-bottom:6px}
-.preview-card-value{font-size:15px;color:var(--text-on-dark);font-weight:500}
-.preview-score{display:flex;align-items:center;gap:16px}
-.preview-score-num{font-size:52px;font-weight:800;color:#34d399;line-height:1;font-family:var(--font-mono)}
-.preview-score-label{font-size:12px;color:var(--text-muted-dark);text-transform:uppercase;letter-spacing:.05em}
-.preview-score-badge{display:inline-block;padding:4px 12px;background:rgba(52,211,153,0.12);color:#34d399;border-radius:6px;font-size:12px;font-weight:700;margin-top:6px;letter-spacing:.03em}
-.preview-right{display:flex;flex-direction:column;gap:6px}
-.preview-right-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted-dark);font-weight:600;margin-bottom:2px}
-.preview-req{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.02);border:1px solid var(--border-dark);border-radius:8px;font-size:13px;color:var(--text-on-dark)}
-.ri{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
-.ri.p{background:rgba(52,211,153,0.15);color:#34d399}
-.ri.w{background:rgba(251,191,36,0.15);color:#fbbf24}
-.ri.f{background:rgba(248,113,113,0.15);color:#f87171}
-
-/* ─── SOCIAL PROOF BAR ─── */
-.proof-bar{padding:48px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg)}
-.proof-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
-.proof-num{font-family:var(--font-mono);font-size:36px;font-weight:700;color:var(--accent);line-height:1;margin-bottom:6px}
-.proof-label{font-size:13px;color:var(--text-light);font-weight:500;line-height:1.4}
-
-/* ─── SECTIONS COMMON ─── */
-.section-eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:var(--accent);margin-bottom:14px}
-.section-title{font-family:var(--font-display);font-size:clamp(30px,3.8vw,46px);line-height:1.12;letter-spacing:-0.02em;margin-bottom:18px;font-weight:800}
-.section-desc{font-size:17px;color:var(--text-light);max-width:600px;line-height:1.65;margin-bottom:48px}
-
-/* ─── PROBLEM ─── */
-.problem{padding:100px 0}
-.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.problem-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all .3s;position:relative;overflow:hidden}
-.problem-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transition:transform .3s;transform-origin:left}
-.problem-card:hover::before{transform:scaleX(1)}
-.problem-card:hover{border-color:var(--accent);box-shadow:0 8px 30px var(--accent-glow)}
-.problem-icon{width:48px;height:48px;background:#fef2f2;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
-.problem-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
-.problem-card p{font-size:14px;color:var(--text-light);line-height:1.65}
-.problem-stat{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:13px;color:var(--accent);font-weight:600}
-
-/* ─── FEATURES ─── */
-.features{padding:100px 0;background:var(--bg-alt)}
-.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px}
-.feature-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all .3s}
-.feature-card:hover{border-color:var(--accent);box-shadow:0 4px 20px var(--accent-glow)}
-.feature-card.large{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;background:var(--bg-dark);border-color:var(--border-dark);color:var(--text-on-dark)}
-.feature-card.large:hover{border-color:#34d399;box-shadow:0 8px 40px rgba(52,211,153,0.1)}
-.feature-card.large .feature-tag{color:#34d399}
-.feature-card.large p{color:var(--text-muted-dark)}
-.feature-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:10px}
-.feature-card h3{font-family:var(--font-display);font-size:22px;margin-bottom:10px;font-weight:700}
-.feature-card p{font-size:14px;color:var(--text-light);line-height:1.65}
-.feature-visual{background:rgba(255,255,255,0.03);border:1px solid var(--border-dark);border-radius:10px;padding:20px;font-family:var(--font-mono);font-size:12px;line-height:1.8}
-.diff-line{padding:5px 10px;border-radius:4px;margin-bottom:3px}
-.diff-line.removed{background:rgba(248,113,113,0.1);color:#f87171}
-.diff-line.added{background:rgba(52,211,153,0.1);color:#34d399}
-.diff-line.neutral{color:var(--text-muted-dark)}
-
-/* ─── HOW IT WORKS ─── */
-.how-it-works{padding:100px 0}
-.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:48px}
-.step-card{position:relative;padding-top:20px}
-.step-num{font-family:var(--font-display);font-size:72px;font-weight:800;color:var(--accent-light);line-height:1;margin-bottom:12px;letter-spacing:-0.03em}
-.step-card h3{font-size:19px;font-weight:700;margin-bottom:8px}
-.step-card p{font-size:14px;color:var(--text-light);line-height:1.65}
-.step-time{margin-top:12px;font-family:var(--font-mono);font-size:13px;color:var(--accent);font-weight:600}
-
-/* ─── USE CASES ─── */
-.use-cases{padding:100px 0;background:var(--bg-alt)}
-.use-cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
-.use-case-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:border-color .2s}
-.use-case-card:hover{border-color:var(--accent)}
-.use-case-icon{font-size:28px;margin-bottom:14px}
-.use-case-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
-.use-case-card p{font-size:14px;color:var(--text-light);line-height:1.65}
-
-/* ─── TESTIMONIALS ─── */
-.testimonials{padding:100px 0;background:var(--bg-dark);color:var(--text-on-dark)}
-.testimonials .section-desc{color:var(--text-muted-dark)}
-.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
-.testimonial-card{background:var(--bg-dark-card);border:1px solid var(--border-dark);border-radius:var(--radius);padding:28px;position:relative}
-.testimonial-card::before{content:'\201C';font-family:var(--font-display);font-size:48px;line-height:1;color:var(--accent);position:absolute;top:20px;right:24px;opacity:.3}
-.testimonial-stars{color:#fbbf24;font-size:14px;letter-spacing:2px;margin-bottom:14px}
-.testimonial-text{font-size:15px;color:var(--text-on-dark);line-height:1.65;margin-bottom:20px;font-style:italic}
-.testimonial-author{display:flex;align-items:center;gap:12px}
-.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#34d399);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px}
-.testimonial-name{font-size:14px;font-weight:600;color:var(--text-on-dark)}
-.testimonial-role{font-size:12px;color:var(--text-muted-dark)}
-
-/* ─── ROI ─── */
-.roi{padding:100px 0}
-.roi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
-.roi-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;text-align:center;transition:all .3s}
-.roi-card:hover{border-color:var(--accent);box-shadow:0 4px 20px var(--accent-glow)}
-.roi-before{font-size:14px;color:var(--text-light);margin-bottom:4px}
-.roi-arrow{font-size:18px;margin:10px 0;color:var(--accent)}
-.roi-after{font-family:var(--font-mono);font-size:36px;font-weight:700;color:var(--accent);margin-bottom:4px}
-.roi-label{font-size:13px;color:var(--text-light);font-weight:500}
-
-/* ─── PRICING ─── */
-.pricing{padding:100px 0;background:var(--bg-alt)}
-.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px}
-.price-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;position:relative;transition:all .3s}
-.price-card:hover{border-color:var(--accent)}
-.price-card.popular{border:2px solid var(--accent);box-shadow:0 8px 32px rgba(5,150,105,0.12);background:linear-gradient(180deg,rgba(5,150,105,0.03) 0%,#fff 100%)}
-.price-card.popular::before{content:'Most Popular';position:absolute;top:-13px;left:50%;transform:translateX(-50%);padding:5px 18px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:100px;letter-spacing:.03em}
-.price-tier{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-light);margin-bottom:8px}
-.price-amount{display:flex;align-items:baseline;gap:2px;margin-bottom:6px}
-.price-currency{font-size:22px;font-weight:700}
-.price-num{font-family:var(--font-display);font-size:48px;line-height:1;font-weight:800}
-.price-period{font-size:14px;color:var(--text-light);margin-left:2px}
-.price-desc{font-size:13px;color:var(--text-light);margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);line-height:1.5}
-.price-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
-.price-features li{font-size:13px;display:flex;align-items:flex-start;gap:8px;line-height:1.4}
-.price-features li::before{content:'\2713';width:18px;height:18px;background:var(--accent-light);color:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
-.price-btn{display:block;width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:600;font-family:var(--font-body);text-align:center;cursor:pointer;transition:all .2s;border:none}
-.price-btn.primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(5,150,105,0.2)}
-.price-btn.primary:hover{background:var(--accent-dark);box-shadow:0 4px 16px rgba(5,150,105,0.3)}
-.price-btn.outline{background:#fff;color:var(--text);border:1.5px solid var(--border)}
-.price-btn.outline:hover{border-color:var(--accent);color:var(--accent)}
-.coming-soon{display:inline-block;padding:1px 6px;border-radius:100px;font-size:9px;font-style:italic;font-weight:400;background:#f3f4f6;color:#9ca3af;margin-left:5px;vertical-align:middle}
-
-/* ─── FAQ ─── */
-.faq{padding:100px 0}
-.faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px}
-.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:border-color .2s}
-.faq-item:hover{border-color:var(--accent)}
-.faq-item h3{font-size:15px;font-weight:700;margin-bottom:6px}
-.faq-item p{font-size:14px;color:var(--text-light);line-height:1.65}
-
-/* ─── FINAL CTA ─── */
-.final-cta{padding:100px 0;background:var(--bg-dark);text-align:center;color:var(--text-on-dark);position:relative;overflow:hidden}
-.final-cta::before{content:'';position:absolute;bottom:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(circle,rgba(5,150,105,0.1) 0%,transparent 60%);pointer-events:none}
-.final-cta .container{position:relative;z-index:1}
-.final-cta h2{font-family:var(--font-display);font-size:clamp(30px,4vw,46px);line-height:1.12;margin-bottom:16px;font-weight:800}
-.final-cta p{font-size:17px;color:var(--text-muted-dark);max-width:480px;margin:0 auto 36px}
-.final-cta .btn-primary{padding:17px 36px;font-size:17px}
-
-/* ─── FOOTER ─── */
-footer{padding:36px 0;border-top:1px solid var(--border)}
-.footer-inner{display:flex;align-items:center;justify-content:space-between}
-.footer-copy{font-size:13px;color:var(--text-light)}
-.footer-links{display:flex;gap:24px}
-.footer-links a{font-size:13px;color:var(--text-light);transition:color .2s}
-.footer-links a:hover{color:var(--accent)}
-
-/* ─── WAITLIST ─── */
-.waitlist-inline{display:flex;gap:10px;max-width:420px;margin:0 auto}
-.waitlist-inline input{flex:1;padding:13px 18px;border:1px solid var(--border-dark);border-radius:8px;background:rgba(255,255,255,0.06);color:#fff;font-size:14px;font-family:var(--font-body);outline:none}
-.waitlist-inline input:focus{border-color:var(--accent)}
-.waitlist-inline input::placeholder{color:var(--text-muted-dark)}
-.waitlist-inline button{padding:13px 24px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;font-family:var(--font-body);cursor:pointer;white-space:nowrap;transition:background .2s}
-.waitlist-inline button:hover{background:var(--accent-dark)}
-.waitlist-success{display:none;text-align:center;padding:14px;color:#34d399;font-weight:500;font-size:15px}
-.waitlist-success.show{display:block}
-
-/* ─── RESPONSIVE ─── */
-@media(max-width:1024px){.pricing-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){
-.preview-body,.problem-grid,.steps-grid,.use-cases-grid,.testimonials-grid,.roi-grid,.features-grid,.faq-grid{grid-template-columns:1fr}
-.feature-card.large{grid-template-columns:1fr}
-.proof-grid{grid-template-columns:repeat(2,1fr)}
-.nav-links{display:none}
-.nav-hamburger{display:flex}
-.pricing-grid{grid-template-columns:1fr}
-}
-@media(max-width:600px){
-.hero h1{font-size:32px}
-.proof-grid{grid-template-columns:repeat(2,1fr);gap:16px}
-.hero-actions{flex-direction:column;width:100%}
-.btn-primary,.btn-secondary{width:100%;justify-content:center}
-.hero-proof{flex-direction:column;gap:12px}
-.footer-inner{flex-direction:column;gap:16px;text-align:center}
-.waitlist-inline{flex-direction:column}
+:root {
+  --bg: #FAFAF8;
+  --bg-warm: #F5F0EB;
+  --bg-cream: #FAF7F2;
+  --bg-dark: #141414;
+  --bg-dark-card: #1C1C1C;
+  --bg-card: #FFFFFF;
+  --text: #1A1A1A;
+  --text-secondary: #6B6560;
+  --text-muted: #9B9590;
+  --text-on-dark: #E8E4E0;
+  --text-muted-dark: #807A75;
+  --accent: #D4764E;
+  --accent-hover: #C0623A;
+  --accent-soft: #F5E6DC;
+  --accent-glow: rgba(212,118,78,0.12);
+  --green: #2D8C5A;
+  --green-soft: #E8F5EE;
+  --red: #C44D4D;
+  --red-soft: #FDE8E8;
+  --yellow: #D4A024;
+  --yellow-soft: #FFF8E1;
+  --border: #E8E4E0;
+  --border-dark: rgba(255,255,255,0.07);
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --max-w: 1140px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+  --shadow-xl: 0 24px 60px rgba(0,0,0,0.12);
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* ─── ANIMATIONS ─── */
-.fade-up{opacity:0;transform:translateY(20px);transition:all .6s cubic-bezier(.16,1,.3,1)}
-.fade-up.visible{opacity:1;transform:translateY(0)}
-.fade-up:nth-child(2){transition-delay:.08s}
-.fade-up:nth-child(3){transition-delay:.16s}
-.fade-up:nth-child(4){transition-delay:.24s}
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px; line-height: 1.7;
+  color: var(--text); background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::selection { background: var(--accent-soft); color: var(--accent-hover); }
+a { text-decoration: none; color: inherit; }
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 28px; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,250,248,0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(232,228,224,0.6);
+  transition: all 0.3s var(--ease);
+}
+nav.scrolled { box-shadow: var(--shadow-sm); }
+.nav-inner {
+  max-width: var(--max-w); margin: 0 auto; padding: 0 28px;
+  height: 68px; display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 0;
+  font-family: var(--font-body); font-weight: 600;
+  font-size: 1.3rem; letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  font-size: 0.88rem; font-weight: 400; color: var(--text-secondary);
+  transition: color 0.2s; letter-spacing: 0.01em;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-cta {
+  background: var(--text) !important; color: #fff !important;
+  padding: 10px 24px !important; border-radius: 100px !important;
+  font-weight: 500 !important; font-size: 0.86rem !important;
+  transition: all 0.25s var(--ease) !important;
+  letter-spacing: 0.01em;
+}
+.nav-cta:hover { background: #333 !important; transform: translateY(-1px); }
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 8px; background: none; border: none;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+.mobile-menu {
+  display: none; position: fixed; top: 68px; left: 0; right: 0;
+  background: rgba(250,250,248,0.98); backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border); padding: 16px 28px;
+  flex-direction: column; gap: 4px; z-index: 99;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 1rem; font-weight: 400; color: var(--text);
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.mobile-menu a:last-child { border: none; }
+.mobile-menu .nav-cta {
+  text-align: center; justify-content: center;
+  margin-top: 8px; display: block; border-radius: 100px;
+  border-bottom: none !important;
+}
+
+/* HERO */
+.hero {
+  padding: 150px 0 80px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(212,118,78,0.06) 0%, rgba(212,118,78,0.02) 35%, transparent 65%);
+  pointer-events: none;
+}
+.hero .container { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 18px 7px 12px;
+  background: var(--accent-soft); color: var(--accent);
+  border-radius: 100px; font-size: 0.82rem; font-weight: 500;
+  margin-bottom: 32px; letter-spacing: 0.02em;
+  border: 1px solid rgba(212,118,78,0.12);
+}
+.hero-badge .dot {
+  width: 7px; height: 7px; background: var(--accent);
+  border-radius: 50%; animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+  line-height: 1.08; letter-spacing: -0.03em;
+  max-width: 780px; margin: 0 auto 24px; font-weight: 400;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-sub {
+  font-size: 1.12rem; color: var(--text-secondary);
+  max-width: 540px; margin: 0 auto 40px;
+  line-height: 1.7; font-weight: 300;
+}
+.hero-sub strong { color: var(--text); font-weight: 500; }
+.hero-actions {
+  display: flex; align-items: center; justify-content: center;
+  gap: 14px; flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 15px 32px; background: var(--accent); color: #fff;
+  border-radius: 100px; font-size: 0.95rem; font-weight: 500;
+  font-family: var(--font-body); border: none; cursor: pointer;
+  transition: all 0.3s var(--ease); letter-spacing: 0.01em;
+}
+.btn-primary:hover {
+  background: var(--accent-hover); transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(212,118,78,0.3);
+}
+.btn-primary svg { transition: transform 0.2s; }
+.btn-primary:hover svg { transform: translateX(3px); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 15px 32px; background: transparent; color: var(--text);
+  border: 1px solid var(--border); border-radius: 100px;
+  font-size: 0.95rem; font-weight: 500; font-family: var(--font-body);
+  cursor: pointer; transition: all 0.25s;
+}
+.btn-secondary:hover { border-color: var(--text-muted); background: var(--bg-card); }
+.hero-proof {
+  margin-top: 48px; display: flex; align-items: center;
+  justify-content: center; gap: 36px; flex-wrap: wrap;
+}
+.hero-proof-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.82rem; color: var(--text-muted);
+  font-weight: 400; letter-spacing: 0.02em;
+}
+.hero-proof-item svg { opacity: 0.45; }
+
+/* PRODUCT PREVIEW */
+.preview-section { padding: 20px 0 100px; }
+.preview-window {
+  max-width: 1020px; margin: 0 auto;
+  background: #0F0F0F; border-radius: var(--radius-lg);
+  overflow: hidden; position: relative;
+  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255,255,255,0.04);
+}
+.preview-topbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 16px 22px; background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border-dark);
+}
+.preview-dot { width: 12px; height: 12px; border-radius: 50%; }
+.preview-dot.red { background: #FF605C; }
+.preview-dot.yellow { background: #FFBD44; }
+.preview-dot.green { background: #00CA4E; }
+.preview-url {
+  flex: 1; text-align: center;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  color: rgba(255,255,255,0.3); letter-spacing: 0.03em;
+}
+.preview-body {
+  padding: 36px; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 24px;
+}
+.preview-left { display: flex; flex-direction: column; gap: 14px; }
+.preview-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-dark);
+  border-radius: 10px; padding: 18px;
+  transition: background 0.3s;
+}
+.preview-card:hover { background: rgba(255,255,255,0.05); }
+.preview-card-label {
+  font-size: 0.65rem; text-transform: uppercase;
+  letter-spacing: 0.12em; color: rgba(255,255,255,0.3);
+  font-weight: 500; margin-bottom: 6px;
+}
+.preview-card-value {
+  font-size: 0.95rem; color: var(--text-on-dark);
+  font-weight: 400; letter-spacing: -0.01em;
+}
+.preview-score { display: flex; align-items: center; gap: 16px; }
+.preview-score-num {
+  font-family: var(--font-display); font-size: 3rem;
+  color: var(--accent); line-height: 1; font-weight: 400;
+}
+.preview-score-label {
+  font-size: 0.7rem; color: rgba(255,255,255,0.3);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.preview-score-badge {
+  display: inline-block; padding: 4px 12px;
+  background: rgba(212,118,78,0.12); color: var(--accent);
+  border-radius: 100px; font-size: 0.72rem; font-weight: 600;
+  margin-top: 6px; letter-spacing: 0.03em;
+}
+.preview-right { display: flex; flex-direction: column; gap: 8px; }
+.preview-right-label {
+  font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: rgba(255,255,255,0.3);
+  font-weight: 500; margin-bottom: 4px;
+}
+.preview-req {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-dark);
+  border-radius: 10px; font-size: 0.85rem; color: var(--text-on-dark);
+  transition: background 0.3s;
+}
+.preview-req:hover { background: rgba(255,255,255,0.05); }
+.ri {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.68rem; flex-shrink: 0; font-weight: 600;
+}
+.ri.p { background: rgba(45,140,90,0.2); color: #4ADE80; }
+.ri.w { background: rgba(212,160,36,0.2); color: #FBBF24; }
+.ri.f { background: rgba(196,77,77,0.2); color: #F87171; }
+
+/* PROOF BAR */
+.proof-bar {
+  padding: 56px 0; border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.proof-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20px; text-align: center;
+}
+.proof-num {
+  font-family: var(--font-display);
+  font-size: 2.4rem; color: var(--accent);
+  line-height: 1; margin-bottom: 8px; font-weight: 400;
+}
+.proof-label {
+  font-size: 0.82rem; color: var(--text-muted);
+  font-weight: 300; line-height: 1.5;
+}
+
+/* SECTION COMMON */
+.section-label {
+  font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 14px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  line-height: 1.12; letter-spacing: -0.02em;
+  margin-bottom: 16px; font-weight: 400;
+}
+.section-desc {
+  font-size: 1.05rem; color: var(--text-secondary);
+  max-width: 560px; line-height: 1.7;
+  margin-bottom: 48px; font-weight: 300;
+}
+
+/* PROBLEM */
+.problem { padding: 100px 0; }
+.problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.problem-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+  transition: all 0.4s var(--ease); position: relative; overflow: hidden;
+}
+.problem-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--accent);
+  transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+}
+.problem-card:hover::before { transform: scaleX(1); }
+.problem-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.problem-icon {
+  width: 48px; height: 48px; background: var(--red-soft);
+  border-radius: 14px; display: flex; align-items: center;
+  justify-content: center; font-size: 1.3rem; margin-bottom: 20px;
+}
+.problem-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
+.problem-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; font-weight: 300; }
+.problem-stat {
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 0.78rem;
+  color: var(--accent); font-weight: 500;
+}
+
+/* FEATURES */
+.features { padding: 100px 0; background: var(--bg-cream); }
+.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 48px; }
+.feature-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+  transition: all 0.4s var(--ease);
+}
+.feature-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.feature-card.large {
+  grid-column: 1 / -1; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 36px; align-items: center;
+  background: var(--bg-dark); border-color: var(--border-dark); color: var(--text-on-dark);
+}
+.feature-card.large:hover { border-color: var(--accent); box-shadow: 0 8px 40px rgba(212,118,78,0.1); }
+.feature-card.large .feature-tag { color: var(--accent); }
+.feature-card.large p { color: var(--text-muted-dark); }
+.feature-tag {
+  font-size: 0.68rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent); margin-bottom: 10px;
+}
+.feature-card h3 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 10px; font-weight: 400; }
+.feature-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; font-weight: 300; }
+.feature-visual {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-dark); border-radius: 10px;
+  padding: 20px; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.9;
+}
+.diff-line { padding: 5px 10px; border-radius: 6px; margin-bottom: 3px; }
+.diff-line.removed { background: rgba(248,113,113,0.08); color: #F87171; }
+.diff-line.added { background: rgba(74,222,128,0.08); color: #4ADE80; }
+.diff-line.neutral { color: var(--text-muted-dark); }
+
+/* HOW IT WORKS */
+.how-it-works { padding: 100px 0; }
+.steps-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 28px; margin-top: 48px; position: relative;
+}
+.steps-grid::before {
+  content: ''; position: absolute; top: 44px; left: 14%; right: 14%;
+  height: 1px; background: var(--border);
+}
+.step-card { text-align: center; position: relative; }
+.step-num {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--bg-card); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 1.5rem;
+  color: var(--accent); margin: 0 auto 22px;
+  position: relative; z-index: 1; transition: all 0.3s;
+}
+.step-card:hover .step-num { border-color: var(--accent); background: var(--accent-soft); }
+.step-card h3 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 8px; font-weight: 400; }
+.step-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; font-weight: 300; }
+.step-time { margin-top: 14px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); font-weight: 500; }
+
+/* USE CASES */
+.use-cases { padding: 100px 0; background: var(--bg-cream); }
+.use-cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 48px; }
+.use-case-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px; transition: all 0.3s var(--ease);
+}
+.use-case-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.use-case-icon { font-size: 1.6rem; margin-bottom: 16px; }
+.use-case-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
+.use-case-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; font-weight: 300; }
+
+/* TESTIMONIALS */
+.testimonials { padding: 100px 0; background: var(--bg-dark); color: var(--text-on-dark); }
+.testimonials .section-desc { color: var(--text-muted-dark); }
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 48px; }
+.testimonial-card {
+  background: var(--bg-dark-card); border: 1px solid var(--border-dark);
+  border-radius: var(--radius); padding: 28px; position: relative;
+}
+.testimonial-card::before {
+  content: '\201C'; font-family: var(--font-display);
+  font-size: 3rem; line-height: 1; color: var(--accent);
+  position: absolute; top: 20px; right: 24px; opacity: 0.3;
+}
+.testimonial-stars { color: #FBBF24; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 14px; }
+.testimonial-text { font-size: 0.92rem; color: var(--text-on-dark); line-height: 1.7; margin-bottom: 20px; font-style: italic; font-weight: 300; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.testimonial-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #E8956A);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 600; font-size: 0.9rem;
+}
+.testimonial-name { font-size: 0.88rem; font-weight: 500; color: var(--text-on-dark); }
+.testimonial-role { font-size: 0.75rem; color: var(--text-muted-dark); }
+
+/* ROI */
+.roi { padding: 100px 0; }
+.roi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 48px; }
+.roi-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+  text-align: center; transition: all 0.3s var(--ease);
+}
+.roi-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.roi-before { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 300; }
+.roi-arrow { font-size: 1.1rem; margin: 10px 0; color: var(--accent); }
+.roi-after { font-family: var(--font-display); font-size: 2.6rem; color: var(--accent); margin-bottom: 6px; font-weight: 400; }
+.roi-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 400; }
+
+/* PRICING */
+.pricing { padding: 100px 0; background: var(--bg-cream); }
+.pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
+.price-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+  position: relative; transition: all 0.4s var(--ease);
+}
+.price-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.price-card.popular { border: 2px solid var(--accent); box-shadow: var(--shadow-lg); }
+.price-card.popular::before {
+  content: 'Most Popular'; position: absolute;
+  top: -13px; left: 50%; transform: translateX(-50%);
+  padding: 5px 20px; background: var(--accent); color: #fff;
+  font-size: 0.68rem; font-weight: 600; border-radius: 100px;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.price-tier { font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 10px; }
+.price-amount { display: flex; align-items: baseline; gap: 2px; margin-bottom: 6px; }
+.price-currency { font-size: 1.3rem; font-weight: 600; }
+.price-num { font-family: var(--font-display); font-size: 2.8rem; line-height: 1; font-weight: 400; }
+.price-period { font-size: 0.88rem; color: var(--text-muted); margin-left: 2px; }
+.price-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--border); line-height: 1.55; font-weight: 300; }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.price-features li { font-size: 0.85rem; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: var(--text-secondary); font-weight: 300; }
+.price-features li::before { content: '\2713'; width: 20px; height: 20px; background: var(--accent-soft); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.price-btn { display: block; width: 100%; padding: 13px; border-radius: 100px; font-size: 0.88rem; font-weight: 500; font-family: var(--font-body); text-align: center; cursor: pointer; transition: all 0.25s; border: none; letter-spacing: 0.01em; }
+.price-btn.primary { background: var(--accent); color: #fff; }
+.price-btn.primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.price-btn.outline { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
+.price-btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* FAQ */
+.faq { padding: 100px 0; }
+.faq-list { max-width: 700px; margin: 48px auto 0; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q {
+  padding: 22px 0; font-size: 1rem; font-weight: 400;
+  cursor: pointer; display: flex; justify-content: space-between;
+  align-items: center; background: none; border: none;
+  width: 100%; text-align: left; font-family: var(--font-body);
+  color: var(--text); transition: color 0.2s;
+}
+.faq-q:hover { color: var(--accent); }
+.faq-q svg { transition: transform 0.3s; flex-shrink: 0; margin-left: 16px; }
+.faq-q.open svg { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease), padding 0.4s; }
+.faq-a.open { max-height: 200px; padding: 0 0 22px; }
+.faq-a p { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); font-weight: 300; }
+
+/* FINAL CTA */
+.final-cta { padding: 120px 0; text-align: center; position: relative; overflow: hidden; }
+.final-cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, var(--accent-soft) 0%, transparent 65%); opacity: 0.5; }
+.final-cta .container { position: relative; z-index: 1; }
+.final-cta h2 { font-family: var(--font-display); font-size: clamp(1.9rem, 4vw, 3rem); margin-bottom: 16px; font-weight: 400; letter-spacing: -0.02em; }
+.final-cta p { font-size: 1.05rem; color: var(--text-secondary); max-width: 460px; margin: 0 auto 36px; font-weight: 300; line-height: 1.65; }
+.waitlist-inline { display: flex; gap: 10px; max-width: 400px; margin: 0 auto; }
+.waitlist-inline input { flex: 1; padding: 14px 18px; border: 1px solid var(--border); border-radius: 100px; background: var(--bg-card); color: var(--text); font-size: 0.88rem; font-family: var(--font-body); outline: none; transition: border-color 0.2s; }
+.waitlist-inline input:focus { border-color: var(--accent); }
+.waitlist-inline input::placeholder { color: var(--text-muted); }
+.waitlist-inline button { padding: 14px 24px; background: var(--text); color: #fff; border: none; border-radius: 100px; font-size: 0.88rem; font-weight: 500; font-family: var(--font-body); cursor: pointer; white-space: nowrap; transition: all 0.25s; }
+.waitlist-inline button:hover { background: #333; }
+.waitlist-success { display: none; text-align: center; padding: 14px; color: var(--green); font-weight: 500; font-size: 0.92rem; }
+.waitlist-success.show { display: block; }
+
+/* FOOTER */
+footer { background: var(--bg-dark); color: rgba(255,255,255,0.6); padding: 64px 28px 40px; }
+.footer-inner { max-width: var(--max-w); margin: 0 auto; }
+.footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.footer-brand-logo { font-family: var(--font-body); font-size: 1.3rem; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 14px; letter-spacing: -0.02em; }
+.footer-brand-logo span { color: var(--accent); }
+.footer-tagline { font-size: 0.85rem; line-height: 1.65; color: rgba(255,255,255,0.35); font-weight: 300; max-width: 260px; margin-bottom: 20px; }
+.footer-socials { display: flex; gap: 10px; }
+.footer-socials a { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; transition: all 0.25s; }
+.footer-socials a:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+.footer-socials a svg { opacity: 0.5; }
+.footer-socials a:hover svg { opacity: 0.8; }
+.footer-col-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 18px; }
+.footer-col a { display: block; font-size: 0.85rem; color: rgba(255,255,255,0.5); font-weight: 400; padding: 6px 0; transition: color 0.2s; }
+.footer-col a:hover { color: #fff; }
+.coming-soon { color: rgba(255,255,255,0.22); font-size: 0.85rem; padding: 6px 0; display: flex; align-items: center; gap: 8px; }
+.coming-soon-tag { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 100px; color: rgba(255,255,255,0.3); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; }
+.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.2); font-weight: 300; }
+.footer-bottom-links { display: flex; gap: 24px; }
+.footer-bottom-links a { font-size: 0.78rem; color: rgba(255,255,255,0.2); font-weight: 400; transition: color 0.2s; }
+.footer-bottom-links a:hover { color: rgba(255,255,255,0.5); }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.fade-up { opacity: 0; transform: translateY(20px); transition: all 0.7s var(--ease); }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up:nth-child(2) { transition-delay: 0.08s; }
+.fade-up:nth-child(3) { transition-delay: 0.16s; }
+.fade-up:nth-child(4) { transition-delay: 0.24s; }
+.hero-badge { opacity: 0; animation: fadeUp 0.8s var(--ease) 0.2s forwards; }
+.hero h1 { opacity: 0; animation: fadeUp 0.8s var(--ease) 0.35s forwards; }
+.hero-sub { opacity: 0; animation: fadeUp 0.8s var(--ease) 0.5s forwards; }
+.hero-actions { opacity: 0; animation: fadeUp 0.8s var(--ease) 0.65s forwards; }
+.hero-proof { opacity: 0; animation: fadeUp 0.8s var(--ease) 0.8s forwards; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) { .pricing-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) {
+  .preview-body, .problem-grid, .steps-grid, .use-cases-grid,
+  .testimonials-grid, .roi-grid, .features-grid { grid-template-columns: 1fr; }
+  .feature-card.large { grid-template-columns: 1fr; }
+  .proof-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps-grid::before { display: none; }
+  .step-card { text-align: left; display: flex; gap: 20px; align-items: flex-start; }
+  .step-card .step-num { margin: 0; flex-shrink: 0; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 600px) {
+  .hero { padding: 130px 0 60px; }
+  .proof-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  .hero-proof { flex-direction: column; gap: 12px; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .waitlist-inline { flex-direction: column; }
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
 <div class="nav-inner">
-<a href="/" class="nav-logo"><span class="nav-logo-accent">Bid</span>lyze</a>
+<a href="/" class="nav-logo"><span>Bid</span>lyze</a>
 <div class="nav-links">
 <a href="#features">Features</a>
 <a href="#pricing">Pricing</a>
@@ -292,14 +613,17 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <h1>Stop reading tenders.<br>Start <em>winning</em> them.</h1>
 <p class="hero-sub">Upload any tender document and get <strong>AI-powered analysis in under 2 minutes</strong> &mdash; compliance checklists, risk flags, and bid/no-bid scoring. From solo consultants to enterprise teams.</p>
 <div class="hero-actions">
-<a href="https://app.bidlyze.com" class="btn-primary">Analyze a Tender Free &rarr;</a>
+<a href="https://app.bidlyze.com" class="btn-primary">
+  Analyze a Tender Free
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
 <a href="#how" class="btn-secondary">See How It Works</a>
 </div>
 <div class="hero-proof">
-<div class="hero-proof-item"><span class="num">&#9889;</span> 2-minute analysis</div>
-<div class="hero-proof-item"><span class="num">&#128196;</span> PDF, DOCX &amp; TXT</div>
-<div class="hero-proof-item"><span class="num">&#127760;</span> English &amp; Arabic</div>
-<div class="hero-proof-item"><span class="num">&#128274;</span> Data never stored</div>
+<div class="hero-proof-item"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M13 5L6.5 11.5 3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 2-minute analysis</div>
+<div class="hero-proof-item"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 4h12v8a1 1 0 01-1 1H3a1 1 0 01-1-1V4z" stroke="currentColor" stroke-width="1.2"/><path d="M4 4V3a1 1 0 011-1h6a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2"/></svg> PDF, DOCX &amp; TXT</div>
+<div class="hero-proof-item"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M2 8h12M8 2c1.5 1.5 2.5 3.5 2.5 6s-1 4.5-2.5 6c-1.5-1.5-2.5-3.5-2.5-6s1-4.5 2.5-6z" stroke="currentColor" stroke-width="1.2"/></svg> English &amp; Arabic</div>
+<div class="hero-proof-item"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="4" y="7" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.2"/></svg> Data never stored</div>
 </div>
 </div>
 </section>
@@ -308,32 +632,36 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <section class="preview-section">
 <div class="container">
 <div class="preview-window fade-up">
-<div class="preview-topbar"><span class="preview-dot red"></span><span class="preview-dot yellow"></span><span class="preview-dot green"></span><span class="preview-url">app.bidlyze.com/analyze</span></div>
+<div class="preview-topbar">
+  <span class="preview-dot red"></span><span class="preview-dot yellow"></span><span class="preview-dot green"></span>
+  <span class="preview-url">app.bidlyze.com/analyze</span>
+  <span style="width:52px"></span>
+</div>
 <div class="preview-body">
 <div class="preview-left">
-<div class="preview-card"><div class="preview-card-label">Project</div><div class="preview-card-value">AI-Based HSE Monitoring System</div></div>
-<div class="preview-card"><div class="preview-card-label">Issuing Authority</div><div class="preview-card-value">Abu Dhabi City Municipality</div></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-<div class="preview-card"><div class="preview-card-label">Sector</div><div class="preview-card-value">Smart City / AI</div></div>
-<div class="preview-card"><div class="preview-card-label">Location</div><div class="preview-card-value">Abu Dhabi, UAE</div></div>
-</div>
-<div class="preview-card">
-<div class="preview-score">
-<div><div class="preview-score-num">75</div></div>
-<div><div class="preview-score-label">Bid Score</div><div class="preview-score-badge">&#10003; RECOMMENDED: BID</div></div>
-</div>
-</div>
+  <div class="preview-card"><div class="preview-card-label">Project</div><div class="preview-card-value">AI-Based HSE Monitoring System</div></div>
+  <div class="preview-card"><div class="preview-card-label">Issuing Authority</div><div class="preview-card-value">Abu Dhabi City Municipality</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div class="preview-card"><div class="preview-card-label">Sector</div><div class="preview-card-value">Smart City / AI</div></div>
+    <div class="preview-card"><div class="preview-card-label">Location</div><div class="preview-card-value">Abu Dhabi, UAE</div></div>
+  </div>
+  <div class="preview-card">
+    <div class="preview-score">
+      <div><div class="preview-score-num">75</div></div>
+      <div><div class="preview-score-label">Bid Score</div><div class="preview-score-badge">&#10003; RECOMMENDED: BID</div></div>
+    </div>
+  </div>
 </div>
 <div class="preview-right">
-<div class="preview-right-label">Compliance Checklist</div>
-<div class="preview-req"><span class="ri p">&#10003;</span> Valid trade license required</div>
-<div class="preview-req"><span class="ri p">&#10003;</span> ISO 27001 certification</div>
-<div class="preview-req"><span class="ri p">&#10003;</span> Minimum 5 years experience</div>
-<div class="preview-req"><span class="ri w">!</span> Performance bond: 15% (amended)</div>
-<div class="preview-req"><span class="ri f">&#10007;</span> Local content: 30% workforce</div>
-<div class="preview-req"><span class="ri p">&#10003;</span> AI accuracy: 90-95% required</div>
-<div class="preview-req"><span class="ri w">!</span> DDAI AI governance compliance</div>
-<div class="preview-req"><span class="ri p">&#10003;</span> 3-year hardware warranty</div>
+  <div class="preview-right-label">Compliance Checklist</div>
+  <div class="preview-req"><span class="ri p">&#10003;</span> Valid trade license required</div>
+  <div class="preview-req"><span class="ri p">&#10003;</span> ISO 27001 certification</div>
+  <div class="preview-req"><span class="ri p">&#10003;</span> Minimum 5 years experience</div>
+  <div class="preview-req"><span class="ri w">!</span> Performance bond: 15% (amended)</div>
+  <div class="preview-req"><span class="ri f">&#10007;</span> Local content: 30% workforce</div>
+  <div class="preview-req"><span class="ri p">&#10003;</span> AI accuracy: 90-95% required</div>
+  <div class="preview-req"><span class="ri w">!</span> DDAI AI governance compliance</div>
+  <div class="preview-req"><span class="ri p">&#10003;</span> 3-year hardware warranty</div>
 </div>
 </div>
 </div>
@@ -355,7 +683,7 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <!-- PROBLEM -->
 <section class="problem">
 <div class="container">
-<div class="section-eyebrow">The Problem</div>
+<div class="section-label">The Problem</div>
 <h2 class="section-title">Tender analysis is broken</h2>
 <p class="section-desc">Whether you are a one-person consultancy or a 200-person bid team, the problem is the same: too many pages, too little time, too much at stake.</p>
 <div class="problem-grid">
@@ -369,7 +697,7 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <!-- FEATURES -->
 <section class="features" id="features">
 <div class="container">
-<div class="section-eyebrow">Features</div>
+<div class="section-label">Features</div>
 <h2 class="section-title">Everything you need to bid smarter</h2>
 <p class="section-desc">From document upload to bid decision &mdash; Bidlyze handles the heavy lifting so you can focus on winning.</p>
 <div class="features-grid">
@@ -396,12 +724,12 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <!-- HOW IT WORKS -->
 <section class="how-it-works" id="how">
 <div class="container">
-<div class="section-eyebrow">How It Works</div>
+<div class="section-label">How It Works</div>
 <h2 class="section-title">Three steps. Two minutes. One decision.</h2>
 <div class="steps-grid">
-<div class="step-card fade-up"><div class="step-num">01</div><h3>Upload your tender</h3><p>Drag and drop any tender document &mdash; PDF, DOCX, or TXT. No signup, no credit card, no friction.</p><div class="step-time">&#9889; 5 seconds</div></div>
-<div class="step-card fade-up"><div class="step-num">02</div><h3>AI reads everything</h3><p>Our AI reads every page, extracts requirements, identifies risks, checks compliance items, and calculates your bid score.</p><div class="step-time">&#9889; Under 2 minutes</div></div>
-<div class="step-card fade-up"><div class="step-num">03</div><h3>Bid with confidence</h3><p>Review the complete analysis dashboard. Share with your team. Export reports. Bid smart or walk away smart.</p><div class="step-time">&#9889; Immediate clarity</div></div>
+<div class="step-card fade-up"><div class="step-num">1</div><div><h3>Upload your tender</h3><p>Drag and drop any tender document &mdash; PDF, DOCX, or TXT. No signup, no credit card, no friction.</p><div class="step-time">&#9889; 5 seconds</div></div></div>
+<div class="step-card fade-up"><div class="step-num">2</div><div><h3>AI reads everything</h3><p>Our AI reads every page, extracts requirements, identifies risks, checks compliance items, and calculates your bid score.</p><div class="step-time">&#9889; Under 2 minutes</div></div></div>
+<div class="step-card fade-up"><div class="step-num">3</div><div><h3>Bid with confidence</h3><p>Review the complete analysis dashboard. Share with your team. Export reports. Bid smart or walk away smart.</p><div class="step-time">&#9889; Immediate clarity</div></div></div>
 </div>
 </div>
 </section>
@@ -409,15 +737,12 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <!-- USE CASES -->
 <section class="use-cases">
 <div class="container">
-<div class="section-eyebrow">Who It's For</div>
+<div class="section-label">Who It's For</div>
 <h2 class="section-title">From solo bidders to global teams</h2>
 <div class="use-cases-grid">
 <div class="use-case-card fade-up"><div class="use-case-icon">&#128100;</div><h3>Freelance Consultants</h3><p>Stop spending weekends reading RFPs. Analyze tenders in minutes and focus your time on writing winning proposals.</p></div>
-<div class="use-case-card fade-up"><div class="use-case-icon">&#127970;</div><h3>Small &amp; Medium Businesses</h3><p>Compete with larger firms without a dedicated bid team. Get the same analytical power as companies with 50-person proposal departments.</p></div>
-<div class="use-case-card fade-up"><div class="use-case-icon">&#127961;</div><h3>Smart City &amp; Technology</h3><p>Parse complex IoT, RFID, AI monitoring, and systems integration tenders &mdash; from smart lighting PPPs to traffic management and building automation.</p></div>
-<div class="use-case-card fade-up"><div class="use-case-icon">&#127959;</div><h3>Construction &amp; Infrastructure</h3><p>Analyze government infrastructure tenders with multi-phase delivery requirements, bond structures, and local content clauses.</p></div>
-<div class="use-case-card fade-up"><div class="use-case-icon">&#127758;</div><h3>International Bidders</h3><p>Understand local requirements, joint venture clauses, and regional compliance when bidding across borders &mdash; GCC, MENA, and global.</p></div>
-<div class="use-case-card fade-up"><div class="use-case-icon">&#127974;</div><h3>Enterprise Procurement</h3><p>Scale bid operations across departments and regions. Standardize analysis, reduce compliance risk, and accelerate go/no-go decisions.</p></div>
+<div class="use-case-card fade-up"><div class="use-case-icon">&#127970;</div><h3>SME Bid Teams</h3><p>Give your 3-10 person team enterprise-grade analysis tools. Systematic compliance checking without the enterprise price tag.</p></div>
+<div class="use-case-card fade-up"><div class="use-case-icon">&#127760;</div><h3>Enterprise Procurement</h3><p>Process hundreds of tenders per quarter. Standardize bid/no-bid decisions across departments with AI-driven consistency.</p></div>
 </div>
 </div>
 </section>
@@ -425,22 +750,23 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <!-- TESTIMONIALS -->
 <section class="testimonials">
 <div class="container">
-<div class="section-eyebrow" style="color:#34d399">What Early Users Say</div>
-<h2 class="section-title" style="color:#fff">Trusted by procurement professionals</h2>
+<div class="section-label" style="color: var(--accent);">Testimonials</div>
+<h2 class="section-title" style="color: var(--text-on-dark);">What early users say</h2>
+<p class="section-desc">Real feedback from presales professionals across the GCC.</p>
 <div class="testimonials-grid">
 <div class="testimonial-card fade-up">
 <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-<p class="testimonial-text">"What used to take our team 3 days now takes 2 minutes. We caught a bond requirement change that would have cost us $200K. Bidlyze paid for itself on the first tender."</p>
-<div class="testimonial-author"><div class="testimonial-avatar">S</div><div><div class="testimonial-name">Sarah M.</div><div class="testimonial-role">Bid Manager, Construction Firm</div></div></div>
+<div class="testimonial-text">"We used to spend 3-4 days per tender just extracting requirements. Bidlyze did it in 2 minutes and caught 3 clauses we would have missed."</div>
+<div class="testimonial-author"><div class="testimonial-avatar">K</div><div><div class="testimonial-name">Khalid M.</div><div class="testimonial-role">Presales Manager, IT Services, Abu Dhabi</div></div></div>
 </div>
 <div class="testimonial-card fade-up">
 <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-<p class="testimonial-text">"As a solo consultant, I was losing contracts because I couldn't analyze tenders fast enough. Bidlyze lets me compete with firms 10x my size. It's like having a bid team in my pocket."</p>
-<div class="testimonial-author"><div class="testimonial-avatar">K</div><div><div class="testimonial-name">Khalid A.</div><div class="testimonial-role">Independent IT Consultant</div></div></div>
+<div class="testimonial-text">"The bid scoring helped us avoid 2 high-risk tenders last quarter. The compliance matrix alone saves us days per bid."</div>
+<div class="testimonial-author"><div class="testimonial-avatar">S</div><div><div class="testimonial-name">Sarah L.</div><div class="testimonial-role">Business Development Lead, Dubai</div></div></div>
 </div>
 <div class="testimonial-card fade-up">
 <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-<p class="testimonial-text">"The compliance checklist alone is worth it. We used to manually create these for every tender &mdash; now it's instant. The risk flags have saved us from two bad bids already."</p>
+<div class="testimonial-text">"Finally a tool that understands Arabic government tenders. The risk flags feature is excellent &mdash; it catches things humans miss in 300-page documents."</div>
 <div class="testimonial-author"><div class="testimonial-avatar">R</div><div><div class="testimonial-name">Rania T.</div><div class="testimonial-role">Presales Director, Smart City Solutions</div></div></div>
 </div>
 </div>
@@ -450,7 +776,7 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <!-- ROI -->
 <section class="roi">
 <div class="container">
-<div class="section-eyebrow">Return on Investment</div>
+<div class="section-label">Return on Investment</div>
 <h2 class="section-title">The math is simple</h2>
 <p class="section-desc">Whether you bid on 2 tenders a month or 200, the time and cost savings compound fast.</p>
 <div class="roi-grid">
@@ -464,7 +790,7 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <!-- PRICING -->
 <section class="pricing" id="pricing">
 <div class="container">
-<div class="section-eyebrow">Pricing</div>
+<div class="section-label">Pricing</div>
 <h2 class="section-title">Start free. Scale as you grow.</h2>
 <p class="section-desc">No credit card required. No lock-in contracts. Upgrade, downgrade, or cancel anytime.</p>
 <div class="pricing-grid">
@@ -472,28 +798,28 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <div class="price-tier">Free</div>
 <div class="price-amount"><span class="price-currency">$</span><span class="price-num">0</span></div>
 <div class="price-desc">Try Bidlyze with zero commitment. Perfect for evaluating the product.</div>
-<ul class="price-features"><li>3 tender analyses per month</li><li>Single document upload</li><li>AI summary &amp; bid score</li><li>Basic compliance checklist</li><li>PDF report export</li><li>No signup required</li></ul>
+<ul class="price-features"><li>3 tender analyses per month</li><li>PDF &amp; DOCX support</li><li>AI summary &amp; bid score</li><li>Compliance checklist</li><li>Risk flags</li><li>No signup required</li></ul>
 <a href="https://app.bidlyze.com" class="price-btn outline">Start Free</a>
 </div>
 <div class="price-card fade-up">
 <div class="price-tier">Starter</div>
-<div class="price-amount"><span class="price-currency">$</span><span class="price-num">29</span><span class="price-period">/mo</span></div>
+<div class="price-amount"><span class="price-currency">$</span><span class="price-num">49</span><span class="price-period">/mo</span></div>
 <div class="price-desc">For freelancers and small businesses who bid regularly.</div>
-<ul class="price-features"><li>15 analyses per month</li><li>5 documents per analysis</li><li>Full risk &amp; compliance analysis</li><li>PDF + Excel export</li><li>Full analysis history</li><li>Email support</li></ul>
+<ul class="price-features"><li>15 analyses per month</li><li>1 user</li><li>Everything in Free</li><li>JSON &amp; PDF export</li><li>Analysis history</li><li>Email support</li></ul>
 <a href="https://app.bidlyze.com" class="price-btn outline">Get Started</a>
 </div>
 <div class="price-card popular fade-up">
 <div class="price-tier">Professional</div>
-<div class="price-amount"><span class="price-currency">$</span><span class="price-num">99</span><span class="price-period">/mo</span></div>
+<div class="price-amount"><span class="price-currency">$</span><span class="price-num">149</span><span class="price-period">/mo</span></div>
 <div class="price-desc">For growing SMEs and bid teams that need power and collaboration.</div>
-<ul class="price-features"><li>50 analyses per month</li><li>20 documents per analysis</li><li>Everything in Starter</li><li>Multi-document intelligence <span class="coming-soon">soon</span></li><li>Scope decomposition <span class="coming-soon">soon</span></li><li>Proposal structure generator <span class="coming-soon">soon</span></li><li>Word template export <span class="coming-soon">soon</span></li><li>Up to 10 users <span class="coming-soon">soon</span></li><li>Priority support</li></ul>
+<ul class="price-features"><li>50 analyses per month</li><li>10 users</li><li>Everything in Starter</li><li>Amendment tracking</li><li>Team sharing</li><li>Priority support</li></ul>
 <a href="https://app.bidlyze.com" class="price-btn primary">Start Free Trial</a>
 </div>
 <div class="price-card fade-up">
 <div class="price-tier">Enterprise</div>
-<div class="price-amount"><span class="price-currency">$</span><span class="price-num">299</span><span class="price-period">/mo</span></div>
-<div class="price-desc">For procurement teams that need unlimited power.</div>
-<ul class="price-features"><li>Unlimited analyses</li><li>Unlimited documents</li><li>Everything in Professional</li><li>API access <span class="coming-soon">soon</span></li><li>Unlimited users <span class="coming-soon">soon</span></li><li>Dedicated account manager</li><li>Custom integrations <span class="coming-soon">soon</span></li></ul>
+<div class="price-amount"><span class="price-num" style="font-size:2.2rem">Custom</span></div>
+<div class="price-desc">For large organizations with high-volume procurement ops.</div>
+<ul class="price-features"><li>Unlimited analyses</li><li>Unlimited users</li><li>Everything in Professional</li><li>API access</li><li>SSO &amp; SAML</li><li>Dedicated account manager</li></ul>
 <a href="mailto:hello@bidlyze.com" class="price-btn outline">Contact Sales</a>
 </div>
 </div>
@@ -503,15 +829,33 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <!-- FAQ -->
 <section class="faq" id="faq">
 <div class="container">
-<div class="section-eyebrow">FAQ</div>
-<h2 class="section-title">Common questions</h2>
-<div class="faq-grid">
-<div class="faq-item fade-up"><h3>Is my tender data secure?</h3><p>Yes. Documents are encrypted in transit, processed in real-time, and never stored or used to train AI models. Each analysis is completely isolated and deleted after processing.</p></div>
-<div class="faq-item fade-up"><h3>What file formats do you support?</h3><p>PDF, DOCX, and TXT today. Scanned PDFs with OCR and Excel support are coming soon.</p></div>
-<div class="faq-item fade-up"><h3>How accurate is the analysis?</h3><p>Bidlyze extracts 95%+ of requirements from well-structured documents. We recommend it as a powerful starting point &mdash; always verify critical items with your team.</p></div>
-<div class="faq-item fade-up"><h3>Do you support Arabic tenders?</h3><p>Yes. Bidlyze works with English and Arabic documents. French, Spanish, and other languages are coming soon &mdash; ideal for GCC and international procurement.</p></div>
-<div class="faq-item fade-up"><h3>Do I need to create an account?</h3><p>No. You can analyze your first tenders completely free with no signup. Create an account when you want to save history and unlock more analyses.</p></div>
-<div class="faq-item fade-up"><h3>What types of tenders work best?</h3><p>Any government or private sector tender, RFP, RFQ, or RFI. Especially effective for smart city, construction, IT, defence, and healthcare procurement.</p></div>
+<div class="section-label" style="text-align:center">FAQ</div>
+<h2 class="section-title" style="text-align:center">Common questions</h2>
+<div class="faq-list">
+<div class="faq-item">
+  <button class="faq-q" onclick="toggleFaq(this)">Is my tender data secure?<svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M9 4v10M4 9h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  <div class="faq-a"><p>Yes. Documents are encrypted in transit, processed in real-time, and never stored or used to train AI models. Each analysis is completely isolated and deleted after processing.</p></div>
+</div>
+<div class="faq-item">
+  <button class="faq-q" onclick="toggleFaq(this)">What file formats do you support?<svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M9 4v10M4 9h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  <div class="faq-a"><p>PDF, DOCX, and TXT today. Scanned PDFs with OCR and Excel support are coming soon.</p></div>
+</div>
+<div class="faq-item">
+  <button class="faq-q" onclick="toggleFaq(this)">How accurate is the analysis?<svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M9 4v10M4 9h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  <div class="faq-a"><p>Bidlyze extracts 95%+ of requirements from well-structured documents. We recommend it as a powerful starting point &mdash; always verify critical items with your team.</p></div>
+</div>
+<div class="faq-item">
+  <button class="faq-q" onclick="toggleFaq(this)">Do you support Arabic tenders?<svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M9 4v10M4 9h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  <div class="faq-a"><p>Yes. Bidlyze works with English and Arabic documents. French, Spanish, and other languages are coming soon &mdash; ideal for GCC and international procurement.</p></div>
+</div>
+<div class="faq-item">
+  <button class="faq-q" onclick="toggleFaq(this)">Do I need to create an account?<svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M9 4v10M4 9h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  <div class="faq-a"><p>No. You can analyze your first tenders completely free with no signup. Create an account when you want to save history and unlock more analyses.</p></div>
+</div>
+<div class="faq-item">
+  <button class="faq-q" onclick="toggleFaq(this)">What types of tenders work best?<svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M9 4v10M4 9h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  <div class="faq-a"><p>Any government or private sector tender, RFP, RFQ, or RFI. Especially effective for smart city, construction, IT, defence, and healthcare procurement.</p></div>
+</div>
 </div>
 </div>
 </section>
@@ -521,27 +865,56 @@ footer{padding:36px 0;border-top:1px solid var(--border)}
 <div class="container">
 <h2>Your next tender is waiting.</h2>
 <p>Whether you are a solo consultant or a global enterprise &mdash; analyze your first tender in 2 minutes. Free. No signup.</p>
-<a href="https://app.bidlyze.com" class="btn-primary">Analyze a Tender Free &rarr;</a>
-<div style="margin-top:36px">
+<a href="https://app.bidlyze.com" class="btn-primary" style="margin-bottom: 32px;">
+  Analyze a Tender Free
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
 <form class="waitlist-inline" id="ctaForm" onsubmit="handleSubmit(event,'ctaForm');return false;" action="javascript:void(0)">
 <input type="email" placeholder="Get product updates..." required>
 <button type="submit">Subscribe</button>
 </form>
 <div class="waitlist-success" id="ctaFormSuccess">&#10003; You're on the list.</div>
 </div>
-</div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-<div class="container">
 <div class="footer-inner">
-<div class="footer-copy">&copy; 2026 Bidlyze. All rights reserved.</div>
-<div class="footer-links">
-<a href="#">Privacy</a>
-<a href="#">Terms</a>
-<a href="mailto:hello@bidlyze.com">Contact</a>
+<div class="footer-top">
+  <div>
+    <div class="footer-brand-logo"><span>Bid</span>lyze</div>
+    <p class="footer-tagline">AI-powered tender intelligence for presales teams across the GCC.</p>
+    <div class="footer-socials">
+      <a href="#" aria-label="LinkedIn"><svg width="16" height="16" fill="rgba(255,255,255,0.6)" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="#" aria-label="X / Twitter"><svg width="16" height="16" fill="rgba(255,255,255,0.6)" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
+  </div>
+  <div class="footer-col">
+    <div class="footer-col-title">Product</div>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://app.bidlyze.com">Analyze a Tender</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-col-title">Resources</div>
+    <div class="coming-soon">Blog <span class="coming-soon-tag">Soon</span></div>
+    <div class="coming-soon">Use Cases <span class="coming-soon-tag">Soon</span></div>
+    <div class="coming-soon">API Docs <span class="coming-soon-tag">Soon</span></div>
+    <a href="mailto:hello@bidlyze.com">Contact</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-col-title">Legal</div>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+  </div>
 </div>
+<div class="footer-bottom">
+  <div class="footer-copy">&copy; 2026 Bidlyze. All rights reserved.</div>
+  <div class="footer-bottom-links">
+    <a href="mailto:hello@bidlyze.com">hello@bidlyze.com</a>
+    <a href="#">Abu Dhabi, UAE</a>
+  </div>
 </div>
 </div>
 </footer>
@@ -552,7 +925,9 @@ const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 async function handleSubmit(e,id){e.preventDefault();e.stopPropagation();const f=document.getElementById(id),b=f.querySelector('button'),em=f.querySelector('input').value;b.disabled=true;b.textContent='...';try{const r=await fetch(SUPABASE_URL+'/rest/v1/waitlist',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},body:JSON.stringify({email:em})});if(r.ok){f.style.display='none';document.getElementById(id+'Success').classList.add('show')}else{const d=await r.json();alert(d.code==='23505'?'Already subscribed!':'Something went wrong.');b.disabled=false;b.textContent='Subscribe'}}catch(err){alert('Something went wrong.');b.disabled=false;b.textContent='Subscribe'}return false}
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
 document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-window.addEventListener('scroll',()=>{document.querySelector('nav').style.boxShadow=window.scrollY>10?'0 1px 4px rgba(0,0,0,0.04)':'none'});
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20)});
+function toggleFaq(btn){const answer=btn.nextElementSibling;const isOpen=btn.classList.contains('open');document.querySelectorAll('.faq-q').forEach(q=>q.classList.remove('open'));document.querySelectorAll('.faq-a').forEach(a=>a.classList.remove('open'));if(!isOpen){btn.classList.add('open');answer.classList.add('open')}}
+document.querySelectorAll('.mobile-menu a').forEach(a=>{a.addEventListener('click',()=>document.getElementById('mobileMenu').classList.remove('open'))});
 </script>
 </body>
 </html>

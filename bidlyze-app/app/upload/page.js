@@ -258,7 +258,7 @@ export default function HomePage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+        <div className="animate-spin h-8 w-8 border-2 border-[#D4764E] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -269,7 +269,7 @@ export default function HomePage() {
       <header className="transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/dashboard")}>
-            <span className="text-xl font-bold tracking-tight"><span className="text-emerald-500">Bid</span>lyze</span>
+            <span className="text-xl font-bold tracking-tight"><span className="text-[#D4764E]">Bid</span>lyze</span>
           </div>
           <UserMenu user={user} onLogout={logout} />
         </div>
@@ -288,9 +288,9 @@ export default function HomePage() {
             >
               <div className="flex items-center gap-3">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  limitReached ? "bg-red-500/10" : "bg-emerald-500/10"
+                  limitReached ? "bg-red-500/10" : "bg-[#D4764E]/10"
                 }`}>
-                  <svg className={`w-4 h-4 ${limitReached ? "text-red-400" : "text-emerald-400"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className={`w-4 h-4 ${limitReached ? "text-red-400" : "text-[#E8956A]"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
                   </svg>
                 </div>
@@ -304,7 +304,7 @@ export default function HomePage() {
               {limitReached && (
                 <button
                   onClick={() => router.push("/pricing")}
-                  className="px-4 py-2 rounded-lg text-sm font-medium bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+                  className="px-4 py-2 rounded-lg text-sm font-medium bg-[#D4764E] hover:bg-[#E8956A] text-white transition-colors"
                 >
                   Upgrade
                 </button>
@@ -316,7 +316,7 @@ export default function HomePage() {
         {/* Hero */}
         <div className="text-center mb-14">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-            AI-Powered <span className="text-emerald-500">Tender Analysis</span>
+            AI-Powered <span className="text-[#D4764E]">Tender Analysis</span>
           </h1>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
             Upload your tender documents and get instant analysis with compliance checks,
@@ -342,7 +342,7 @@ export default function HomePage() {
               </p>
               <button
                 onClick={() => router.push("/pricing")}
-                className="inline-block px-6 py-3 rounded-xl font-semibold text-sm bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+                className="inline-block px-6 py-3 rounded-xl font-semibold text-sm bg-[#D4764E] hover:bg-[#E8956A] text-white transition-colors"
               >
                 View Pricing
               </button>
@@ -360,9 +360,9 @@ export default function HomePage() {
                   processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 } ${
                   dragActive
-                    ? "border-emerald-500 bg-emerald-500/5"
+                    ? "border-[#D4764E] bg-[#D4764E]/5"
                     : pendingFiles.length > 0
-                    ? "border-emerald-500/50 bg-emerald-500/5"
+                    ? "border-[#D4764E]/50 bg-[#D4764E]/5"
                     : ""
                 }`}
                 style={!dragActive && pendingFiles.length === 0 ? { borderColor: "var(--border-secondary)", background: "var(--bg-subtle)" } : {}}
@@ -380,7 +380,7 @@ export default function HomePage() {
                 />
 
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: pendingFiles.length > 0 ? "rgba(16,185,129,0.1)" : "var(--icon-muted)" }}>
-                  <svg className={`w-7 h-7 ${pendingFiles.length > 0 ? "text-emerald-500" : ""}`} style={pendingFiles.length === 0 ? { color: "var(--text-secondary)" } : {}} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <svg className={`w-7 h-7 ${pendingFiles.length > 0 ? "text-[#D4764E]" : ""}`} style={pendingFiles.length === 0 ? { color: "var(--text-secondary)" } : {}} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                   </svg>
                 </div>
@@ -437,13 +437,13 @@ export default function HomePage() {
                           <div className="w-2 h-2 rounded-full" style={{ background: "var(--text-muted)" }} />
                         )}
                         {entry.status === "analyzing" && (
-                          <svg className="animate-spin h-4 w-4 text-emerald-500" viewBox="0 0 24 24">
+                          <svg className="animate-spin h-4 w-4 text-[#D4764E]" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                           </svg>
                         )}
                         {entry.status === "done" && (
-                          <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <svg className="w-4 h-4 text-[#D4764E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                           </svg>
                         )}
@@ -483,13 +483,13 @@ export default function HomePage() {
                         {entry.status === "done" && entry.analysisId && (
                           <button
                             onClick={(e) => { e.stopPropagation(); router.push(`/analysis/${entry.analysisId}`); }}
-                            className="px-3 py-1 rounded-lg text-xs font-medium text-emerald-500 transition-colors hover:bg-emerald-500/10"
+                            className="px-3 py-1 rounded-lg text-xs font-medium text-[#D4764E] transition-colors hover:bg-[#D4764E]/10"
                           >
                             View
                           </button>
                         )}
                         {entry.status === "analyzing" && (
-                          <span className="text-xs text-emerald-500">Analyzing...</span>
+                          <span className="text-xs text-[#D4764E]">Analyzing...</span>
                         )}
                       </div>
                     </div>
@@ -518,7 +518,7 @@ export default function HomePage() {
                   </button>
                   <button
                     onClick={() => router.push("/dashboard")}
-                    className="flex-1 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 bg-emerald-500 hover:bg-emerald-400 text-white"
+                    className="flex-1 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 bg-[#D4764E] hover:bg-[#E8956A] text-white"
                   >
                     View Dashboard
                   </button>
@@ -527,7 +527,7 @@ export default function HomePage() {
                 <button
                   onClick={handleAnalyze}
                   disabled={pendingFiles.length === 0 || processing}
-                  className="w-full mt-6 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-emerald-500 hover:bg-emerald-400 text-white"
+                  className="w-full mt-6 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-[#D4764E] hover:bg-[#E8956A] text-white"
                 >
                   {processing ? (
                     <span className="flex items-center justify-center gap-3">
@@ -560,7 +560,7 @@ export default function HomePage() {
               onMouseEnter={(e) => e.currentTarget.style.borderColor = "var(--border-secondary)"}
               onMouseLeave={(e) => e.currentTarget.style.borderColor = "var(--border-primary)"}
             >
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-lg bg-[#D4764E]/10 text-[#D4764E] flex items-center justify-center mb-4">
                 {f.icon}
               </div>
               <h3 className="font-semibold mb-1">{f.title}</h3>

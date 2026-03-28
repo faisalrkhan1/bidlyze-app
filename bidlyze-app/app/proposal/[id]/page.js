@@ -180,7 +180,7 @@ export default function ProposalPage({ params }) {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+        <div className="animate-spin h-8 w-8 border-2 border-[#D4764E] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -200,7 +200,7 @@ export default function ProposalPage({ params }) {
           </p>
           <button
             onClick={() => router.push("/dashboard")}
-            className="px-6 py-3 rounded-xl font-semibold text-sm bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+            className="px-6 py-3 rounded-xl font-semibold text-sm bg-[#D4764E] hover:bg-[#E8956A] text-white transition-colors"
           >
             Back to Dashboard
           </button>
@@ -212,7 +212,7 @@ export default function ProposalPage({ params }) {
   if (!record) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+        <div className="animate-spin h-8 w-8 border-2 border-[#D4764E] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -228,7 +228,7 @@ export default function ProposalPage({ params }) {
         <div className="px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div>
-              <span className="text-xl font-bold tracking-tight cursor-pointer" onClick={() => router.push("/dashboard")}><span className="text-emerald-500">Bid</span>lyze</span>
+              <span className="text-xl font-bold tracking-tight cursor-pointer" onClick={() => router.push("/dashboard")}><span className="text-[#D4764E]">Bid</span>lyze</span>
               <span className="text-sm font-medium ml-2" style={{ color: "var(--text-muted)" }}>Proposal Writer</span>
               <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                 {record.project_name || record.file_name}
@@ -266,7 +266,7 @@ export default function ProposalPage({ params }) {
               <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
                 Proposal Sections
               </p>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-medium">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#D4764E]/10 text-[#E8956A] font-medium">
                 {generatedCount}/{SECTIONS.length}
               </span>
             </div>
@@ -291,14 +291,14 @@ export default function ProposalPage({ params }) {
                     if (!isActive) e.currentTarget.style.background = "transparent";
                   }}
                 >
-                  <span className={isActive ? "text-emerald-400" : ""} style={!isActive ? { color: "var(--text-muted)" } : {}}>
+                  <span className={isActive ? "text-[#E8956A]" : ""} style={!isActive ? { color: "var(--text-muted)" } : {}}>
                     {s.icon}
                   </span>
                   <span className="flex-1 font-medium truncate">{s.label}</span>
                   {isGenerating ? (
-                    <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-[#D4764E] border-t-transparent rounded-full animate-spin" />
                   ) : hasContent ? (
-                    <svg className="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <svg className="w-4 h-4 text-[#E8956A] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                     </svg>
                   ) : null}
@@ -336,7 +336,7 @@ export default function ProposalPage({ params }) {
             style={{ borderBottom: "1px solid var(--border-primary)" }}
           >
             <div className="flex items-center gap-3">
-              <span className="text-emerald-400">{activeSectionObj?.icon}</span>
+              <span className="text-[#E8956A]">{activeSectionObj?.icon}</span>
               <h2 className="text-lg font-semibold">{activeSectionObj?.label}</h2>
             </div>
             <div className="flex items-center gap-2">
@@ -351,7 +351,7 @@ export default function ProposalPage({ params }) {
                   >
                     {copied ? (
                       <>
-                        <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <svg className="w-3.5 h-3.5 text-[#E8956A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>
                         Copied
@@ -382,7 +382,7 @@ export default function ProposalPage({ params }) {
               <button
                 onClick={() => handleGenerate(activeSection)}
                 disabled={generating !== null}
-                className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-[#D4764E] hover:bg-[#E8956A] text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
               >
                 {generating === activeSection ? (
                   <>
@@ -412,7 +412,7 @@ export default function ProposalPage({ params }) {
           <div className="flex-1 overflow-y-auto p-6">
             {generating === activeSection ? (
               <div className="flex flex-col items-center justify-center h-full gap-4">
-                <div className="w-12 h-12 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" style={{ borderWidth: 3 }} />
+                <div className="w-12 h-12 border-3 border-[#D4764E] border-t-transparent rounded-full animate-spin" style={{ borderWidth: 3 }} />
                 <div className="text-center">
                   <p className="font-medium mb-1">Generating {activeSectionObj?.label}...</p>
                   <p className="text-sm" style={{ color: "var(--text-muted)" }}>
@@ -427,7 +427,7 @@ export default function ProposalPage({ params }) {
                 onChange={(e) => {
                   setSections((prev) => ({ ...prev, [activeSection]: e.target.value }));
                 }}
-                className="w-full h-full min-h-[500px] resize-none rounded-xl p-5 text-sm leading-relaxed font-mono transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                className="w-full h-full min-h-[500px] resize-none rounded-xl p-5 text-sm leading-relaxed font-mono transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4764E]/30"
                 style={{
                   background: "var(--bg-subtle)",
                   border: "1px solid var(--border-primary)",
@@ -441,7 +441,7 @@ export default function ProposalPage({ params }) {
                   className="w-16 h-16 rounded-2xl flex items-center justify-center"
                   style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}
                 >
-                  <span className="text-emerald-400">{activeSectionObj?.icon}</span>
+                  <span className="text-[#E8956A]">{activeSectionObj?.icon}</span>
                 </div>
                 <div>
                   <p className="font-medium mb-1">{activeSectionObj?.label}</p>
@@ -452,7 +452,7 @@ export default function ProposalPage({ params }) {
                 <button
                   onClick={() => handleGenerate(activeSection)}
                   disabled={generating !== null}
-                  className="px-6 py-3 rounded-xl font-semibold text-sm bg-emerald-500 hover:bg-emerald-400 text-white transition-colors disabled:opacity-50 flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl font-semibold text-sm bg-[#D4764E] hover:bg-[#E8956A] text-white transition-colors disabled:opacity-50 flex items-center gap-2"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />

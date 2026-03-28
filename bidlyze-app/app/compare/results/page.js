@@ -94,7 +94,7 @@ function ChangeCard({ change, expanded, onToggle }) {
               </p>
             </div>
             <div className="rounded-lg p-3" style={{ background: "rgba(16, 185, 129, 0.05)", border: "1px solid rgba(16, 185, 129, 0.15)" }}>
-              <p className="text-xs font-semibold text-emerald-400 mb-2 uppercase tracking-wider">Amended</p>
+              <p className="text-xs font-semibold text-[#E8956A] mb-2 uppercase tracking-wider">Amended</p>
               <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
                 {change.amendedText || "N/A"}
               </p>
@@ -109,8 +109,8 @@ function ChangeCard({ change, expanded, onToggle }) {
           )}
 
           {change.actionRequired && (
-            <div className="rounded-lg p-3 bg-emerald-500/5" style={{ border: "1px solid rgba(16, 185, 129, 0.15)" }}>
-              <p className="text-xs font-semibold text-emerald-400 mb-1 uppercase tracking-wider">Action Required</p>
+            <div className="rounded-lg p-3 bg-[#D4764E]/5" style={{ border: "1px solid rgba(16, 185, 129, 0.15)" }}>
+              <p className="text-xs font-semibold text-[#E8956A] mb-1 uppercase tracking-wider">Action Required</p>
               <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{change.actionRequired}</p>
             </div>
           )}
@@ -139,7 +139,7 @@ export default function CompareResultsPage() {
   if (authLoading || !data) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+        <div className="animate-spin h-8 w-8 border-2 border-[#D4764E] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -170,7 +170,7 @@ export default function CompareResultsPage() {
       <header className="transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/dashboard")}>
-            <span className="text-xl font-bold tracking-tight"><span className="text-emerald-500">Bid</span>lyze</span>
+            <span className="text-xl font-bold tracking-tight"><span className="text-[#D4764E]">Bid</span>lyze</span>
           </div>
           <UserMenu user={user} onLogout={logout} />
         </div>
@@ -194,7 +194,7 @@ export default function CompareResultsPage() {
         <div className="flex items-start justify-between flex-wrap gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
-              Amendment <span className="text-emerald-500">Analysis</span>
+              Amendment <span className="text-[#D4764E]">Analysis</span>
             </h1>
             <p className="text-sm" style={{ color: "var(--text-muted)" }}>
               {originalFileName} → {amendedFileName}
@@ -228,14 +228,14 @@ export default function CompareResultsPage() {
         {/* AI Recommendation */}
         {summary?.recommendation && (
           <div
-            className="p-5 rounded-xl mb-8 bg-emerald-500/5"
+            className="p-5 rounded-xl mb-8 bg-[#D4764E]/5"
             style={{ border: "1px solid rgba(16, 185, 129, 0.2)" }}
           >
             <div className="flex items-center gap-2 mb-2">
-              <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="w-5 h-5 text-[#D4764E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
               </svg>
-              <h3 className="font-semibold text-emerald-500">AI Recommendation</h3>
+              <h3 className="font-semibold text-[#D4764E]">AI Recommendation</h3>
             </div>
             <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
               {summary.recommendation}
@@ -310,7 +310,7 @@ export default function CompareResultsPage() {
                     <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{dc.originalDate}</p>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider mb-1 text-emerald-400">New</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider mb-1 text-[#E8956A]">New</p>
                     <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{dc.newDate}</p>
                   </div>
                   <div>
@@ -330,7 +330,7 @@ export default function CompareResultsPage() {
             style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="w-5 h-5 text-[#D4764E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
               </svg>
               <h3 className="font-semibold">Compliance Changes</h3>
@@ -339,11 +339,11 @@ export default function CompareResultsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {complianceChanges.newRequirements?.length > 0 && (
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-emerald-400">Added</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-[#E8956A]">Added</p>
                   <ul className="space-y-1.5">
                     {complianceChanges.newRequirements.map((r, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
-                        <span className="text-emerald-400 mt-0.5">+</span>
+                        <span className="text-[#E8956A] mt-0.5">+</span>
                         {r}
                       </li>
                     ))}
@@ -397,7 +397,7 @@ export default function CompareResultsPage() {
                 riskAssessment.overallRiskChange === "increased"
                   ? "bg-red-500/10 text-red-400"
                   : riskAssessment.overallRiskChange === "decreased"
-                  ? "bg-emerald-500/10 text-emerald-400"
+                  ? "bg-[#D4764E]/10 text-[#E8956A]"
                   : "bg-blue-500/10 text-blue-400"
               }`}>
                 Risk {riskAssessment.overallRiskChange === "increased" ? "↑ Increased" : riskAssessment.overallRiskChange === "decreased" ? "↓ Decreased" : "→ Unchanged"}
@@ -420,11 +420,11 @@ export default function CompareResultsPage() {
               )}
               {riskAssessment.mitigatedRisks?.length > 0 && (
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-emerald-400">Mitigated Risks</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-[#E8956A]">Mitigated Risks</p>
                   <ul className="space-y-1.5">
                     {riskAssessment.mitigatedRisks.map((r, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 mt-1.5" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#D4764E] flex-shrink-0 mt-1.5" />
                         {r}
                       </li>
                     ))}
@@ -449,7 +449,7 @@ export default function CompareResultsPage() {
               onClick={() => setFilter(f.key)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                 filter === f.key
-                  ? "bg-emerald-500 text-white"
+                  ? "bg-[#D4764E] text-white"
                   : ""
               }`}
               style={filter !== f.key ? { background: "var(--bg-subtle)", color: "var(--text-secondary)", border: "1px solid var(--border-secondary)" } : {}}

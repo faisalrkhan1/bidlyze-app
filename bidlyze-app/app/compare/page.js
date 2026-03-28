@@ -39,9 +39,9 @@ function UploadZone({ label, sublabel, file, onFile, dragActive, onDrag, onDrop,
         onClick={() => inputRef.current?.click()}
         className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all duration-300 ${
           dragActive
-            ? "border-emerald-500 bg-emerald-500/5"
+            ? "border-[#D4764E] bg-[#D4764E]/5"
             : file
-            ? "border-emerald-500/50 bg-emerald-500/5"
+            ? "border-[#D4764E]/50 bg-[#D4764E]/5"
             : ""
         }`}
         style={!dragActive && !file ? { borderColor: "var(--border-secondary)", background: "var(--bg-subtle)" } : {}}
@@ -56,8 +56,8 @@ function UploadZone({ label, sublabel, file, onFile, dragActive, onDrag, onDrop,
 
         {file ? (
           <div>
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
-              <svg className="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div className="w-12 h-12 rounded-xl bg-[#D4764E]/10 flex items-center justify-center mx-auto mb-3">
+              <svg className="w-6 h-6 text-[#D4764E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
             </div>
@@ -170,7 +170,7 @@ export default function ComparePage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+        <div className="animate-spin h-8 w-8 border-2 border-[#D4764E] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -181,7 +181,7 @@ export default function ComparePage() {
       <header className="transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/dashboard")}>
-            <span className="text-xl font-bold tracking-tight"><span className="text-emerald-500">Bid</span>lyze</span>
+            <span className="text-xl font-bold tracking-tight"><span className="text-[#D4764E]">Bid</span>lyze</span>
           </div>
           <UserMenu user={user} onLogout={logout} />
         </div>
@@ -204,13 +204,13 @@ export default function ComparePage() {
 
         {/* Title */}
         <div className="text-center mb-10">
-          <div className="w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 rounded-xl bg-[#D4764E]/10 text-[#D4764E] flex items-center justify-center mx-auto mb-4">
             <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
             </svg>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
-            Amendment <span className="text-emerald-500">Intelligence</span>
+            Amendment <span className="text-[#D4764E]">Intelligence</span>
           </h1>
           <p className="text-base max-w-xl mx-auto" style={{ color: "var(--text-secondary)" }}>
             Upload the original and amended tender documents to detect all changes, assess impact, and get AI-powered recommendations.
@@ -234,7 +234,7 @@ export default function ComparePage() {
             {/* Arrow divider */}
             <div className="flex items-center justify-center sm:pt-10">
               <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}>
-                <svg className="w-5 h-5 text-emerald-500 rotate-90 sm:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-5 h-5 text-[#D4764E] rotate-90 sm:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                 </svg>
               </div>
@@ -261,7 +261,7 @@ export default function ComparePage() {
           <button
             onClick={handleCompare}
             disabled={!originalFile || !amendedFile || loading}
-            className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-emerald-500 hover:bg-emerald-400 text-white"
+            className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-[#D4764E] hover:bg-[#E8956A] text-white"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-3">

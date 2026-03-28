@@ -21,7 +21,7 @@ function ScoreBadge({ score }) {
   const num = Number(score);
   let color = "text-red-400";
   let bg = "bg-red-500/10";
-  if (num >= 70) { color = "text-emerald-400"; bg = "bg-emerald-500/10"; }
+  if (num >= 70) { color = "text-[#E8956A]"; bg = "bg-[#D4764E]/10"; }
   else if (num >= 40) { color = "text-yellow-400"; bg = "bg-yellow-500/10"; }
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold ${color} ${bg}`}>
@@ -37,7 +37,7 @@ function StatCard({ label, value, icon }) {
       style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}
     >
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+        <div className="w-9 h-9 rounded-lg bg-[#D4764E]/10 text-[#D4764E] flex items-center justify-center">
           {icon}
         </div>
         <span className="text-xs font-medium uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
@@ -166,7 +166,7 @@ export default function DashboardPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-        <div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+        <div className="animate-spin h-8 w-8 border-2 border-[#D4764E] border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -180,7 +180,7 @@ export default function DashboardPage() {
       <header className="transition-colors duration-300" style={{ borderBottom: "1px solid var(--border-primary)" }}>
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/dashboard")}>
-            <span className="text-xl font-bold tracking-tight"><span className="text-emerald-500">Bid</span>lyze</span>
+            <span className="text-xl font-bold tracking-tight"><span className="text-[#D4764E]">Bid</span>lyze</span>
           </div>
           <UserMenu user={user} onLogout={logout} />
         </div>
@@ -190,7 +190,7 @@ export default function DashboardPage() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-6">
-            Welcome back, <span className="text-emerald-500">{user?.email}</span>
+            Welcome back, <span className="text-[#D4764E]">{user?.email}</span>
           </h1>
 
           {/* Plan + Usage Bar */}
@@ -221,7 +221,7 @@ export default function DashboardPage() {
                 {plan === "free" ? (
                   <button
                     onClick={() => router.push("/pricing")}
-                    className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+                    className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-[#D4764E] hover:bg-[#E8956A] text-white transition-colors"
                   >
                     Upgrade
                   </button>
@@ -311,7 +311,7 @@ export default function DashboardPage() {
             className="p-6 rounded-2xl transition-colors duration-300"
             style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}
           >
-            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-4">
+            <div className="w-10 h-10 rounded-lg bg-[#D4764E]/10 text-[#D4764E] flex items-center justify-center mb-4">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
@@ -322,7 +322,7 @@ export default function DashboardPage() {
             </p>
             <button
               onClick={() => router.push("/upload")}
-              className="w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200 bg-emerald-500 hover:bg-emerald-400 text-white"
+              className="w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200 bg-[#D4764E] hover:bg-[#E8956A] text-white"
             >
               Start Analysis
             </button>
@@ -333,7 +333,7 @@ export default function DashboardPage() {
             className="p-6 rounded-2xl transition-colors duration-300"
             style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}
           >
-            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-4">
+            <div className="w-10 h-10 rounded-lg bg-[#D4764E]/10 text-[#D4764E] flex items-center justify-center mb-4">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
               </svg>
@@ -364,7 +364,7 @@ export default function DashboardPage() {
           >
             {analyses === null ? (
               <div className="p-8 text-center">
-                <div className="animate-spin h-6 w-6 border-2 border-emerald-500 border-t-transparent rounded-full mx-auto" />
+                <div className="animate-spin h-6 w-6 border-2 border-[#D4764E] border-t-transparent rounded-full mx-auto" />
               </div>
             ) : analyses.length === 0 ? (
               <div className="p-12 text-center">

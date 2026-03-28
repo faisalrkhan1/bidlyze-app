@@ -134,7 +134,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#D4764E]/50 focus:ring-1 focus:ring-[#D4764E]/25 transition-colors duration-300"
                 style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="you@example.com"
               />
@@ -146,7 +146,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#D4764E]/50 focus:ring-1 focus:ring-[#D4764E]/25 transition-colors duration-300"
                 style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="Enter your password"
               />
@@ -154,7 +154,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-emerald-500 hover:bg-emerald-400 text-white"
+              className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-[#D4764E] hover:bg-[#E8956A] text-white"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-3">
@@ -181,7 +181,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#D4764E]/50 focus:ring-1 focus:ring-[#D4764E]/25 transition-colors duration-300"
                 style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="you@example.com"
               />
@@ -193,7 +193,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#D4764E]/50 focus:ring-1 focus:ring-[#D4764E]/25 transition-colors duration-300"
                 style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="At least 6 characters"
               />
@@ -205,7 +205,7 @@ export default function LoginPage() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/25 transition-colors duration-300"
+                className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-[#D4764E]/50 focus:ring-1 focus:ring-[#D4764E]/25 transition-colors duration-300"
                 style={{ background: "var(--bg-input)", border: "1px solid var(--border-secondary)", color: "var(--text-primary)" }}
                 placeholder="Confirm your password"
               />
@@ -213,7 +213,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-emerald-500 hover:bg-emerald-400 text-white"
+              className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed bg-[#D4764E] hover:bg-[#E8956A] text-white"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-3">
@@ -239,7 +239,7 @@ export default function LoginPage() {
 
         {/* Success Message */}
         {message && (
-          <div className="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
+          <div className="mt-4 p-4 rounded-xl bg-[#D4764E]/10 border border-[#D4764E]/20 text-[#E8956A] text-sm">
             {message}
           </div>
         )}
