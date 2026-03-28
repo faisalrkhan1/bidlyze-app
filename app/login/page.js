@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getSupabase } from "@/lib/supabase";
 import { useTheme } from "@/lib/theme";
 
@@ -36,6 +36,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   async function handleSignIn(e) {
     e.preventDefault();
@@ -50,7 +51,8 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard");
+    const nextPath = searchParams.get("next");
+    router.push(nextPath || "/dashboard");
   }
 
   async function handleSignUp(e) {
