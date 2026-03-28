@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { getStripe, getPlanByPriceId, PRICE_IDS, PLAN_LIMITS } from "@/lib/stripe";
+import { getStripe, getPlanByPriceId } from "@/lib/stripe";
+import { PRICE_IDS, PLAN_LIMITS } from "@/lib/billing-config";
 
 export const maxDuration = 300;
 

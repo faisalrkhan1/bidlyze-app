@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { analyzeTender } from "@/lib/openrouter";
+import { PLAN_LIMITS } from "@/lib/billing-config";
 import {
   sendEmail,
   buildAnalysisSummaryEmail,
@@ -51,7 +52,7 @@ export async function POST(request) {
     const planName = subscription?.plan || "free";
     const isActive = subscription?.status === "active";
     // null analyses_limit means unlimited (enterprise plan)
-    const analysesLimit = isActive ? subscription?.analyses_limit : 3;
+    const analysesLimit = isActive ? subscription?.analyses_limit : PLAN_LIMITS.free;
     const isUnlimited = isActive && analysesLimit === null;
 
     // Check usage limit (skip for unlimited/enterprise plans)
@@ -63,8 +64,8 @@ export async function POST(request) {
       .eq("user_id", user.id)
       .gte("created_at", startOfMonth);
 
-    if (!isUnlimited && count >= (analysesLimit ?? 3)) {
-      const limit = analysesLimit ?? 3;
+    if (!isUnlimited && count >= (analysesLimit ?? PLAN_LIMITS.free)) {
+      const limit = analysesLimit ?? PLAN_LIMITS.free;
       const msg = planName === "free"
         ? "You've reached your free limit of 3 analyses this month. Upgrade to continue."
         : `You've reached your ${planName} plan limit of ${limit} analyses this month. Upgrade for more.`;
@@ -195,7 +196,7 @@ export async function POST(request) {
       .catch((err) => console.error("Failed to send analysis email:", err));
 
     // Usage warning email (when 1 remaining, skip for unlimited plans)
-    const effectiveLimit = analysesLimit ?? 3;
+    const effectiveLimit = analysesLimit ?? PLAN_LIMITS.free;
     if (!isUnlimited && newUsageCount === effectiveLimit - 1) {
       const warningEmail = buildUsageWarningEmail({ usageCount: newUsageCount, limit: effectiveLimit });
       sendEmail({ to: user.email, subject: warningEmail.subject, html: warningEmail.html })

@@ -5,15 +5,13 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
 import { getSupabase } from "@/lib/supabase";
 import UserMenu from "@/app/components/UserMenu";
+import { PLAN_LIMITS, PLANS } from "@/lib/billing-config";
 
-const DEFAULT_LIMIT = 3;
+const DEFAULT_LIMIT = PLAN_LIMITS.free;
 
-const PLAN_LABELS = {
-  free: "Free",
-  starter: "Starter",
-  professional: "Professional",
-  enterprise: "Enterprise",
-};
+const PLAN_LABELS = Object.fromEntries(
+  Object.entries(PLANS).map(([key, plan]) => [key, plan.name])
+);
 
 
 function ScoreBadge({ score }) {

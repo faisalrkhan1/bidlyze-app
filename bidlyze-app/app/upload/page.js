@@ -5,16 +5,14 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
 import { getSupabase } from "@/lib/supabase";
 import UserMenu from "@/app/components/UserMenu";
+import { DOC_LIMITS, PLAN_LIMITS } from "@/lib/billing-config";
 
 const ACCEPTED_TYPES = [
   "application/pdf",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "text/plain",
 ];
-const DEFAULT_LIMIT = 3;
-
-// Max files per upload session by plan (mirrors DOC_LIMITS in lib/stripe.js)
-const DOC_LIMITS = { free: 1, starter: 5, professional: 20, enterprise: 20 };
+const DEFAULT_LIMIT = PLAN_LIMITS.free;
 
 const features = [
   {
@@ -110,7 +108,7 @@ export default function HomePage() {
   const isUnlimited = analysesLimit === null;
   const limitReached = !isUnlimited && usageCount !== null && usageCount >= (analysesLimit ?? DEFAULT_LIMIT);
   const remainingQuota = isUnlimited ? Infinity : Math.max(0, (analysesLimit ?? DEFAULT_LIMIT) - (usageCount ?? 0));
-  const maxDocs = DOC_LIMITS[plan] || 1;
+  const maxDocs = DOC_LIMITS[plan] ?? 20;
   const effectiveMax = remainingQuota === Infinity ? maxDocs : Math.min(maxDocs, remainingQuota);
 
   const pendingFiles = files.filter((f) => f.status === "pending");

@@ -11,6 +11,7 @@ const ACCEPTED_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "text/plain",
 ];
+const COMPARISON_STORAGE_KEY = "bidlyze-comparison";
 
 function validateFile(f) {
   if (!f) return "Please select a file.";
@@ -159,7 +160,12 @@ export default function ComparePage() {
         return;
       }
 
-      sessionStorage.setItem("bidlyze-comparison", JSON.stringify(data));
+      const serialized = JSON.stringify({
+        ...data,
+        savedAt: new Date().toISOString(),
+      });
+      sessionStorage.setItem(COMPARISON_STORAGE_KEY, serialized);
+      localStorage.setItem(COMPARISON_STORAGE_KEY, serialized);
       router.push("/compare/results");
     } catch (err) {
       setError("Network error. Please check your connection and try again.");

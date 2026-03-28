@@ -5,82 +5,9 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
 import { getSupabase } from "@/lib/supabase";
 import UserMenu from "@/app/components/UserMenu";
+import { PLANS as BILLING_PLANS } from "@/lib/billing-config";
 
-const PLANS = [
-  {
-    key: "free",
-    name: "Free",
-    price: 0,
-    period: "forever",
-    analysesLimit: 3,
-    cta: "Start Free",
-    features: [
-      "3 tender analyses per month",
-      "Single document upload",
-      "AI summary & bid score",
-      "Basic compliance checklist",
-      "PDF report export",
-      "No signup required",
-    ],
-  },
-  {
-    key: "starter",
-    name: "Starter",
-    price: 29,
-    period: "/month",
-    priceId: "price_1TDLd7JbZq5ga8LYLedS8Xsb",
-    analysesLimit: 10,
-    cta: "Get Started",
-    features: [
-      "10 analyses per month",
-      "5 documents per analysis",
-      "Full risk & compliance analysis",
-      "PDF + Excel export",
-      "Full analysis history",
-      "Email support",
-    ],
-  },
-  {
-    key: "professional",
-    name: "Professional",
-    price: 99,
-    period: "/month",
-    priceId: "price_1TDLdkJbZq5ga8LY1wnyYxAC",
-    analysesLimit: 50,
-    popular: true,
-    cta: "Start Free Trial",
-    features: [
-      "50 analyses per month",
-      "20 documents per analysis",
-      "Everything in Starter",
-      { text: "Multi-document intelligence", comingSoon: true },
-      { text: "Scope decomposition", comingSoon: true },
-      { text: "Proposal structure generator", comingSoon: true },
-      { text: "Word template export", comingSoon: true },
-      { text: "Up to 10 users", comingSoon: true },
-      "Priority support",
-    ],
-  },
-  {
-    key: "enterprise",
-    name: "Enterprise",
-    price: 299,
-    period: "/month",
-    priceId: "price_1TDLeWJbZq5ga8LYsAOgqoQ1",
-    analysesLimit: null,
-    cta: "Contact Sales",
-    ctaHref: "mailto:hello@bidlyze.com",
-    features: [
-      "Unlimited analyses",
-      "Unlimited documents",
-      "Everything in Professional",
-      { text: "API access", comingSoon: true },
-      { text: "Unlimited users", comingSoon: true },
-      "Dedicated account manager",
-      { text: "Custom integrations", comingSoon: true },
-    ],
-  },
-];
+const PLANS = Object.entries(BILLING_PLANS).map(([key, plan]) => ({ key, ...plan }));
 
 export default function PricingPage() {
   const { user, loading: authLoading, logout } = useAuth();

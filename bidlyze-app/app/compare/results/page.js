@@ -21,6 +21,32 @@ const CATEGORY_LABELS = {
   evaluation: "Evaluation",
   administrative: "Administrative",
 };
+const COMPARISON_STORAGE_KEY = "bidlyze-comparison";
+
+function readStoredComparison() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const candidates = [
+    window.sessionStorage.getItem(COMPARISON_STORAGE_KEY),
+    window.localStorage.getItem(COMPARISON_STORAGE_KEY),
+  ];
+
+  for (const stored of candidates) {
+    if (!stored) continue;
+    try {
+      const parsed = JSON.parse(stored);
+      if (parsed?.comparison) {
+        return parsed;
+      }
+    } catch {
+      // Ignore invalid stored payloads and keep checking fallbacks.
+    }
+  }
+
+  return null;
+}
 
 function SeverityBadge({ severity }) {
   const colors = SEVERITY_COLORS[severity] || SEVERITY_COLORS.minor;
@@ -122,19 +148,21 @@ function ChangeCard({ change, expanded, onToggle }) {
 
 export default function CompareResultsPage() {
   const { user, loading: authLoading, logout } = useAuth();
-  const [data, setData] = useState(null);
+  const [data] = useState(readStoredComparison);
   const [filter, setFilter] = useState("all");
   const [expandedCards, setExpandedCards] = useState({});
   const router = useRouter();
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("bidlyze-comparison");
-    if (stored) {
-      setData(JSON.parse(stored));
-    } else {
+    if (!data) {
       router.push("/compare");
+      return;
     }
-  }, [router]);
+
+    const serialized = JSON.stringify(data);
+    window.sessionStorage.setItem(COMPARISON_STORAGE_KEY, serialized);
+    window.localStorage.setItem(COMPARISON_STORAGE_KEY, serialized);
+  }, [data, router]);
 
   if (authLoading || !data) {
     return (

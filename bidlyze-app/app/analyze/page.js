@@ -87,26 +87,42 @@ function InfoCard({ label, value }) {
 
 export default function AnalyzePage() {
   const { user, loading: authLoading, logout } = useAuth();
-  const [result, setResult] = useState(null);
+  const [result] = useState(() => {
+    if (typeof window === "undefined") {
+      return null;
+    }
+
+    const stored = sessionStorage.getItem("bidlyze-result");
+    if (!stored) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return null;
+    }
+  });
   const router = useRouter();
 
   useEffect(() => {
     if (authLoading) return;
-    if (!user) return;
-
-    const stored = sessionStorage.getItem("bidlyze-result");
-    if (!stored) {
+    if (!user) {
       router.push("/dashboard");
       return;
     }
-    try {
-      setResult(JSON.parse(stored));
-    } catch {
+
+    if (result?.analysisId) {
+      router.replace(`/analysis/${result.analysisId}`);
+      return;
+    }
+
+    if (!result) {
       router.push("/dashboard");
     }
-  }, [router, user, authLoading]);
+  }, [authLoading, result, router, user]);
 
-  if (authLoading || !result) {
+  if (authLoading || !result || result.analysisId) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
         <div className="animate-spin h-8 w-8 border-2 border-[#D4764E] border-t-transparent rounded-full" />
