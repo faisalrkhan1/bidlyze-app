@@ -29,9 +29,7 @@ export async function proxy(request) {
     return NextResponse.next();
   }
 
-  let response = NextResponse.next({
-    request,
-  });
+  let response = NextResponse.next({ request });
 
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
@@ -41,9 +39,7 @@ export async function proxy(request) {
       setAll(cookiesToSet) {
         cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
 
-        response = NextResponse.next({
-          request,
-        });
+        response = NextResponse.next({ request });
 
         cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
       },
@@ -65,5 +61,13 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/upload/:path*", "/analyze/:path*", "/analysis/:path*", "/compare/:path*", "/pricing/:path*", "/proposal/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/upload/:path*",
+    "/analyze/:path*",
+    "/analysis/:path*",
+    "/compare/:path*",
+    "/pricing/:path*",
+    "/proposal/:path*",
+  ],
 };
