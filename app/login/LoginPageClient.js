@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getSupabase } from "@/lib/supabase";
 import { useTheme } from "@/lib/theme";
 import { getLoginRedirectTarget } from "@/lib/auth-redirect";
+import { LogoMark } from "@/app/components/Logo";
 
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -211,9 +212,7 @@ export default function LoginPageClient() {
         <div className="relative">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-12">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-lg text-white">
-              B
-            </div>
+            <LogoMark size={38} />
             <span className="text-xl font-semibold tracking-tight">Bidlyze</span>
           </div>
 
@@ -255,9 +254,7 @@ export default function LoginPageClient() {
         <div className="w-full max-w-[400px]">
           {/* Mobile logo */}
           <div className="flex flex-col items-center mb-10 lg:hidden">
-            <div className="w-14 h-14 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-2xl text-white mb-4">
-              B
-            </div>
+            <div className="mb-4"><LogoMark size={52} /></div>
             <span className="text-2xl font-semibold tracking-tight">Bidlyze</span>
             <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>AI-Powered Tender Analysis</p>
           </div>

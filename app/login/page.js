@@ -1,6 +1,11 @@
 import { Suspense } from "react";
 import LoginPageClient from "./LoginPageClient";
 
+export const metadata = {
+  title: "Sign In",
+  description: "Sign in to Bidlyze to analyze tenders, track compliance, and generate bid proposals with AI.",
+};
+
 function LoginPageFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>

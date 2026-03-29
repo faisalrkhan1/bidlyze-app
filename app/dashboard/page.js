@@ -79,6 +79,20 @@ export default function DashboardPage() {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
+    // Send welcome email on first visit (localStorage flag prevents duplicate sends)
+    const welcomeKey = `bidlyze-welcome-${user.id}`;
+    if (!localStorage.getItem(welcomeKey)) {
+      localStorage.setItem(welcomeKey, "1");
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.access_token) {
+          fetch("/api/welcome", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${session.access_token}` },
+          }).catch(() => {});
+        }
+      });
+    }
+
     // Get subscription plan
     supabase
       .from("subscriptions")

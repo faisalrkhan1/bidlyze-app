@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
+import { LogoMark } from "./Logo";
 
 const NAV_ITEMS = [
   {
@@ -57,9 +58,7 @@ export default function AppShell({ user, onLogout, children, breadcrumbs }) {
       >
         {/* Logo */}
         <div className="h-16 flex items-center gap-2.5 px-5" style={{ borderBottom: "1px solid var(--border-primary)" }}>
-          <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-sm text-white flex-shrink-0">
-            B
-          </div>
+          <LogoMark size={30} />
           <span className="text-base font-semibold tracking-tight">Bidlyze</span>
           <span className="ml-auto text-[10px] font-medium px-1.5 py-0.5 rounded-md" style={{ background: "var(--accent-muted)", color: "var(--accent-text)" }}>
             BETA

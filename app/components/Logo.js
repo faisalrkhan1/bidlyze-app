@@ -1,0 +1,35 @@
+"use client";
+
+export function LogoMark({ size = 32, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <rect width="32" height="32" rx="8" fill="#10b981" />
+      {/* Stylized "B" with analysis bars */}
+      <path
+        d="M10 8h6.5c2.5 0 4 1.2 4 3.2 0 1.5-.9 2.5-2.2 2.9v.1c1.7.3 2.8 1.5 2.8 3.2 0 2.3-1.7 3.6-4.4 3.6H10V8zm3.2 5.2h2.8c1.1 0 1.7-.5 1.7-1.4 0-.9-.6-1.3-1.7-1.3h-2.8v2.7zm0 5.6h3.1c1.2 0 1.9-.6 1.9-1.5s-.7-1.4-1.9-1.4h-3.1v2.9z"
+        fill="white"
+      />
+      {/* Small accent bar - suggests data/analysis */}
+      <rect x="22" y="21" width="2" height="3" rx="0.5" fill="white" opacity="0.6" />
+      <rect x="22" y="17" width="2" height="3" rx="0.5" fill="white" opacity="0.4" />
+    </svg>
+  );
+}
+
+export function LogoFull({ size = 32, className = "" }) {
+  return (
+    <div className={`flex items-center gap-2.5 ${className}`}>
+      <LogoMark size={size} />
+      <span className="font-semibold tracking-tight" style={{ fontSize: size * 0.5 }}>
+        Bidlyze
+      </span>
+    </div>
+  );
+}

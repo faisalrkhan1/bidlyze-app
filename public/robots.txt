@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /upload
+Disallow: /analyze
+Disallow: /analysis/
+Disallow: /compare
+Disallow: /proposal/
+Disallow: /pricing
+
+Sitemap: https://app.bidlyze.com/sitemap.xml

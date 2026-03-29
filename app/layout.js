@@ -8,9 +8,48 @@ const outfit = Outfit({
 });
 
 export const metadata = {
-  title: "Bidlyze — AI-Powered Tender Analysis",
+  title: {
+    default: "Bidlyze — AI-Powered Tender Analysis & Bid Intelligence",
+    template: "%s | Bidlyze",
+  },
   description:
-    "Upload tender documents and get instant AI-powered analysis, compliance checks, risk flags, and bid recommendations.",
+    "Analyze tender documents in 60 seconds with AI. Get compliance checks, risk assessment, bid scoring, win probability, and proposal generation.",
+  keywords: [
+    "tender analysis",
+    "bid management",
+    "procurement intelligence",
+    "tender compliance",
+    "bid scoring",
+    "proposal automation",
+    "tender risk assessment",
+    "bid intelligence",
+    "go no-go decision",
+    "tender management software",
+    "procurement software",
+    "bid qualification",
+  ],
+  authors: [{ name: "Bidlyze" }],
+  creator: "Bidlyze",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://app.bidlyze.com"),
+  openGraph: {
+    title: "Bidlyze — AI-Powered Tender Analysis & Bid Intelligence",
+    description: "From tender document to bid decision in 60 seconds. AI-powered compliance checks, risk radar, bid scoring, and proposal generation.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Bidlyze",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bidlyze — AI-Powered Tender Analysis",
+    description: "From tender document to bid decision in 60 seconds.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {

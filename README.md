@@ -53,4 +53,4 @@ RESEND_API_KEY=
 
 ## Deployment
 
-Deploy on [Vercel](https://vercel.com) with the environment variables configured in your project settings.
+Deploy on any Node.js hosting platform (Vercel, Railway, AWS, etc.) with the environment variables configured in your project settings.
