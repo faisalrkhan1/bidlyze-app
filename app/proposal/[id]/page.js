@@ -183,7 +183,7 @@ export default function ProposalPage({ params }) {
 
   async function handleSave() {
     try {
-      const { data: { session } } = await getSupabase().auth.getSession();
+      await getSupabase().auth.getSession();
       const proposals = {};
       for (const [key, content] of Object.entries(sections)) {
         proposals[key] = { content, generatedAt: new Date().toISOString() };

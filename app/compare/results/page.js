@@ -143,7 +143,7 @@ function ChangeCard({ change, expanded, onToggle }) {
 }
 
 export default function CompareResultsPage() {
-  const { user, loading: authLoading, logout } = useAuth();
+  const { loading: authLoading, logout } = useAuth();
   const [data] = useState(() => {
     if (typeof window === "undefined") return null;
     const stored = sessionStorage.getItem("bidlyze-comparison");

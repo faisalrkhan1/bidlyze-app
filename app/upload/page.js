@@ -182,7 +182,7 @@ export default function HomePage() {
 
       sessionStorage.setItem("bidlyze-result", JSON.stringify(data));
       router.push("/analyze");
-    } catch (err) {
+    } catch {
       setError("Network error. Please check your connection and try again.");
       setLoading(false);
     }

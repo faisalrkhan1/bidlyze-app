@@ -10,7 +10,6 @@ const RED = [239, 68, 68];
 const TEAL = [13, 148, 136];
 const DARK = [30, 30, 30];
 const SECONDARY = [120, 130, 145];
-const LIGHT_BG = [248, 250, 252];
 const CARD_BORDER = [226, 232, 240];
 const CARD_BG = [255, 255, 255];
 const M = 15; // page margin
@@ -192,7 +191,7 @@ export function exportPDF(analysis, fileName) {
 
   const {
     summary, requirements, complianceAnalysis, riskRadar, keyDates,
-    evaluationCriteria, financialRequirements, bidScore, winProbability,
+    evaluationCriteria, bidScore, winProbability,
     competitorIntelligence, pricingAdvisor,
   } = analysis || {};
 

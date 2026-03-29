@@ -185,7 +185,7 @@ export default function ComparePage() {
 
       sessionStorage.setItem("bidlyze-comparison", JSON.stringify(data));
       router.push("/compare/results");
-    } catch (err) {
+    } catch {
       setError("Network error. Please check your connection and try again.");
       setLoading(false);
     }
