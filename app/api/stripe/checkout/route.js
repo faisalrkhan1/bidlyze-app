@@ -52,7 +52,7 @@ export async function POST(request) {
     }
 
     const stripe = getStripe();
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://app.bidlyze.com";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bidlyze.com";
 
     // Check if user already has a Stripe customer ID
     const { data: existingSub } = await supabase

@@ -30,7 +30,7 @@ export const metadata = {
   ],
   authors: [{ name: "Bidlyze" }],
   creator: "Bidlyze",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://app.bidlyze.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://bidlyze.com"),
   openGraph: {
     title: "Bidlyze — AI-Powered Tender Analysis & Bid Intelligence",
     description: "From tender document to bid decision in 60 seconds. AI-powered compliance checks, risk radar, bid scoring, and proposal generation.",

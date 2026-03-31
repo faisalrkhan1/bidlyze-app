@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://app.bidlyze.com";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bidlyze.com";
 
   return [
     {
