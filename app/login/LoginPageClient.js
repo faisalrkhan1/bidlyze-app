@@ -221,20 +221,33 @@ export default function LoginPageClient() {
 
         {/* Social proof */}
         <div className="relative mt-8 pt-6" style={{ borderTop: "1px solid var(--border-primary)" }}>
-          <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-            Trusted by procurement teams, consultants, and contractors worldwide
-          </p>
+          <div className="flex items-center gap-4 flex-wrap">
+            {["No credit card required", "3 free analyses per month", "Data encrypted at rest"].map((t) => (
+              <span key={t} className="flex items-center gap-1.5 text-xs" style={{ color: "var(--text-muted)" }}>
+                <svg className="w-3 h-3 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Right Panel - Auth Form */}
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-[400px]">
-          {/* Mobile logo */}
+          {/* Mobile logo + trust */}
           <div className="flex flex-col items-center mb-10 lg:hidden">
             <div className="mb-4"><LogoMark size={52} /></div>
             <span className="text-2xl font-semibold tracking-tight">Bidlyze</span>
-            <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>AI-Powered Tender Analysis</p>
+            <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>AI-Powered Tender Analysis Platform</p>
+            <div className="flex items-center gap-4 mt-4 flex-wrap justify-center">
+              {["No credit card required", "3 free analyses", "Results in 60s"].map((t) => (
+                <span key={t} className="flex items-center gap-1.5 text-xs" style={{ color: "var(--text-muted)" }}>
+                  <svg className="w-3 h-3 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                  {t}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Desktop heading */}
@@ -247,7 +260,7 @@ export default function LoginPageClient() {
                 ? "Enter your email and we'll send you a reset link"
                 : tab === "signin"
                 ? "Sign in to continue to Bidlyze"
-                : "Start analyzing tenders in minutes"}
+                : "3 free analyses per month. No credit card required."}
             </p>
           </div>
 

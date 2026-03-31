@@ -25,7 +25,7 @@ const NAV_ITEMS = [
     ),
   },
   {
-    label: "Compare",
+    label: "Compare Docs",
     href: "/compare",
     icon: (
       <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -99,6 +99,18 @@ export default function AppShell({ user, onLogout, children, breadcrumbs }) {
             </div>
             <div className="flex items-center gap-2">
               <ThemeToggle size="small" />
+              <a
+                href="mailto:support@bidlyze.com"
+                className="py-1.5 px-2 rounded-lg text-xs font-medium transition-colors duration-200 flex items-center justify-center"
+                style={{ border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "var(--bg-input)"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                title="Contact support"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                </svg>
+              </a>
               <button
                 onClick={onLogout}
                 className="flex-1 py-1.5 rounded-lg text-xs font-medium transition-colors duration-200"

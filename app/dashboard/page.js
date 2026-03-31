@@ -266,7 +266,7 @@ export default function DashboardPage() {
             }
           />
           <StatCard
-            label="Average Bid Score"
+            label="Avg. Bid Score (0–100)"
             value={avgScore !== null ? avgScore : "--"}
             accentColor="violet"
             icon={
@@ -418,7 +418,7 @@ export default function DashboardPage() {
                 </div>
                 <p className="font-semibold mb-1">No analyses yet</p>
                 <p className="text-sm mb-5" style={{ color: "var(--text-muted)" }}>
-                  Upload your first tender document to get started with AI-powered bid analysis.
+                  Upload a tender document (PDF, DOCX, or TXT) and get a full bid analysis — compliance gaps, risk assessment, bid score, and a BID/NO-BID recommendation — in under 60 seconds.
                 </p>
                 <button
                   onClick={() => router.push("/upload")}
