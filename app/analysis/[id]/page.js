@@ -6,6 +6,9 @@ import { useAuth } from "@/lib/useAuth";
 import { getSupabase } from "@/lib/supabase";
 import { exportPDF } from "@/app/utils/exportPDF";
 import AppShell from "@/app/components/AppShell";
+import { ConfidenceBadge, AIDisclaimer, getSectionConfidence } from "@/app/components/AIConfidence";
+import AnalysisNotes from "@/app/components/AnalysisNotes";
+import RequirementsTable from "@/app/components/RequirementsTable";
 
 function ScoreBadge({ score }) {
   const color =
@@ -269,15 +272,32 @@ export default function AnalysisDetailPage({ params }) {
           </div>
         )}
 
+        {/* AI Disclaimer */}
+        <AIDisclaimer variant="standard" />
+
         {/* AI Recommendation */}
         {bidScore?.reasoning && (
           <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
-            <p className="text-emerald-400 text-xs uppercase tracking-wider mb-2 font-semibold">
-              AI Recommendation
-            </p>
+            <div className="flex items-center gap-2.5 mb-2">
+              <p className="text-emerald-400 text-xs uppercase tracking-wider font-semibold">
+                AI Recommendation
+              </p>
+              <ConfidenceBadge level={getSectionConfidence("bidScore")} />
+            </div>
             <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{bidScore.reasoning}</p>
           </div>
         )}
+
+        {/* Internal Notes */}
+        <AnalysisNotes analysisId={record.id} userId={user.id} />
+
+        {/* Requirements Tracker */}
+        <RequirementsTable
+          analysisId={record.id}
+          userId={user.id}
+          requirements={requirements}
+          complianceItems={complianceAnalysis?.items}
+        />
 
         {/* Win Probability */}
         {winProbability && (
@@ -304,6 +324,7 @@ export default function AnalysisDetailPage({ params }) {
                   </div>
                 </div>
                 <p className="text-sm font-semibold mb-1">Win Probability</p>
+                <ConfidenceBadge level={getSectionConfidence("winProbability")} className="mt-1" />
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-bold border ${
                     winProbability.competitivePosition === "strong"
@@ -414,7 +435,7 @@ export default function AnalysisDetailPage({ params }) {
 
         {/* Competitor Intelligence */}
         {competitorIntelligence && (
-          <Section title="Competitor Intelligence" defaultOpen>
+          <Section title={<span className="flex items-center gap-2.5">Competitor Intelligence <ConfidenceBadge level={getSectionConfidence("competitorIntelligence")} /></span>} defaultOpen>
             <div className="space-y-6">
               {/* Market Dynamics */}
               {competitorIntelligence.marketDynamics && (
@@ -427,7 +448,7 @@ export default function AnalysisDetailPage({ params }) {
               {/* Competitor Cards */}
               {competitorIntelligence.estimatedCompetitors?.length > 0 && (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>Estimated Competitors</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>Estimated Competitors <span className="normal-case font-normal">(AI-inferred — verify independently)</span></p>
                   {competitorIntelligence.estimatedCompetitors.map((c, i) => (
                     <div
                       key={i}
@@ -544,7 +565,7 @@ export default function AnalysisDetailPage({ params }) {
 
         {/* Pricing Advisor */}
         {pricingAdvisor && (
-          <Section title="Pricing Advisor" defaultOpen>
+          <Section title={<span className="flex items-center gap-2.5">Pricing Advisor <ConfidenceBadge level={getSectionConfidence("pricingAdvisor")} /></span>} defaultOpen>
             <div className="space-y-6">
               {pricingAdvisor.canEstimate ? (
                 <>
@@ -682,33 +703,9 @@ export default function AnalysisDetailPage({ params }) {
 
         {/* Collapsible Sections */}
         <div className="space-y-3">
-          {/* Requirements */}
-          {requirements?.length > 0 && (
-            <Section title={`Requirements (${requirements.length})`} defaultOpen>
-              <div className="space-y-3">
-                {requirements.map((r, i) => (
-                  <div key={i} className="p-4 rounded-xl transition-colors duration-300" style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}>
-                    <div className="flex items-start justify-between gap-3 mb-1">
-                      <span className="text-xs font-medium uppercase" style={{ color: "var(--text-muted)" }}>{r.category}</span>
-                      <div className="flex items-center gap-2">
-                        {r.mandatory && (
-                          <span className="px-2 py-0.5 rounded text-xs font-medium bg-red-500/10 text-red-400">
-                            Mandatory
-                          </span>
-                        )}
-                        <SeverityBadge severity={r.priority} />
-                      </div>
-                    </div>
-                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{r.requirement}</p>
-                  </div>
-                ))}
-              </div>
-            </Section>
-          )}
-
           {/* Compliance Gap Detector */}
           {complianceAnalysis && (
-            <Section title="Compliance Gap Detector" defaultOpen>
+            <Section title={<span className="flex items-center gap-2.5">Compliance Gap Detector <ConfidenceBadge level={getSectionConfidence("complianceAnalysis")} /></span>} defaultOpen>
               <div className="space-y-6">
                 {/* Score + Summary Row */}
                 <div className="flex flex-col sm:flex-row gap-6">
@@ -888,7 +885,7 @@ export default function AnalysisDetailPage({ params }) {
 
           {/* Risk Radar */}
           {riskRadar && (
-            <Section title="Risk Radar" defaultOpen>
+            <Section title={<span className="flex items-center gap-2.5">Risk Radar <ConfidenceBadge level={getSectionConfidence("riskRadar")} /></span>} defaultOpen>
               <div className="space-y-6">
                 {/* Overall Risk Gauge */}
                 <div className="flex flex-col sm:flex-row gap-6">
