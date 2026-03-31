@@ -349,7 +349,7 @@ export default function DashboardPage() {
             <h2 className="text-lg font-semibold">Recent Analyses</h2>
             {analyses && analyses.length > 0 && (
               <button
-                onClick={() => router.push("/analyses")}
+                onClick={() => router.push("/dashboard")}
                 className="text-xs font-medium transition-colors duration-200"
                 style={{ color: "var(--text-muted)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
