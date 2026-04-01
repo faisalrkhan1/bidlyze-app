@@ -166,12 +166,12 @@ export async function POST(request) {
       );
     }
 
-    // Save analysis record to Supabase (including full analysis JSON)
+    // Save analysis record to Supabase (including full analysis JSON and rfxType)
     const { data: insertedRow } = await supabase.from("analyses").insert({
       user_id: user.id,
       file_name: fileName,
       project_name: result.data?.summary?.projectName || "Unknown",
-      bid_score: result.data?.bidScore?.score ?? null,
+      bid_score: result.data?.bidScore?.score ?? result.data?.qualificationSummary?.fitScore ?? null,
       analysis_data: result.data,
     }).select("id").single();
 

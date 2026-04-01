@@ -9,6 +9,7 @@ import AppShell from "@/app/components/AppShell";
 import { ConfidenceBadge, AIDisclaimer, getSectionConfidence } from "@/app/components/AIConfidence";
 import AnalysisNotes from "@/app/components/AnalysisNotes";
 import RequirementsTable from "@/app/components/RequirementsTable";
+import { RFIResults, RFQResults, OtherResults } from "@/app/components/RFxResults";
 
 function ScoreBadge({ score }) {
   const color =
@@ -157,6 +158,8 @@ export default function AnalysisDetailPage({ params }) {
   const analysis = record.analysis_data;
   const fileName = record.file_name;
   const filePath = record.file_path;
+  const rfxType = analysis.rfxType || "rfp";
+  const isSpecializedType = rfxType !== "rfp";
   const { summary, requirements, complianceAnalysis, riskRadar, keyDates, evaluationCriteria, financialRequirements, bidScore, winProbability, competitorIntelligence, pricingAdvisor } = analysis;
 
   function exportJSON() {
@@ -196,8 +199,12 @@ export default function AnalysisDetailPage({ params }) {
             <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{fileName}</p>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
+            <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold" style={{ background: "var(--accent-muted)", color: "var(--accent-text)", border: "1px solid var(--accent-border)" }}>
+              {rfxType.toUpperCase()}
+            </span>
             {bidScore && <ScoreBadge score={bidScore.score} />}
             {bidScore && <RecommendationBadge recommendation={bidScore.recommendation} />}
+            {!bidScore && analysis.qualificationSummary && <ScoreBadge score={analysis.qualificationSummary.fitScore} />}
           </div>
         </div>
 
@@ -275,29 +282,59 @@ export default function AnalysisDetailPage({ params }) {
         {/* AI Disclaimer */}
         <AIDisclaimer variant="standard" />
 
-        {/* AI Recommendation */}
-        {bidScore?.reasoning && (
-          <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
-            <div className="flex items-center gap-2.5 mb-2">
-              <p className="text-emerald-400 text-xs uppercase tracking-wider font-semibold">
-                AI Recommendation
-              </p>
-              <ConfidenceBadge level={getSectionConfidence("bidScore")} />
-            </div>
-            <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{bidScore.reasoning}</p>
-          </div>
+        {/* Specialized RFx Results (RFI, RFQ, Other) */}
+        {isSpecializedType && (
+          <>
+            {rfxType === "rfi" && <RFIResults analysis={analysis} />}
+            {rfxType === "rfq" && <RFQResults analysis={analysis} />}
+            {rfxType === "other" && <OtherResults analysis={analysis} />}
+
+            {/* Internal Notes — shared across all types */}
+            <AnalysisNotes analysisId={record.id} userId={user.id} />
+
+            {/* Key Dates — shared across all types */}
+            {analysis.keyDates?.length > 0 && (
+              <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border-primary)" }}>
+                <div className="px-5 py-4 font-semibold" style={{ borderBottom: "1px solid var(--border-primary)" }}>Key Dates</div>
+                <div className="px-5 py-4 space-y-2">
+                  {analysis.keyDates.map((d, i) => (
+                    <div key={i} className="flex items-center justify-between py-1.5 text-sm" style={{ borderBottom: "1px solid var(--border-primary)" }}>
+                      <span style={{ color: "var(--text-secondary)" }}>{d.event}</span>
+                      <span className="font-medium">{d.date}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
 
-        {/* Internal Notes */}
-        <AnalysisNotes analysisId={record.id} userId={user.id} />
+        {/* RFP Results (existing comprehensive layout) */}
+        {!isSpecializedType && (
+          <>
+            {/* AI Recommendation */}
+            {bidScore?.reasoning && (
+              <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
+                <div className="flex items-center gap-2.5 mb-2">
+                  <p className="text-emerald-400 text-xs uppercase tracking-wider font-semibold">
+                    AI Recommendation
+                  </p>
+                  <ConfidenceBadge level={getSectionConfidence("bidScore")} />
+                </div>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{bidScore.reasoning}</p>
+              </div>
+            )}
 
-        {/* Requirements Tracker */}
-        <RequirementsTable
-          analysisId={record.id}
-          userId={user.id}
-          requirements={requirements}
-          complianceItems={complianceAnalysis?.items}
-        />
+            {/* Internal Notes */}
+            <AnalysisNotes analysisId={record.id} userId={user.id} />
+
+            {/* Requirements Tracker */}
+            <RequirementsTable
+              analysisId={record.id}
+              userId={user.id}
+              requirements={requirements}
+              complianceItems={complianceAnalysis?.items}
+            />
 
         {/* Win Probability */}
         {winProbability && (
@@ -1128,6 +1165,8 @@ export default function AnalysisDetailPage({ params }) {
             </Section>
           )}
         </div>
+          </>
+        )}
       </div>
     </AppShell>
   );
