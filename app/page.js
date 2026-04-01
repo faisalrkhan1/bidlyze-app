@@ -279,18 +279,18 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-14">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-              Straightforward pricing
+              Plans built for RFx workflows
             </h2>
             <p className="text-sm max-w-lg mx-auto" style={{ color: "var(--text-secondary)" }}>
-              Start with 3 free analyses. No credit card required. Upgrade when your team needs more capacity.
+              All plans support RFI, RFQ, RFP, and other tender documents. Scale by workflow depth, not document types.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
             {[
-              { name: "Free", price: "$0", period: "forever", features: ["3 analyses per month", "Full AI-powered analysis", "PDF report export", "Email notifications"], cta: "Get Started Free" },
-              { name: "Starter", price: "$49", period: "/ month", features: ["15 analyses per month", "Everything in Free", "Proposal Writer", "Amendment Intelligence", "Priority processing"], cta: "Start Free Trial", popular: true },
-              { name: "Professional", price: "$149", period: "/ month", features: ["50 analyses per month", "Everything in Starter", "Competitor Intelligence", "Pricing Advisor", "Priority support"], cta: "Start Free Trial" },
+              { name: "Starter", price: "$29", period: "/ month", features: ["10 analyses per month", "RFI / RFQ / RFP / Other", "Summary & requirement extraction", "Basic compliance mapping", "PDF export"], cta: "Start Free Trial" },
+              { name: "Professional", price: "$99", period: "/ month", features: ["40 analyses per month", "Full compliance matrix", "Risk & bid/no-bid scoring", "Proposal Writer", "Branded exports"], cta: "Start Free Trial", popular: true },
+              { name: "Enterprise", price: "Custom", period: "", features: ["Custom volume", "Team collaboration", "Admin controls", "Priority support", "Custom onboarding"], cta: "Contact Sales" },
             ].map((plan) => (
               <div
                 key={plan.name}
@@ -302,7 +302,7 @@ export default function LandingPage() {
               >
                 {plan.popular && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500 text-white">
-                    Most Popular
+                    Recommended
                   </span>
                 )}
                 <h3 className="font-bold mb-1">{plan.name}</h3>
@@ -334,9 +334,9 @@ export default function LandingPage() {
           </div>
 
           <p className="text-center text-xs mt-6" style={{ color: "var(--text-muted)" }}>
-            Need unlimited analyses or team accounts?{" "}
+            All plans include RFI, RFQ, RFP, and tender document support.{" "}
             <a href="mailto:sales@bidlyze.com" className="text-emerald-500 hover:text-emerald-400 transition-colors">Contact sales</a>{" "}
-            for enterprise pricing.
+            for custom enterprise pricing.
           </p>
         </div>
       </section>
