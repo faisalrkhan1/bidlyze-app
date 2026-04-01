@@ -11,6 +11,9 @@ import ComplianceMatrix from "@/app/components/ComplianceMatrix";
 import ActionTracker from "@/app/components/ActionTracker";
 import DecisionPanel from "@/app/components/DecisionPanel";
 import CommentThread from "@/app/components/CommentThread";
+import AuditTrail from "@/app/components/AuditTrail";
+import { RoleBadge } from "@/app/components/PermissionGate";
+import { getUserRole, APPROVAL_STATES } from "@/lib/permissions";
 import { exportMultiSheetExcel, formatPackageSummaryForExcel } from "@/app/utils/exportExcel";
 
 const CAT_COLORS = {
@@ -101,7 +104,10 @@ export default function WorkspaceDetailPage({ params }) {
               <h1 className="text-2xl font-bold">{pkg.tenderObjective || record.project_name}</h1>
               <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20">PACKAGE</span>
             </div>
-            <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{files.length} documents &middot; {pkg.sector || "Tender Package"}</p>
+            <div className="flex items-center gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <span>{files.length} documents &middot; {pkg.sector || "Tender Package"}</span>
+              <RoleBadge role={getUserRole(user.id, record.user_id)} />
+            </div>
           </div>
           {a.recommendation && (
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold border ${
@@ -340,6 +346,7 @@ export default function WorkspaceDetailPage({ params }) {
         <DecisionPanel
           analysisId={record.id}
           userId={user.id}
+          userEmail={user.email}
           aiRecommendation={a.recommendation}
         />
 
@@ -348,6 +355,9 @@ export default function WorkspaceDetailPage({ params }) {
 
         {/* Notes */}
         <AnalysisNotes analysisId={record.id} userId={user.id} />
+
+        {/* Audit Trail */}
+        <AuditTrail analysisId={record.id} userId={user.id} />
       </div>
     </AppShell>
   );

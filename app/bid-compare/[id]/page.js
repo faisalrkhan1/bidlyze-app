@@ -11,6 +11,9 @@ import { exportMultiSheetExcel, formatComparisonForExcel } from "@/app/utils/exp
 import ActionTracker from "@/app/components/ActionTracker";
 import DecisionPanel from "@/app/components/DecisionPanel";
 import CommentThread from "@/app/components/CommentThread";
+import AuditTrail from "@/app/components/AuditTrail";
+import { RoleBadge } from "@/app/components/PermissionGate";
+import { getUserRole } from "@/lib/permissions";
 
 const RATING_COLORS = {
   best: "bg-emerald-500/10 text-emerald-400",
@@ -79,7 +82,10 @@ export default function BidCompareResultPage({ params }) {
               <h1 className="text-2xl font-bold">{record.project_name}</h1>
               <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">COMPARISON</span>
             </div>
-            <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{subs.length} submissions &middot; {a.compareType || "comparison"}</p>
+            <div className="flex items-center gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <span>{subs.length} submissions &middot; {a.compareType || "comparison"}</span>
+              <RoleBadge role={getUserRole(user.id, record.user_id)} />
+            </div>
           </div>
           {rec.bestOverall && (
             <div className="text-right">
@@ -331,6 +337,7 @@ export default function BidCompareResultPage({ params }) {
         <DecisionPanel
           analysisId={record.id}
           userId={user.id}
+          userEmail={user.email}
           aiRecommendation={rec}
         />
 
@@ -339,6 +346,9 @@ export default function BidCompareResultPage({ params }) {
 
         {/* Notes */}
         <AnalysisNotes analysisId={record.id} userId={user.id} />
+
+        {/* Audit Trail */}
+        <AuditTrail analysisId={record.id} userId={user.id} />
       </div>
     </AppShell>
   );
