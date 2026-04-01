@@ -309,14 +309,14 @@ export default function DashboardPage() {
             <button onClick={() => router.push("/workspace/new")} className="w-full py-3 rounded-xl font-semibold text-sm transition-colors" style={{ border: "1px solid var(--accent-border)", color: "var(--accent-text)" }} onMouseEnter={(e) => (e.currentTarget.style.background = "var(--accent-muted)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>Multi-Document</button>
           </div>
 
-          {/* Compare Documents */}
+          {/* Bid Compare */}
           <div className="group p-6 rounded-2xl transition-all duration-300 hover:shadow-lg" style={{ background: "var(--bg-subtle)", border: "1px solid var(--border-primary)" }}>
             <div className="w-11 h-11 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-110">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2 3-1m-3 1-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>
             </div>
-            <h3 className="font-semibold mb-1">Compare Documents</h3>
-            <p className="text-sm mb-5" style={{ color: "var(--text-secondary)" }}>Compare RFx amendments to detect changes and impact.</p>
-            <button onClick={() => router.push("/compare")} className="w-full py-3 rounded-xl font-semibold text-sm transition-colors" style={{ border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" }} onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-input)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>Compare Versions</button>
+            <h3 className="font-semibold mb-1">Bid Comparison</h3>
+            <p className="text-sm mb-5" style={{ color: "var(--text-secondary)" }}>Compare vendor quotations, proposals, or bid options side by side.</p>
+            <button onClick={() => router.push("/bid-compare")} className="w-full py-3 rounded-xl font-semibold text-sm transition-colors" style={{ border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" }} onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-input)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>Compare Submissions</button>
           </div>
         </section>
 
