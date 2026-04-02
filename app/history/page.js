@@ -93,39 +93,21 @@ export default function HistoryPage() {
 
   useEffect(() => {
     if (!user) return;
-    async function loadHistory() {
-      const supabase = getSupabase();
-      // Try full query first; fall back to core columns if optional columns don't exist yet
-      let { data, error } = await supabase
-        .from("analyses")
-        .select("id, project_name, file_name, bid_score, created_at, analysis_data, workflow_decision, tender_status")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(200);
-
-      if (error && error.code === "42703") {
-        // Column doesn't exist — retry with core columns only
-        const result = await supabase
-          .from("analyses")
-          .select("id, project_name, file_name, bid_score, created_at, analysis_data")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false })
-          .limit(200);
-        data = result.data;
-      }
-
-      setRecords(data || []);
-      setLoading(false);
-    }
-    loadHistory();
+    getSupabase()
+      .from("analyses")
+      .select("id, project_name, file_name, bid_score, created_at, analysis_data, workflow_decision, tender_status")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(200)
+      .then(({ data }) => {
+        setRecords(data || []);
+        setLoading(false);
+      });
   }, [user]);
 
   async function updateStatus(id, newStatus) {
     setRecords((prev) => prev.map((r) => r.id === id ? { ...r, tender_status: newStatus } : r));
-    // Try to persist — will silently fail if column doesn't exist yet
-    await getSupabase().from("analyses").update({ tender_status: newStatus }).eq("id", id).eq("user_id", user.id).then(({ error }) => {
-      if (error) console.warn("Status update failed (column may not exist):", error.message);
-    });
+    await getSupabase().from("analyses").update({ tender_status: newStatus }).eq("id", id).eq("user_id", user.id);
   }
 
   function navigateTo(record) {

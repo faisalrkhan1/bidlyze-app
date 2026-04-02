@@ -174,7 +174,7 @@ export default function DashboardPage() {
     // Recent analyses
     supabase
       .from("analyses")
-      .select("id, project_name, file_name, bid_score, created_at, file_path, analysis_data")
+      .select("id, project_name, file_name, bid_score, created_at, file_path, analysis_data, workflow_actions, workflow_decision")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(10)
