@@ -178,30 +178,37 @@ export default function AppShell({ user, onLogout, children, breadcrumbs }) {
             </svg>
           </button>
 
-          {/* Breadcrumbs */}
-          {breadcrumbs && (
-            <div className="hidden sm:flex items-center gap-1.5 text-xs" style={{ color: "var(--text-muted)" }}>
-              {breadcrumbs.map((crumb, i) => (
-                <span key={i} className="flex items-center gap-1.5">
-                  {i > 0 && (
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                    </svg>
-                  )}
-                  {crumb.href ? (
-                    <button
-                      onClick={() => router.push(crumb.href)}
-                      className="hover:underline transition-colors"
-                      style={{ color: "var(--text-secondary)" }}
-                    >
-                      {crumb.label}
-                    </button>
-                  ) : (
-                    <span style={{ color: "var(--text-primary)" }}>{crumb.label}</span>
-                  )}
-                </span>
-              ))}
-            </div>
+          {/* Breadcrumbs — full on sm+, current page only on mobile */}
+          {breadcrumbs && breadcrumbs.length > 0 && (
+            <>
+              {/* Mobile: show current page name */}
+              <span className="sm:hidden text-xs font-medium" style={{ color: "var(--text-primary)" }}>
+                {breadcrumbs[breadcrumbs.length - 1].label}
+              </span>
+              {/* Desktop: full breadcrumb trail */}
+              <div className="hidden sm:flex items-center gap-1.5 text-xs" style={{ color: "var(--text-muted)" }}>
+                {breadcrumbs.map((crumb, i) => (
+                  <span key={i} className="flex items-center gap-1.5">
+                    {i > 0 && (
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                      </svg>
+                    )}
+                    {crumb.href ? (
+                      <button
+                        onClick={() => router.push(crumb.href)}
+                        className="hover:underline transition-colors"
+                        style={{ color: "var(--text-secondary)" }}
+                      >
+                        {crumb.label}
+                      </button>
+                    ) : (
+                      <span style={{ color: "var(--text-primary)" }}>{crumb.label}</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            </>
           )}
 
           {/* Mobile logo */}

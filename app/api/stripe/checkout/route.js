@@ -39,8 +39,8 @@ export async function POST(request) {
     const { plan } = await request.json();
 
     const priceIds = {
-      starter: process.env.STRIPE_STARTER_PRICE_ID,
-      professional: process.env.STRIPE_PROFESSIONAL_PRICE_ID,
+      pro: process.env.STRIPE_PRO_PRICE_ID,
+      team: process.env.STRIPE_TEAM_PRICE_ID,
     };
 
     const priceId = priceIds[plan];

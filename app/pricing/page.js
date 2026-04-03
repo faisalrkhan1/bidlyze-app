@@ -9,43 +9,49 @@ import { PLANS, PLAN_DISPLAY } from "@/lib/plans";
 const PLAN_CARDS = [
   {
     key: "free",
+    tagline: "Explore the platform",
     features: [
       "3 analyses per month",
       "RFI / RFQ / RFP / Other",
-      "Basic summary & requirements",
+      "AI summary & requirement extraction",
       "Requirement status tracking",
       "Internal notes",
+      "PDF export",
       "30-day history",
     ],
   },
   {
     key: "pro",
     popular: true,
+    tagline: "For bid professionals",
     features: [
       "25 analyses per month",
-      "Everything in Free",
-      "Source references & due dates",
-      "Owner assignment per requirement",
+      "Everything in Free, plus:",
+      "Source page references per requirement",
+      "Owner assignment & due dates",
       "Full compliance matrix",
       "Risk & assumption mapping",
-      "Bid / No-Bid scoring",
-      "Win probability & competitor intel",
+      "Bid / No-Bid scoring & win probability",
+      "Competitor intelligence",
+      "Pricing Advisor",
       "Proposal Writer (6 sections)",
+      "Amendment Intelligence",
       "Tender Package workspace",
       "Bid Comparison",
-      "Deadline Tracker",
-      "Action items & decisions",
-      "Excel export",
+      "Deadline Tracker with urgency views",
+      "Action items & decision panel",
+      "Excel & requirement export",
       "Unlimited history",
     ],
   },
   {
     key: "team",
+    tagline: "Collaborate on bids",
     features: [
       "80 analyses per month",
-      "Everything in Professional",
-      "Internal comments & review",
-      "Audit trail",
+      "Everything in Professional, plus:",
+      "Internal review comments",
+      "Full audit trail",
       "Branded PDF exports",
       "Shared tender library (roadmap)",
       "Team roles & permissions (roadmap)",
@@ -53,9 +59,10 @@ const PLAN_CARDS = [
   },
   {
     key: "enterprise",
+    tagline: "For large organizations",
     features: [
       "Custom analysis volume",
-      "Everything in Team",
+      "Everything in Team, plus:",
       "SSO & admin controls (roadmap)",
       "Custom analysis templates",
       "API access (roadmap)",
@@ -67,12 +74,12 @@ const PLAN_CARDS = [
 
 const COMPARISON = [
   {
-    category: "Analysis",
+    category: "Document Analysis",
     features: [
-      { name: "RFI / RFQ / RFP / Other", free: true, pro: true, team: true, enterprise: true },
-      { name: "Basic summary & extraction", free: true, pro: true, team: true, enterprise: true },
+      { name: "RFI / RFQ / RFP / Other document types", free: true, pro: true, team: true, enterprise: true },
+      { name: "AI-powered summary & classification", free: true, pro: true, team: true, enterprise: true },
       { name: "Requirement extraction table", free: true, pro: true, team: true, enterprise: true },
-      { name: "Source references per requirement", free: false, pro: true, team: true, enterprise: true },
+      { name: "Source page references per requirement", free: false, pro: true, team: true, enterprise: true },
       { name: "Full compliance matrix", free: false, pro: true, team: true, enterprise: true },
       { name: "Risk & assumption mapping", free: false, pro: true, team: true, enterprise: true },
       { name: "Bid / No-Bid scoring", free: false, pro: true, team: true, enterprise: true },
@@ -81,25 +88,25 @@ const COMPARISON = [
     ],
   },
   {
-    category: "Workflow",
+    category: "Workflow & Tracking",
     features: [
       { name: "Requirement status tracking", free: true, pro: true, team: true, enterprise: true },
       { name: "Internal notes", free: true, pro: true, team: true, enterprise: true },
-      { name: "Owner assignment", free: false, pro: true, team: true, enterprise: true },
+      { name: "Owner assignment per requirement", free: false, pro: true, team: true, enterprise: true },
       { name: "Due dates per requirement", free: false, pro: true, team: true, enterprise: true },
+      { name: "Deadline Tracker with urgency views", free: false, pro: true, team: true, enterprise: true },
       { name: "Action items & decision panel", free: false, pro: true, team: true, enterprise: true },
-      { name: "Deadline Tracker", free: false, pro: true, team: true, enterprise: true },
       { name: "Internal review comments", free: false, pro: false, team: true, enterprise: true },
       { name: "Audit trail", free: false, pro: false, team: true, enterprise: true },
     ],
   },
   {
-    category: "Advanced Features",
+    category: "Advanced Tools",
     features: [
       { name: "Proposal Writer (6 sections)", free: false, pro: true, team: true, enterprise: true },
-      { name: "Amendment Intelligence", free: false, pro: true, team: true, enterprise: true },
-      { name: "Tender Package workspace", free: false, pro: true, team: true, enterprise: true },
-      { name: "Bid Comparison", free: false, pro: true, team: true, enterprise: true },
+      { name: "Amendment Intelligence (diff analysis)", free: false, pro: true, team: true, enterprise: true },
+      { name: "Tender Package workspace (multi-doc)", free: false, pro: true, team: true, enterprise: true },
+      { name: "Bid Comparison (side-by-side)", free: false, pro: true, team: true, enterprise: true },
     ],
   },
   {
@@ -107,8 +114,9 @@ const COMPARISON = [
     features: [
       { name: "PDF export", free: true, pro: true, team: true, enterprise: true },
       { name: "Excel export", free: false, pro: true, team: true, enterprise: true },
+      { name: "Requirements table Excel export", free: false, pro: true, team: true, enterprise: true },
       { name: "Branded exports", free: false, pro: false, team: true, enterprise: true },
-      { name: "Analysis history", free: "30 days", pro: "Unlimited", team: "Unlimited", enterprise: "Unlimited" },
+      { name: "Tender history", free: "30 days", pro: "Unlimited", team: "Unlimited", enterprise: "Unlimited" },
     ],
   },
   {
@@ -164,7 +172,7 @@ export default function PricingPage() {
         <div className="text-center mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">Plans & Pricing</h1>
           <p className="text-base max-w-xl mx-auto" style={{ color: "var(--text-secondary)" }}>
-            One platform for RFI, RFQ, RFP, and tender intelligence. Scale from discovery to full team operations.
+            From document upload to structured bid intelligence. Pick the plan that fits your workflow.
           </p>
           {usageCount !== null && (
             <p className="text-sm mt-4" style={{ color: "var(--text-muted)" }}>
@@ -189,6 +197,7 @@ export default function PricingPage() {
                     <h3 className="text-lg font-bold">{plan.name}</h3>
                     {isCurrent && <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: "var(--bg-input)", color: "var(--text-muted)" }}>Current</span>}
                   </div>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>{card.tagline}</p>
                 </div>
 
                 <div className="mb-5">
@@ -214,11 +223,11 @@ export default function PricingPage() {
                 {card.key === "enterprise" ? (
                   <a href="mailto:sales@bidlyze.com" className="w-full py-2.5 rounded-xl font-semibold text-sm text-center block transition-colors" style={{ border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" }}>Contact Sales</a>
                 ) : isCurrent ? (
-                  <button disabled className="w-full py-2.5 rounded-xl font-semibold text-sm opacity-40 cursor-not-allowed" style={{ border: "1px solid var(--border-secondary)" }}>Current Plan</button>
+                  <button disabled className="w-full py-2.5 rounded-xl font-semibold text-sm opacity-40 cursor-not-allowed" style={{ border: "1px solid var(--border-secondary)" }}>Your Current Plan</button>
                 ) : card.key === "free" ? (
                   <button disabled className="w-full py-2.5 rounded-xl font-semibold text-sm opacity-40 cursor-not-allowed" style={{ border: "1px solid var(--border-secondary)" }}>Free</button>
                 ) : (
-                  <button onClick={() => handleSubscribe(card.key)} disabled={loadingPlan === card.key} className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-60 ${isPopular ? "bg-emerald-500 hover:bg-emerald-400 text-white" : ""}`} style={!isPopular ? { border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" } : {}}>
+                  <button onClick={() => handleSubscribe(card.key)} disabled={loadingPlan === card.key} className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed ${isPopular ? "bg-emerald-500 hover:bg-emerald-400 text-white" : ""}`} style={!isPopular ? { border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" } : {}}>
                     {loadingPlan === card.key ? "Redirecting..." : "Upgrade"}
                   </button>
                 )}
@@ -230,27 +239,31 @@ export default function PricingPage() {
         {/* Comparison Table */}
         <h2 className="text-xl font-bold tracking-tight mb-6 text-center">Feature Comparison</h2>
         <div className="rounded-2xl overflow-hidden mb-8" style={{ border: "1px solid var(--border-primary)" }}>
-          <div className="grid grid-cols-12 gap-1 px-5 py-3 text-[10px] font-semibold uppercase tracking-wider" style={{ background: "var(--bg-subtle)", color: "var(--text-muted)", borderBottom: "1px solid var(--border-primary)" }}>
-            <div className="col-span-4">Feature</div>
-            <div className="col-span-2 text-center">Free</div>
-            <div className="col-span-2 text-center text-emerald-500">Pro</div>
-            <div className="col-span-2 text-center">Team</div>
-            <div className="col-span-2 text-center">Enterprise</div>
-          </div>
-          {COMPARISON.map((section) => (
-            <div key={section.category}>
-              <div className="px-5 py-2.5 text-[10px] font-bold uppercase tracking-wider" style={{ background: "var(--bg-subtle)", color: "var(--text-muted)", borderBottom: "1px solid var(--border-primary)" }}>{section.category}</div>
-              {section.features.map((f) => (
-                <div key={f.name} className="grid grid-cols-12 gap-1 px-5 py-2.5 items-center text-sm" style={{ borderBottom: "1px solid var(--border-primary)" }}>
-                  <div className="col-span-4" style={{ color: "var(--text-secondary)" }}>{f.name}</div>
-                  <div className="col-span-2 flex justify-center"><CellVal v={f.free} /></div>
-                  <div className="col-span-2 flex justify-center"><CellVal v={f.pro} /></div>
-                  <div className="col-span-2 flex justify-center"><CellVal v={f.team} /></div>
-                  <div className="col-span-2 flex justify-center"><CellVal v={f.enterprise} /></div>
+          <div className="overflow-x-auto">
+            <div className="min-w-[600px]">
+              <div className="grid grid-cols-12 gap-1 px-5 py-3 text-[10px] font-semibold uppercase tracking-wider" style={{ background: "var(--bg-subtle)", color: "var(--text-muted)", borderBottom: "1px solid var(--border-primary)" }}>
+                <div className="col-span-4">Feature</div>
+                <div className="col-span-2 text-center">Free</div>
+                <div className="col-span-2 text-center text-emerald-500">Pro</div>
+                <div className="col-span-2 text-center">Team</div>
+                <div className="col-span-2 text-center">Enterprise</div>
+              </div>
+              {COMPARISON.map((section) => (
+                <div key={section.category}>
+                  <div className="px-5 py-2.5 text-[10px] font-bold uppercase tracking-wider" style={{ background: "var(--bg-subtle)", color: "var(--text-muted)", borderBottom: "1px solid var(--border-primary)" }}>{section.category}</div>
+                  {section.features.map((f) => (
+                    <div key={f.name} className="grid grid-cols-12 gap-1 px-5 py-2.5 items-center text-sm" style={{ borderBottom: "1px solid var(--border-primary)" }}>
+                      <div className="col-span-4" style={{ color: "var(--text-secondary)" }}>{f.name}</div>
+                      <div className="col-span-2 flex justify-center"><CellVal v={f.free} /></div>
+                      <div className="col-span-2 flex justify-center"><CellVal v={f.pro} /></div>
+                      <div className="col-span-2 flex justify-center"><CellVal v={f.team} /></div>
+                      <div className="col-span-2 flex justify-center"><CellVal v={f.enterprise} /></div>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
-          ))}
+          </div>
         </div>
 
         <div className="text-center">

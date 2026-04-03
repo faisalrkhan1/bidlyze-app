@@ -10,8 +10,8 @@ const DEFAULT_LIMIT = 3;
 
 const PLAN_LABELS = {
   free: "Free",
-  starter: "Starter",
-  professional: "Professional",
+  pro: "Professional",
+  team: "Team",
   enterprise: "Enterprise",
 };
 
@@ -411,7 +411,7 @@ export default function DashboardPage() {
             <h2 className="text-lg font-semibold">Recent Analyses</h2>
             {analyses && analyses.length > 0 && (
               <button
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/history")}
                 className="text-xs font-medium transition-colors duration-200"
                 style={{ color: "var(--text-muted)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
