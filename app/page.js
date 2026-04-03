@@ -2,12 +2,12 @@ import Link from "next/link";
 import { LogoMark } from "@/app/components/Logo";
 
 export const metadata = {
-  title: "Bidlyze — AI RFx & Tender Intelligence Platform",
+  title: "Bidlyze",
   description:
     "Analyze RFI, RFQ, RFP, and tender packages with AI. Get compliance mapping, requirement extraction, risk assessment, pricing analysis, and response planning — in minutes, not days.",
   keywords: "RFx analysis, RFP analysis, RFQ analysis, RFI analysis, tender intelligence, bid management, procurement intelligence, tender compliance, bid scoring, proposal automation, tender risk assessment, go no-go decision",
   openGraph: {
-    title: "Bidlyze — AI RFx & Tender Intelligence Platform",
+    title: "Bidlyze",
     description: "From raw RFx documents to structured bid intelligence. Compliance, requirements, risks, and response planning in one platform.",
     type: "website",
     locale: "en_US",
@@ -15,7 +15,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bidlyze — AI RFx & Tender Intelligence",
+    title: "Bidlyze",
     description: "From raw RFx documents to structured bid intelligence in minutes.",
   },
 };

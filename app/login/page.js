@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import LoginPageClient from "./LoginPageClient";
 
 export const metadata = {
-  title: "Sign In",
+  title: "Bidlyze",
   description: "Sign in to Bidlyze to analyze tenders, track compliance, and generate bid proposals with AI.",
 };
 

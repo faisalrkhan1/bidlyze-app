@@ -9,8 +9,8 @@ const outfit = Outfit({
 
 export const metadata = {
   title: {
-    default: "Bidlyze — AI RFx & Tender Intelligence Platform",
-    template: "%s | Bidlyze",
+    default: "Bidlyze",
+    template: "Bidlyze",
   },
   description:
     "Analyze RFI, RFQ, RFP, and tender packages with AI. Compliance mapping, requirement extraction, risk assessment, pricing analysis, and response planning in one platform.",
@@ -32,7 +32,7 @@ export const metadata = {
   creator: "Bidlyze",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://bidlyze.com"),
   openGraph: {
-    title: "Bidlyze — AI RFx & Tender Intelligence Platform",
+    title: "Bidlyze",
     description: "From raw RFx documents to structured bid intelligence. Compliance, requirements, risks, and response planning in one platform.",
     type: "website",
     locale: "en_US",
@@ -40,7 +40,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bidlyze — AI RFx & Tender Intelligence",
+    title: "Bidlyze",
     description: "From raw RFx documents to structured bid intelligence in minutes.",
   },
   robots: {
