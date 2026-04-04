@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useAuth } from "@/lib/useAuth";
 import { getSupabase } from "@/lib/supabase";
 import AppShell from "@/app/components/AppShell";
+import { LogoMark } from "@/app/components/Logo";
 import { PLANS, PLAN_DISPLAY } from "@/lib/plans";
 
 const PLAN_CARDS = [
@@ -166,110 +168,156 @@ export default function PricingPage() {
 
   if (authLoading) return <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)" }}><div className="animate-spin h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full" /></div>;
 
-  return (
-    <AppShell user={user} onLogout={logout} breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Pricing" }]}>
-      <div className="max-w-6xl mx-auto px-6 py-10 animate-fade-in">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">Plans & Pricing</h1>
-          <p className="text-base max-w-xl mx-auto" style={{ color: "var(--text-secondary)" }}>
-            From document upload to structured bid intelligence. Pick the plan that fits your workflow.
+  const pricingContent = (
+    <div className="max-w-6xl mx-auto px-6 py-10 animate-fade-in">
+      <div className="text-center mb-12">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">Plans & Pricing</h1>
+        <p className="text-base max-w-xl mx-auto" style={{ color: "var(--text-secondary)" }}>
+          From document upload to structured bid intelligence. Pick the plan that fits your workflow.
+        </p>
+        {user && usageCount !== null && (
+          <p className="text-sm mt-4" style={{ color: "var(--text-muted)" }}>
+            Current plan: <strong style={{ color: "var(--text-primary)" }}>{PLAN_DISPLAY[currentPlan] || "Free"}</strong> &middot; {usageCount} analyses this month
           </p>
-          {usageCount !== null && (
-            <p className="text-sm mt-4" style={{ color: "var(--text-muted)" }}>
-              Current plan: <strong style={{ color: "var(--text-primary)" }}>{PLAN_DISPLAY[currentPlan] || "Free"}</strong> &middot; {usageCount} analyses this month
-            </p>
-          )}
-        </div>
+        )}
+      </div>
 
-        {/* Plan Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
-          {PLAN_CARDS.map((card) => {
-            const plan = PLANS[card.key];
-            const isCurrent = card.key === currentPlan;
-            const isPopular = card.popular;
+      {/* Plan Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+        {PLAN_CARDS.map((card) => {
+          const plan = PLANS[card.key];
+          const isCurrent = user && card.key === currentPlan;
+          const isPopular = card.popular;
 
-            return (
-              <div key={card.key} className="relative rounded-2xl p-5 flex flex-col" style={{ background: "var(--bg-subtle)", border: isPopular ? "2px solid #10b981" : "1px solid var(--border-primary)" }}>
-                {isPopular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500 text-white">Recommended</span>}
+          return (
+            <div key={card.key} className="relative rounded-2xl p-5 flex flex-col" style={{ background: "var(--bg-subtle)", border: isPopular ? "2px solid #10b981" : "1px solid var(--border-primary)" }}>
+              {isPopular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500 text-white">Recommended</span>}
 
-                <div className="mb-4">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <h3 className="text-lg font-bold">{plan.name}</h3>
-                    {isCurrent && <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: "var(--bg-input)", color: "var(--text-muted)" }}>Current</span>}
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="text-lg font-bold">{plan.name}</h3>
+                  {isCurrent && <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: "var(--bg-input)", color: "var(--text-muted)" }}>Current</span>}
+                </div>
+                <p className="text-xs" style={{ color: "var(--text-muted)" }}>{card.tagline}</p>
+              </div>
+
+              <div className="mb-5">
+                {plan.price !== null ? (
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-bold">${plan.price}</span>
+                    <span className="text-sm" style={{ color: "var(--text-muted)" }}>{plan.period}</span>
                   </div>
-                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>{card.tagline}</p>
-                </div>
-
-                <div className="mb-5">
-                  {plan.price !== null ? (
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-bold">${plan.price}</span>
-                      <span className="text-sm" style={{ color: "var(--text-muted)" }}>{plan.period}</span>
-                    </div>
-                  ) : (
-                    <div><span className="text-2xl font-bold">Custom</span><p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Tailored to your organization</p></div>
-                  )}
-                </div>
-
-                <ul className="space-y-2 mb-6 flex-1">
-                  {card.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
-                      <svg className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                {card.key === "enterprise" ? (
-                  <a href="mailto:sales@bidlyze.com" className="w-full py-2.5 rounded-xl font-semibold text-sm text-center block transition-colors" style={{ border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" }}>Contact Sales</a>
-                ) : isCurrent ? (
-                  <button disabled className="w-full py-2.5 rounded-xl font-semibold text-sm opacity-40 cursor-not-allowed" style={{ border: "1px solid var(--border-secondary)" }}>Your Current Plan</button>
-                ) : card.key === "free" ? (
-                  <button disabled className="w-full py-2.5 rounded-xl font-semibold text-sm opacity-40 cursor-not-allowed" style={{ border: "1px solid var(--border-secondary)" }}>Free</button>
                 ) : (
-                  <button onClick={() => handleSubscribe(card.key)} disabled={loadingPlan === card.key} className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed ${isPopular ? "bg-emerald-500 hover:bg-emerald-400 text-white" : ""}`} style={!isPopular ? { border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" } : {}}>
-                    {loadingPlan === card.key ? "Redirecting..." : "Upgrade"}
-                  </button>
+                  <div><span className="text-2xl font-bold">Custom</span><p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Tailored to your organization</p></div>
                 )}
               </div>
-            );
-          })}
-        </div>
 
-        {/* Comparison Table */}
-        <h2 className="text-xl font-bold tracking-tight mb-6 text-center">Feature Comparison</h2>
-        <div className="rounded-2xl overflow-hidden mb-8" style={{ border: "1px solid var(--border-primary)" }}>
-          <div className="overflow-x-auto">
-            <div className="min-w-[600px]">
-              <div className="grid grid-cols-12 gap-1 px-5 py-3 text-[10px] font-semibold uppercase tracking-wider" style={{ background: "var(--bg-subtle)", color: "var(--text-muted)", borderBottom: "1px solid var(--border-primary)" }}>
-                <div className="col-span-4">Feature</div>
-                <div className="col-span-2 text-center">Free</div>
-                <div className="col-span-2 text-center text-emerald-500">Pro</div>
-                <div className="col-span-2 text-center">Team</div>
-                <div className="col-span-2 text-center">Enterprise</div>
-              </div>
-              {COMPARISON.map((section) => (
-                <div key={section.category}>
-                  <div className="px-5 py-2.5 text-[10px] font-bold uppercase tracking-wider" style={{ background: "var(--bg-subtle)", color: "var(--text-muted)", borderBottom: "1px solid var(--border-primary)" }}>{section.category}</div>
-                  {section.features.map((f) => (
-                    <div key={f.name} className="grid grid-cols-12 gap-1 px-5 py-2.5 items-center text-sm" style={{ borderBottom: "1px solid var(--border-primary)" }}>
-                      <div className="col-span-4" style={{ color: "var(--text-secondary)" }}>{f.name}</div>
-                      <div className="col-span-2 flex justify-center"><CellVal v={f.free} /></div>
-                      <div className="col-span-2 flex justify-center"><CellVal v={f.pro} /></div>
-                      <div className="col-span-2 flex justify-center"><CellVal v={f.team} /></div>
-                      <div className="col-span-2 flex justify-center"><CellVal v={f.enterprise} /></div>
-                    </div>
-                  ))}
-                </div>
-              ))}
+              <ul className="space-y-2 mb-6 flex-1">
+                {card.features.map((f, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+                    <svg className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              {card.key === "enterprise" ? (
+                <a href="mailto:sales@bidlyze.com" className="w-full py-2.5 rounded-xl font-semibold text-sm text-center block transition-colors" style={{ border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" }}>Contact Sales</a>
+              ) : isCurrent ? (
+                <button disabled className="w-full py-2.5 rounded-xl font-semibold text-sm opacity-40 cursor-not-allowed" style={{ border: "1px solid var(--border-secondary)" }}>Your Current Plan</button>
+              ) : !user ? (
+                <Link href="/login?tab=signup" className={`w-full py-2.5 rounded-xl font-semibold text-sm text-center block transition-colors ${isPopular ? "bg-emerald-500 hover:bg-emerald-400 text-white" : ""}`} style={!isPopular ? { border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" } : {}}>
+                  {card.key === "free" ? "Get Started" : "Start Free"}
+                </Link>
+              ) : card.key === "free" ? (
+                <button disabled className="w-full py-2.5 rounded-xl font-semibold text-sm opacity-40 cursor-not-allowed" style={{ border: "1px solid var(--border-secondary)" }}>Free</button>
+              ) : (
+                <button onClick={() => handleSubscribe(card.key)} disabled={loadingPlan === card.key} className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed ${isPopular ? "bg-emerald-500 hover:bg-emerald-400 text-white" : ""}`} style={!isPopular ? { border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" } : {}}>
+                  {loadingPlan === card.key ? "Redirecting..." : "Upgrade"}
+                </button>
+              )}
             </div>
+          );
+        })}
+      </div>
+
+      {/* Comparison Table */}
+      <h2 className="text-xl font-bold tracking-tight mb-6 text-center">Feature Comparison</h2>
+      <div className="rounded-2xl overflow-hidden mb-8" style={{ border: "1px solid var(--border-primary)" }}>
+        <div className="overflow-x-auto">
+          <div className="min-w-[600px]">
+            <div className="grid grid-cols-12 gap-1 px-5 py-3 text-[10px] font-semibold uppercase tracking-wider" style={{ background: "var(--bg-subtle)", color: "var(--text-muted)", borderBottom: "1px solid var(--border-primary)" }}>
+              <div className="col-span-4">Feature</div>
+              <div className="col-span-2 text-center">Free</div>
+              <div className="col-span-2 text-center text-emerald-500">Pro</div>
+              <div className="col-span-2 text-center">Team</div>
+              <div className="col-span-2 text-center">Enterprise</div>
+            </div>
+            {COMPARISON.map((section) => (
+              <div key={section.category}>
+                <div className="px-5 py-2.5 text-[10px] font-bold uppercase tracking-wider" style={{ background: "var(--bg-subtle)", color: "var(--text-muted)", borderBottom: "1px solid var(--border-primary)" }}>{section.category}</div>
+                {section.features.map((f) => (
+                  <div key={f.name} className="grid grid-cols-12 gap-1 px-5 py-2.5 items-center text-sm" style={{ borderBottom: "1px solid var(--border-primary)" }}>
+                    <div className="col-span-4" style={{ color: "var(--text-secondary)" }}>{f.name}</div>
+                    <div className="col-span-2 flex justify-center"><CellVal v={f.free} /></div>
+                    <div className="col-span-2 flex justify-center"><CellVal v={f.pro} /></div>
+                    <div className="col-span-2 flex justify-center"><CellVal v={f.team} /></div>
+                    <div className="col-span-2 flex justify-center"><CellVal v={f.enterprise} /></div>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
-
-        <div className="text-center">
-          <p className="text-xs" style={{ color: "var(--text-muted)" }}>All plans include RFI, RFQ, RFP, and tender support. <a href="mailto:sales@bidlyze.com" className="text-emerald-500">Contact sales</a> for custom pricing.</p>
-        </div>
       </div>
-    </AppShell>
+
+      <div className="text-center">
+        <p className="text-xs" style={{ color: "var(--text-muted)" }}>All plans include RFI, RFQ, RFP, and tender support. <a href="mailto:sales@bidlyze.com" className="text-emerald-500">Contact sales</a> for custom pricing.</p>
+      </div>
+    </div>
+  );
+
+  // Authenticated: render inside app shell
+  if (user) {
+    return (
+      <AppShell user={user} onLogout={logout} breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Pricing" }]}>
+        {pricingContent}
+      </AppShell>
+    );
+  }
+
+  // Public: render with public header/footer
+  return (
+    <div className="min-h-screen" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
+      <header className="sticky top-0 z-50 backdrop-blur-md" style={{ background: "var(--bg-primary-translucent)", borderBottom: "1px solid var(--border-primary)" }}>
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <LogoMark size={30} />
+            <span className="text-base font-semibold tracking-tight">Bidlyze</span>
+          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-sm font-medium transition-colors" style={{ color: "var(--text-secondary)" }}>
+              Sign In
+            </Link>
+            <Link href="/login?tab=signup" className="px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors">
+              Start Free
+            </Link>
+          </div>
+        </div>
+      </header>
+      {pricingContent}
+      <footer style={{ borderTop: "1px solid var(--border-primary)" }}>
+        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+            &copy; {new Date().getFullYear()} Bidlyze. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6 text-xs" style={{ color: "var(--text-muted)" }}>
+            <Link href="/terms" className="hover:text-emerald-500 transition-colors">Terms</Link>
+            <Link href="/privacy" className="hover:text-emerald-500 transition-colors">Privacy</Link>
+            <Link href="/refund-policy" className="hover:text-emerald-500 transition-colors">Refunds</Link>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }

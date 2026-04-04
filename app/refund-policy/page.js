@@ -31,47 +31,32 @@ export default function RefundPolicyPage() {
           <section>
             <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>1. Overview</h2>
             <p>
-              This Refund Policy outlines the terms under which refunds may be issued for paid subscriptions
-              to the Bidlyze platform. By subscribing to a paid plan, you agree to the billing and refund
-              terms described below.
+              Bidlyze offers a free plan so you can evaluate the platform before subscribing. If you
+              subscribe to a paid plan and are not satisfied, you may request a refund as described below.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>2. Free Plan</h2>
-            <p>
-              Bidlyze offers a Free plan at no cost. Since no payment is collected, no refund applies.
-              We encourage new users to evaluate the platform on the Free plan before subscribing to a
-              paid tier.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>3. Paid Subscriptions</h2>
+            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>2. Billing</h2>
             <p>
               Paid subscriptions are billed on a monthly recurring basis through our merchant of record,
-              Paddle (Paddle.com Market Limited). Current plan pricing is listed on our{" "}
-              <Link href="/pricing" className="text-emerald-500 hover:underline">Pricing page</Link>.
-              Enterprise plans are billed according to the terms of the individual agreement.
+              Paddle (Paddle.com Market Limited). Current plan pricing is available on our{" "}
+              <Link href="/#pricing" className="text-emerald-500 hover:underline">Pricing section</Link>.
+              Paddle handles all billing, invoicing, and tax-related processing.
             </p>
+          </section>
 
-            <h3 className="text-base font-semibold mt-4 mb-2" style={{ color: "var(--text-primary)" }}>3.1 Refund Eligibility</h3>
+          <section>
+            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>3. Refunds</h2>
             <p>
-              You may request a refund within <strong>14 days</strong> of your initial subscription purchase.
-              To be eligible:
+              If you are not satisfied with your paid subscription, you may request a refund
+              within <strong>14 days</strong> of your purchase. To request a refund, email{" "}
+              <a href="mailto:support@bidlyze.com" className="text-emerald-500 hover:underline">support@bidlyze.com</a>{" "}
+              with your account email address and we will process your request promptly.
             </p>
-            <ul className="list-disc pl-6 mt-2 space-y-1">
-              <li>The refund request must be submitted within 14 days of your first paid charge.</li>
-              <li>Refunds are available for first-time subscribers only.</li>
-              <li>You must contact our support team with your account email and reason for the request.</li>
-            </ul>
-
-            <h3 className="text-base font-semibold mt-4 mb-2" style={{ color: "var(--text-primary)" }}>3.2 Recurring Billing</h3>
-            <p>
-              After the initial 14-day period, subscription fees are non-refundable. Each billing cycle
-              renews automatically, and charges for the current billing period are not refundable upon
-              cancellation. You will continue to have access to your paid plan features until the end of
-              the billing period for which you have already paid.
+            <p className="mt-3">
+              Refunds are processed through Paddle and returned to your original payment method. Processing
+              times may vary depending on your bank or payment provider.
             </p>
           </section>
 
@@ -83,69 +68,30 @@ export default function RefundPolicyPage() {
             <ul className="list-disc pl-6 mt-2 space-y-1">
               <li>Your subscription remains active until the end of the current billing period.</li>
               <li>No further charges will be made after cancellation.</li>
-              <li>After the billing period ends, your account will transition to the Free plan with its associated limits.</li>
-              <li>Cancellation does not entitle you to a refund for the current billing period.</li>
+              <li>After the billing period ends, your account will transition to the Free plan.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>5. Non-Refundable Cases</h2>
-            <p>Refunds will not be issued in the following circumstances:</p>
-            <ul className="list-disc pl-6 mt-2 space-y-1">
-              <li>Requests made after the 14-day initial purchase window.</li>
-              <li>Renewal charges for subsequent billing cycles. You may cancel at any time to prevent future charges.</li>
-              <li>Accounts suspended or terminated due to a violation of our Terms of Service.</li>
-              <li>Failure to cancel before a renewal date.</li>
-              <li>Differences in AI-generated analysis outputs. Bidlyze provides AI-powered decision-support tools; outputs are informational and may vary based on the content and quality of uploaded documents.</li>
-              <li>Partial-month usage. We do not offer prorated refunds for unused time within a billing period.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>6. Plan Changes</h2>
+            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>5. Billing Issues</h2>
             <p>
-              If you change to a lower-tier plan (e.g., Team to Professional), the change takes effect
-              at the start of the next billing period. No refund or credit is issued for the remaining time
-              on the higher-tier plan.
+              If you experience a billing error or duplicate charge, please contact us at{" "}
+              <a href="mailto:support@bidlyze.com" className="text-emerald-500 hover:underline">support@bidlyze.com</a>{" "}
+              and we will resolve it as quickly as possible.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>7. Exceptional Circumstances</h2>
-            <p>
-              If you experience a billing error, duplicate charge, or a significant service disruption that
-              materially affected your ability to use the platform, please contact our support team. We will
-              review these requests on a case-by-case basis and may issue a refund or service credit at our
-              discretion.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>8. How to Request a Refund</h2>
-            <p>To request a refund or report a billing issue:</p>
-            <ol className="list-decimal pl-6 mt-2 space-y-1">
-              <li>Email <a href="mailto:support@bidlyze.com" className="text-emerald-500 hover:underline">support@bidlyze.com</a> with the subject line &quot;Refund Request.&quot;</li>
-              <li>Include your account email address and a brief description of the reason.</li>
-              <li>Our team will review your request and respond within 5 business days.</li>
-            </ol>
-            <p className="mt-3">
-              Approved refunds are processed through Paddle and returned to your original payment method.
-              Processing times may vary depending on your bank or payment provider.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>9. Changes to This Policy</h2>
+            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>6. Changes to This Policy</h2>
             <p>
               We may update this Refund Policy from time to time. Changes will be posted on this page with an
-              updated &quot;Last updated&quot; date. Your continued use of the Service after changes are posted constitutes
-              acceptance of the revised policy.
+              updated &quot;Last updated&quot; date.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>10. Contact</h2>
-            <p>For billing questions or refund requests, please contact us:</p>
+            <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>7. Contact</h2>
+            <p>For billing questions or refund requests:</p>
             <ul className="list-none mt-2 space-y-1">
               <li>Email: <a href="mailto:support@bidlyze.com" className="text-emerald-500 hover:underline">support@bidlyze.com</a></li>
               <li>Website: <a href="https://bidlyze.com" className="text-emerald-500 hover:underline">bidlyze.com</a></li>

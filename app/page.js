@@ -468,6 +468,7 @@ export default function LandingPage() {
               <span className="text-sm font-semibold">Bidlyze</span>
             </div>
             <div className="flex items-center gap-6 text-xs" style={{ color: "var(--text-muted)" }}>
+              <a href="#pricing" className="hover:text-emerald-500 transition-colors">Pricing</a>
               <a href="mailto:support@bidlyze.com" className="hover:text-emerald-500 transition-colors">Support</a>
               <a href="mailto:sales@bidlyze.com" className="hover:text-emerald-500 transition-colors">Sales</a>
               <Link href="/login" className="hover:text-emerald-500 transition-colors">Sign In</Link>
