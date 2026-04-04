@@ -117,18 +117,21 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>5. Third-Party Services</h2>
-            <p>We rely on the following categories of third-party services to operate Bidlyze:</p>
-            <ul className="list-disc pl-6 mt-2 space-y-1">
-              <li><strong>Authentication & database provider</strong> — Manages user accounts, secure login, and stores your analysis results.</li>
-              <li><strong>AI document processing provider</strong> — Document text is sent via API to a third-party AI service, which processes it through a large language model to generate your analysis. The provider processes data under its own privacy policy and data processing terms.</li>
-              <li><strong>Paddle</strong> — Payment processing and subscription management. Paddle (Paddle.com Market Limited) acts as our merchant of record and handles all billing, invoicing, and tax compliance.</li>
-              <li><strong>Hosting & infrastructure provider</strong> — Serves the Bidlyze application, processes web requests, and maintains standard server logs.</li>
-              <li><strong>Email delivery provider</strong> — Handles transactional email delivery for account notifications and analysis summaries.</li>
+            <p>
+              To operate the Service, we work with trusted third-party providers in the following categories:
+            </p>
+            <ul className="list-disc pl-6 mt-3 space-y-2">
+              <li><strong>Authentication & data storage</strong> — We use a third-party service to manage user accounts, secure authentication, and store your account data and analysis results.</li>
+              <li><strong>AI & document processing</strong> — We use third-party AI services to analyze uploaded document content and generate structured outputs for you. These providers process data only to the extent necessary to deliver the requested analysis, subject to their own privacy and data processing terms.</li>
+              <li><strong>Paddle</strong> — Paddle (Paddle.com Market Limited) acts as our merchant of record for payment processing and subscription management. Paddle handles all billing, invoicing, and tax-related processing on our behalf.</li>
+              <li><strong>Hosting & infrastructure</strong> — We use a third-party cloud platform to host the Bidlyze application, serve web requests, and maintain standard server logs.</li>
+              <li><strong>Email delivery</strong> — We use a third-party provider to deliver transactional emails, including account notifications and analysis summaries.</li>
             </ul>
             <p className="mt-3">
-              Each third-party service operates under its own privacy policy and terms of service. We share
-              data with these services only to the extent necessary to provide the Service to you. A current
-              list of specific sub-processors is available upon request by emailing{" "}
+              Each provider operates under its own privacy policy and terms of service. We share data with
+              third parties only to the extent necessary to provide the Service to you. We may use additional
+              service providers and subprocessors to support the operation of the Service. Information about
+              relevant subprocessors may be provided upon reasonable request by contacting{" "}
               <a href="mailto:support@bidlyze.com" className="text-emerald-500 hover:underline">support@bidlyze.com</a>.
             </p>
           </section>
