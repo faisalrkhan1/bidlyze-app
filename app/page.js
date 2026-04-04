@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoMark } from "@/app/components/Logo";
+import { PLANS } from "@/lib/plans";
 
 export const metadata = {
   title: "Bidlyze",
@@ -288,33 +289,107 @@ export default function LandingPage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {[
-              { name: "Free", price: "$0", period: "forever", features: ["3 analyses / month", "Basic summary & requirements", "Requirement tracking", "30-day history"], cta: "Get Started" },
-              { name: "Professional", price: "$49", period: "/ month", features: ["25 analyses / month", "Full compliance & risk", "Proposal Writer", "Tender Packages", "Deadline Tracker", "Excel export"], cta: "Upgrade", popular: true },
-              { name: "Team", price: "$149", period: "/ month", features: ["80 analyses / month", "Comments & audit trail", "Branded exports", "Team features (roadmap)"], cta: "Upgrade" },
-              { name: "Enterprise", price: "Custom", period: "", features: ["Unlimited volume", "Admin controls", "Priority support", "Custom onboarding"], cta: "Contact Sales" },
-            ].map((plan) => (
+              {
+                key: "free",
+                tagline: "Explore the platform",
+                features: [
+                  `${PLANS.free.analysesLimit} analyses per month`,
+                  "RFI / RFQ / RFP / Other",
+                  "AI summary & requirement extraction",
+                  "Requirement status tracking",
+                  "Internal notes",
+                  "PDF export",
+                  `${PLANS.free.historyDays}-day history`,
+                ],
+                cta: "Get Started",
+              },
+              {
+                key: "pro",
+                popular: true,
+                tagline: "For bid professionals",
+                features: [
+                  `${PLANS.pro.analysesLimit} analyses per month`,
+                  "Everything in Free, plus:",
+                  "Source page references per requirement",
+                  "Owner assignment & due dates",
+                  "Full compliance matrix",
+                  "Risk & assumption mapping",
+                  "Bid / No-Bid scoring & win probability",
+                  "Competitor intelligence",
+                  "Pricing Advisor",
+                  "Proposal Writer (6 sections)",
+                  "Amendment Intelligence",
+                  "Tender Package workspace",
+                  "Bid Comparison",
+                  "Deadline Tracker with urgency views",
+                  "Action items & decision panel",
+                  "Excel & requirement export",
+                  "Unlimited history",
+                ],
+                cta: "Upgrade",
+              },
+              {
+                key: "team",
+                tagline: "Collaborate on bids",
+                features: [
+                  `${PLANS.team.analysesLimit} analyses per month`,
+                  "Everything in Professional, plus:",
+                  "Internal review comments",
+                  "Full audit trail",
+                  "Branded PDF exports (coming soon)",
+                  "Shared tender library (roadmap)",
+                  "Team roles & permissions (roadmap)",
+                ],
+                cta: "Upgrade",
+              },
+              {
+                key: "enterprise",
+                tagline: "For large organizations",
+                features: [
+                  "Custom analysis volume",
+                  "Everything in Team, plus:",
+                  "SSO & admin controls (roadmap)",
+                  "Custom analysis templates (roadmap)",
+                  "API access (roadmap)",
+                  "Priority support & SLA",
+                  "Custom onboarding",
+                ],
+                cta: "Contact Sales",
+              },
+            ].map((card) => {
+              const plan = PLANS[card.key];
+              return (
               <div
-                key={plan.name}
+                key={card.key}
                 className="relative p-6 rounded-2xl flex flex-col"
                 style={{
                   background: "var(--bg-subtle)",
-                  border: plan.popular ? "2px solid #10b981" : "1px solid var(--border-primary)",
+                  border: card.popular ? "2px solid #10b981" : "1px solid var(--border-primary)",
                 }}
               >
-                {plan.popular && (
+                {card.popular && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500 text-white">
                     Recommended
                   </span>
                 )}
-                <h3 className="font-bold mb-1">{plan.name}</h3>
-                <div className="flex items-baseline gap-1 mb-5">
-                  <span className="text-3xl font-bold">{plan.price}</span>
-                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>{plan.period}</span>
+                <div className="mb-1">
+                  <h3 className="font-bold">{plan.name}</h3>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>{card.tagline}</p>
+                </div>
+                <div className="flex items-baseline gap-1 mb-5 mt-3">
+                  {plan.price !== null ? (
+                    <>
+                      <span className="text-3xl font-bold">${plan.price}</span>
+                      <span className="text-xs" style={{ color: "var(--text-muted)" }}>{plan.period}</span>
+                    </>
+                  ) : (
+                    <span className="text-2xl font-bold">Custom</span>
+                  )}
                 </div>
                 <ul className="space-y-2.5 mb-6 flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
-                      <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  {card.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+                      <svg className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                       </svg>
                       {f}
@@ -322,16 +397,17 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link
-                  href="/login?tab=signup"
-                  className={`w-full py-3 rounded-xl text-sm font-semibold text-center transition-colors ${
-                    plan.popular ? "bg-emerald-500 hover:bg-emerald-400 text-white" : ""
+                  href={card.key === "enterprise" ? "mailto:sales@bidlyze.com" : "/login?tab=signup"}
+                  className={`w-full py-3 rounded-xl text-sm font-semibold text-center transition-colors block ${
+                    card.popular ? "bg-emerald-500 hover:bg-emerald-400 text-white" : ""
                   }`}
-                  style={!plan.popular ? { border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" } : {}}
+                  style={!card.popular ? { border: "1px solid var(--border-secondary)", color: "var(--text-secondary)" } : {}}
                 >
-                  {plan.cta}
+                  {card.cta}
                 </Link>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           <p className="text-center text-xs mt-6" style={{ color: "var(--text-muted)" }}>
