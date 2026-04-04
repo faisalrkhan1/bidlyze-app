@@ -46,7 +46,7 @@ export default function PrivacyPage() {
             <ul className="list-disc pl-6 mt-2 space-y-1">
               <li>Email address</li>
               <li>Name (if provided)</li>
-              <li>Authentication credentials (managed by our authentication provider, Supabase — we never see or store your password directly)</li>
+              <li>Authentication credentials (managed securely by our authentication service provider — we never see or store your password directly)</li>
             </ul>
 
             <h3 className="text-base font-semibold mt-4 mb-2" style={{ color: "var(--text-primary)" }}>2.2 Documents You Upload</h3>
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
 
             <h3 className="text-base font-semibold mt-4 mb-2" style={{ color: "var(--text-primary)" }}>2.3 Usage Data</h3>
             <p>
-              Our hosting provider (Vercel) automatically collects standard server logs when you use the
+              Our hosting infrastructure automatically collects standard server logs when you use the
               Service, which may include:
             </p>
             <ul className="list-disc pl-6 mt-2 space-y-1">
@@ -105,7 +105,7 @@ export default function PrivacyPage() {
             <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>4. Cookies & Local Storage</h2>
             <p>
               Bidlyze uses only <strong>essential cookies</strong> required for authentication and session
-              management. These are set by our authentication provider (Supabase) and are necessary for the
+              management. These are set by our authentication service and are necessary for the
               platform to function. We do not use advertising cookies, tracking pixels, or third-party
               analytics cookies.
             </p>
@@ -117,28 +117,30 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>5. Third-Party Services</h2>
-            <p>We rely on the following third-party services to operate Bidlyze:</p>
+            <p>We rely on the following categories of third-party services to operate Bidlyze:</p>
             <ul className="list-disc pl-6 mt-2 space-y-1">
-              <li><strong>Supabase</strong> — User authentication and database hosting. Your account data and analysis results are stored in Supabase.</li>
-              <li><strong>OpenRouter</strong> — AI model routing. Document text is sent to OpenRouter&apos;s API, which routes it to a large language model for analysis. OpenRouter processes data under its own privacy policy and data processing terms.</li>
-              <li><strong>Paddle</strong> — Payment processing and subscription management. Paddle acts as our merchant of record and handles all billing and tax compliance.</li>
-              <li><strong>Vercel</strong> — Application hosting and deployment. Vercel serves the Bidlyze application and processes web requests.</li>
-              <li><strong>Resend</strong> — Transactional email delivery. We use Resend to send account and analysis notification emails.</li>
+              <li><strong>Authentication & database provider</strong> — Manages user accounts, secure login, and stores your analysis results.</li>
+              <li><strong>AI document processing provider</strong> — Document text is sent via API to a third-party AI service, which processes it through a large language model to generate your analysis. The provider processes data under its own privacy policy and data processing terms.</li>
+              <li><strong>Paddle</strong> — Payment processing and subscription management. Paddle (Paddle.com Market Limited) acts as our merchant of record and handles all billing, invoicing, and tax compliance.</li>
+              <li><strong>Hosting & infrastructure provider</strong> — Serves the Bidlyze application, processes web requests, and maintains standard server logs.</li>
+              <li><strong>Email delivery provider</strong> — Handles transactional email delivery for account notifications and analysis summaries.</li>
             </ul>
             <p className="mt-3">
               Each third-party service operates under its own privacy policy and terms of service. We share
-              data with these services only to the extent necessary to provide the Service to you.
+              data with these services only to the extent necessary to provide the Service to you. A current
+              list of specific sub-processors is available upon request by emailing{" "}
+              <a href="mailto:support@bidlyze.com" className="text-emerald-500 hover:underline">support@bidlyze.com</a>.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold mb-3" style={{ color: "var(--text-primary)" }}>6. International Data Processing</h2>
             <p>
-              Bidlyze is operated from and our primary infrastructure is hosted in the United States. The
-              third-party services we use (Supabase, Vercel, OpenRouter, Resend, Paddle) may process data
-              in the United States and other countries. By using the Service, you acknowledge that your data
-              may be transferred to and processed in jurisdictions outside your country of residence, which
-              may have different data protection laws than your jurisdiction.
+              Bidlyze is operated from and our primary infrastructure is hosted in the United States. Our
+              third-party service providers may process data in the United States and other countries. By
+              using the Service, you acknowledge that your data may be transferred to and processed in
+              jurisdictions outside your country of residence, which may have different data protection
+              laws than your jurisdiction.
             </p>
           </section>
 
@@ -150,16 +152,16 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc pl-6 mt-2 space-y-1">
               <li>All data transmitted between your browser and our servers is encrypted via TLS (HTTPS)</li>
-              <li>Authentication is handled by Supabase, which manages password hashing and session tokens</li>
-              <li>Database access is restricted using Supabase Row-Level Security (RLS) policies, ensuring users can only access their own data</li>
+              <li>Authentication is managed by a dedicated service provider that handles password hashing and session tokens</li>
+              <li>Database access is restricted using row-level security policies, ensuring users can only access their own data</li>
               <li>API endpoints verify user authentication before processing requests</li>
               <li>We do not store payment credentials — all payment data is handled by Paddle</li>
             </ul>
             <p className="mt-3">
-              Our infrastructure providers (Supabase and Vercel) maintain their own security certifications
-              and encrypt data at rest on their platforms. While we rely on these providers&apos; security
-              measures and take care in our own application design, no system is 100% secure. We cannot
-              guarantee absolute security and will notify affected users promptly if a data breach occurs.
+              Our infrastructure providers maintain their own security certifications and encrypt data at
+              rest on their platforms. While we rely on these providers&apos; security measures and take
+              care in our own application design, no system is 100% secure. We cannot guarantee absolute
+              security and will notify affected users promptly if a data breach occurs.
             </p>
           </section>
 
