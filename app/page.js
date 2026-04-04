@@ -401,9 +401,11 @@ export default function LandingPage() {
             <p className="text-xs" style={{ color: "var(--text-muted)" }}>
               &copy; {new Date().getFullYear()} Bidlyze. All rights reserved.
             </p>
-            <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-              AI RFx & Tender Intelligence for teams that win.
-            </p>
+            <div className="flex items-center gap-6 text-xs" style={{ color: "var(--text-muted)" }}>
+              <Link href="/terms" className="hover:text-emerald-500 transition-colors">Terms</Link>
+              <Link href="/privacy" className="hover:text-emerald-500 transition-colors">Privacy</Link>
+              <Link href="/refund-policy" className="hover:text-emerald-500 transition-colors">Refunds</Link>
+            </div>
           </div>
         </div>
       </footer>
